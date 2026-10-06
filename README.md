@@ -1,3 +1,17 @@
+# Accord
+
+A maintained Wrath Combo fork with curated job setups, matching hotbar layouts, and an exclusive simplified interface.
+
+**Status:** initial upstream baseline plus project notes. Accord's UI and runtime integration are not implemented yet; the inherited source still identifies itself as Wrath. There is no Accord build to install yet.
+
+- [Premise, boundaries and implementation direction](docs/ACCORD.md)
+- [Development rules](AGENTS.md)
+- [Companion HotbarTools project](https://github.com/kaldigo/HotbarTools)
+
+The original upstream documentation and attribution are preserved below. Its installation instructions refer to upstream Wrath, not an Accord release.
+
+---
+
 <section id="top">
     <p style="text-align:center;" align="center">
         <img align="center" src="/res/plugin/wrathcombo.png" width="250" />
