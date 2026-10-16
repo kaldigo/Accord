@@ -18,6 +18,7 @@ internal static class EngineSchema
         };
         var assembly = AssemblyLoadContext.Default.LoadFromAssemblyPath(Path.GetFullPath(path));
         var type = assembly.GetType("WrathCombo.Core.Configuration")!;
+        UpstreamMigrationTests.VerifyModel(type);
         var configuration = Activator.CreateInstance(type)!;
         assembly.GetType("WrathCombo.Services.Service")!.GetProperty("Configuration", BindingFlags.Static | BindingFlags.NonPublic)!.SetValue(null, configuration);
         assembly.GetType("WrathCombo.Window.Tabs.Debug")?.GetField("DebugConfig", BindingFlags.Static | BindingFlags.Public | BindingFlags.NonPublic)?.SetValue(null, true);

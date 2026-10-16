@@ -150,3 +150,7 @@ Show the current class's explanation directly beneath each variant, labelled wit
 ## Distribution name — 2026-10-16
 
 The user chose **Wrathful Combo** as the fork display name to distinguish it from upstream. Keep the existing internal identity `WrathFork`, configuration, `/wrath` and inherited IPC contracts. Publish Accord and Wrathful Combo alongside Hotbar Bridge in the existing HotbarTools custom repository feed; source repositories remain separate.
+
+## Keyboard compaction - 2026-10-17
+
+Compact keyboard layouts by default for both explicit setup and live updates. Reuse the established compaction rules: ST, AoE, actual mobility and tank/healer general reserves stay fixed; remaining actions fill available keyboard positions in order. Controller function positions and shared controls do not move. Persist per-job Bridge routes with the layout transaction and restore them with backups. Hotbar Bridge must be loaded so moved keyboard actions remain paired with their fixed controller controls. Without general cleanup, clear recognised moved/retired design actions from vacated keyboard slots but preserve unrelated assignments. Explicitly allowed extra job slots remain outside the original twelve-slot compaction region.

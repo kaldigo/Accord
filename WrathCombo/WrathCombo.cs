@@ -182,9 +182,18 @@ public sealed partial class WrathCombo : IDalamudPlugin
     {
         if (pluginInterface.InstalledPlugins.Any(p => p.InternalName == "WrathCombo" && p.IsLoaded))
             throw new InvalidOperationException("Disable Wrath Combo before loading Wrathful Combo.");
+        var importedUpstream = Engine.UpstreamSettingsMigration.ImportIfMissing(pluginInterface.ConfigFile.FullName,
+            json =>
+            {
+                // Validate using the same configuration model, without resolving source assembly metadata.
+                if (Newtonsoft.Json.JsonConvert.DeserializeObject<Configuration>(json,
+                        new Newtonsoft.Json.JsonSerializerSettings { TypeNameHandling = Newtonsoft.Json.TypeNameHandling.None }) is null)
+                    throw new InvalidDataException("Upstream Wrath configuration is empty.");
+            });
         P = this;
         pluginInterface.Create<Service>();
         ECommonsMain.Init(pluginInterface, this, Module.All);
+        if (importedUpstream) Svc.Log.Information("Imported upstream Wrath settings into the new Wrathful Combo configuration.");
         PunishLibMain.Init(pluginInterface, "Wrath Combo");
         ActionRequestIPCProvider.Initialize();
 

@@ -8,9 +8,11 @@
   <ItemGroup>
     <Compile Include="../Contract/*.cs" Link="Contract/%(Filename)%(Extension)" />
     <Reference Include="Dalamud"><HintPath>$(appdata)/XIVLauncher/addon/Hooks/dev/Dalamud.dll</HintPath></Reference>
+    <Compile Include="../Accord.Plugin/LiveUpdateState.cs" Link="LiveUpdateState.cs" />
     <Compile Include="../Accord.Plugin/MigrationPreparation.cs" Link="MigrationPreparation.cs" />
     <Compile Include="../Accord.Plugin/AccordSettings.cs" Link="AccordSettings.cs" />
     <Compile Include="../Accord.Plugin/SetupPack.cs" Link="SetupPack.cs" />
+    <Compile Include="../WrathCombo/Engine/UpstreamSettingsMigration.cs" Link="UpstreamSettingsMigration.cs" />
     <Compile Include="../WrathCombo/Engine/IntentHandoff.cs" Link="IntentHandoff.cs" />
     <Compile Include="../WrathCombo/Engine/BurstPolicy.cs" Link="BurstPolicy.cs" />
     <Compile Include="../Accord.Plugin/JobIntents.cs" Link="JobIntents.cs" />

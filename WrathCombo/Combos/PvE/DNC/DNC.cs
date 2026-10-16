@@ -149,8 +149,6 @@ internal partial class DNC : PhysicalRanged
 
             #endregion
 
-            if (CanPrepareStandardDance(true)) return StandardStep;
-
             #region Dance Fills
 
             // ST Standard (Dance) Steps & Fill
@@ -783,8 +781,6 @@ internal partial class DNC : PhysicalRanged
                     return ClosedPosition;
 
             #endregion
-
-            if (CanPrepareStandardDance(false)) return StandardStep;
 
             #region Dance Fills
 

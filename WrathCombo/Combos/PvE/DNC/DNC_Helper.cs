@@ -166,19 +166,6 @@ internal partial class DNC
         return true;
     }
 
-    private static bool CanPrepareStandardDance(bool singleTarget) =>
-        Engine.Options.Enabled(Feature.DncTargetlessPrepull) &&
-        Engine.Options.Enabled(Feature.DncStandardInitiation) &&
-        !InCombat() && !HasBattleTarget() &&
-        IsEnabled(Preset.DNC_ST_Adv_SS_Prepull) &&
-        IsEnabled(singleTarget ? Preset.DNC_ST_Adv_SS : Preset.DNC_AoE_Adv_SS) &&
-        (singleTarget ? DNC_ST_ADV_SS_IncludeSS : DNC_AoE_Adv_SS_IncludeSS) == (int)IncludeStep.Yes &&
-        !LocalPlayer.HasStatus(Buffs.StandardStep) &&
-        !LocalPlayer.HasStatus(Buffs.TechnicalStep) &&
-        !LocalPlayer.HasStatus(Buffs.FinishingMoveReady) &&
-        !LocalPlayer.HasStatus(Buffs.TechnicalFinish) &&
-        ActionReady(StandardStep) && IsOffCooldown(TechnicalStep);
-
     #region GCD Evaluation
 
     private static GCDRange GCDValue =>

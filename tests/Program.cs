@@ -17,6 +17,44 @@ var upstreamEnabled = new HashSet<Feature> { Feature.DncStandardInitiation, Feat
 foreach (var feature in Enum.GetValues<Feature>())
     Check(FeatureDefaults.Enabled(feature) == upstreamEnabled.Contains(feature), "Unconfigured fork changed upstream behaviour: " + feature);
 var pack = new SetupPack();
+// Every variant compacts keyboard functions without changing controller ownership.
+foreach (var preset in pack.Data.Jobs)
+for (int mask = 0; mask < 16; mask++)
+{
+    var choices = new AccordSettings();
+    foreach (var variant in VariantDefinitions.All) choices.Variants[variant.Id] = (mask & (1 << (int)variant.Id)) != 0;
+    var resolved = pack.Resolve(preset, choices);
+    var layout = KeyboardLayout.Compile(resolved, true);
+    Check(layout.Values.Distinct().Count() == KeyboardLayout.Positions.Length, "Compaction overlaps keyboard controls.");
+    var mapsForJob = ExtraJobMappings.Merge(Defaults.Maps(), resolved.Slots.Any(s => s.LogicalSlot > 12) ? [ExtraJobMappings.For(preset.JobId)] : [], new())
+        .Where(m => m.Applies(preset.JobId)).ToList();
+    var routes = mapsForJob.Where(m => !m.SharedAcrossJobs).ToDictionary(m => m.Id, m => layout.GetValueOrDefault(m.Regular, m.Regular));
+    var routed = LayoutRoutes.Effective(mapsForJob, routes);
+    foreach (var map in mapsForJob)
+    {
+        var after = routed.Single(m => m.Id == map.Id);
+        Check(after.Cross == map.Cross, "Compaction moved a controller function.");
+        Check(!map.SharedAcrossJobs || after.Regular == map.Regular, "Compaction moved a shared control.");
+    }
+    foreach (var slot in resolved.Slots.Where(s => s.Action != "Empty"))
+    {
+        var source = new Position(slot.RegularBar - 1, slot.RegularSlot - 1);
+        var map = mapsForJob.Single(m => m.Regular == source);
+        Check(routed.Single(m => m.Id == map.Id).Regular == layout.GetValueOrDefault(source, source), "Bridge lost a moved action.");
+    }
+    Check(layout[new(0, 0)] == new Position(0, 0) && layout[new(0, 1)] == new Position(0, 1), "Compaction moved ST/AoE.");
+    var locked = resolved.Slots.Where(s => s.LogicalSlot is 1 or 2 ||
+        ((Defaults.IsHealer(preset.JobId) || preset.JobId is 19 or 21 or 32 or 37) && s.LogicalSlot is 9 or 10) ||
+        (Defaults.IsCombat(preset.JobId) && !Defaults.IsHealer(preset.JobId) && s.LogicalSlot == 4 && s.Action != "Empty"))
+        .Select(s => new Position(s.RegularBar - 1, s.RegularSlot - 1)).ToHashSet();
+    var occupied = resolved.Slots.Where(s => s.Action != "Empty").Select(s => layout.GetValueOrDefault(new(s.RegularBar - 1, s.RegularSlot - 1), new(s.RegularBar - 1, s.RegularSlot - 1))).ToHashSet();
+    bool emptySeen = false;
+    foreach (var position in KeyboardLayout.Positions.Where(p => !locked.Contains(p)))
+    {
+        if (!occupied.Contains(position)) emptySeen = true;
+        else Check(!emptySeen, "Compaction left a movable keyboard gap.");
+    }
+}
 var scope = new AccordSettings();
 Check(pack.SelectedJobs(scope).Length == 0, "New installations must wait for a class selection.");
 scope.PreparedJobs[19] = 1;
@@ -194,7 +232,7 @@ foreach (var job in pack.Data.Jobs)
         if(job.JobId==38)
         {
             Check(features[Feature.DncPartnerOnAoe]==choices.Enabled(VariantId.Support),"Partner AoE ownership mismatch.");
-            Check(features[Feature.DncTargetlessPrepull]==choices.Enabled(VariantId.ClassMechanics),"Targetless prepull must follow dance initiation.");
+            Check(!features[Feature.DncTargetlessPrepull],"Retired targetless initiation must remain disabled for every variant.");
             Check(features[Feature.DncImprovisationFinish],"An accepted Improvisation must remain finishable after switching Support off.");
             foreach (int slot in new[] {7,9,11})
                 if (resolved.Slots.Single(s => s.LogicalSlot == slot) is { Action: "Empty" } removed)
@@ -315,6 +353,22 @@ catch (AggregateException ex)
     Check(undoAttempts == edits.Count && routeUndoAttempted, "A rollback failure skipped other recovery attempts.");
     Check(ex.InnerExceptions.Count == 6, "Recovery failures were hidden.");
 }
+// Class transitions bypass idle polling; failures remain pending without a variant click.
+var liveUpdates = new LiveUpdateState();
+Check(liveUpdates.Poll(1000, 38, 1), "First live update was delayed.");
+try { liveUpdates.Apply(38, 1, () => throw new IOException("Hotbars not ready")); } catch (IOException) { }
+liveUpdates.Wake();
+liveUpdates.DeferRetry(1000);
+Check(!liveUpdates.Applied && !liveUpdates.Poll(1249, 38, 1) && liveUpdates.Poll(1250, 38, 1), "Failed live update did not retry with bounded delay.");
+liveUpdates.Apply(38, 1, () => { });
+Check(liveUpdates.Applied, "Successful live update remained pending.");
+Check(liveUpdates.Poll(1251, 31, 1) && !liveUpdates.Applied, "Class change waited for idle poll.");
+liveUpdates.Apply(31, 1, () => { });
+Check(liveUpdates.Poll(1252, 31, 2) && !liveUpdates.Applied, "Character change did not refresh layout.");
+liveUpdates.Apply(31, 2, () => { });
+liveUpdates.Request();
+Check(liveUpdates.Poll(1253, 31, 2) && !liveUpdates.Applied, "Variant or cleanup change did not refresh current layout.");
+checks += UpstreamMigrationTests.Run();
 checks += SeparationTests.Run();
 if (args.Length > 0) checks += EngineSchema.Verify(args[0], pack);
 Console.WriteLine($"Passed {checks} assertions across 512 job/variant combinations, burst handoff, shared-slot cleanup and transaction failure recovery.");

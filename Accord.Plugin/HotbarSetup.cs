@@ -36,8 +36,8 @@ internal sealed class HotbarSetup
         var module = NativeHotbars.Ready(current);
         string character = NativeHotbars.CharacterKey(Svc.PlayerState.ContentId);
         bool bridge = BridgeLoaded;
-        if (cleanup && !bridge)
-            throw new InvalidOperationException("Load Hotbar Bridge before clearing other actions, so its actual shared map can be protected.");
+        if (!bridge)
+            throw new InvalidOperationException("Load Hotbar Bridge before applying compact hotbars, so controller routes and shared slots can be preserved.");
         if (bridge && !Svc.PluginInterface.GetIpcSubscriber<bool>("HotbarBridge.BeginExternalEdit").InvokeFunc())
             throw new InvalidOperationException("Hotbar Bridge is busy. Try again.");
         try
@@ -60,6 +60,12 @@ internal sealed class HotbarSetup
             foreach (var (job, preset) in jobs)
             {
                 var keep = new HashSet<Position>();
+                var layout = KeyboardLayout.Compile(preset, true);
+                // Vacated keyboard positions may contain actions moved by this or a prior variant.
+                // Clear only recognised design actions when general cleanup is disabled.
+                var designActions = preset.Slots.SelectMany(s => new[] { s.Action, s.RetiredAction })
+                    .Where(a => !string.IsNullOrEmpty(a) && a != "Empty")
+                    .Select(a => actions.ResolveSlot(preset.Job, a)).ToHashSet();
                 var effectiveMaps = maps ?? ExtraJobMappings.Merge(Defaults.Maps(), extras, new());
                 if (routes is not null)
                 {
@@ -74,9 +80,10 @@ internal sealed class HotbarSetup
                     var map = effectiveMaps.SingleOrDefault(m => m.Applies(job) && m.Regular == source);
                     if (map is null || map.SharedAcrossJobs)
                         throw new InvalidOperationException($"No job-specific Bridge pair for {preset.Job} {source}.");
-                    if (routes is not null) routes[job][map.Id] = source;
+                    var regular = layout.GetValueOrDefault(source, source);
+                    if (routes is not null) routes[job][map.Id] = regular;
                     var retired = string.IsNullOrEmpty(slot?.RetiredAction) ? default : actions.ResolveSlot(preset.Job, slot.RetiredAction);
-                    Add(source, value, retired);
+                    Add(regular, value, retired, true);
                     Add(map.Cross, value, retired);
                 }
                 if (routes is not null) LayoutRoutes.Effective(effectiveMaps.Where(m => m.Applies(job)), routes[job]);
@@ -85,7 +92,7 @@ internal sealed class HotbarSetup
                                  bar => NativeHotbars.Ready(current)->IsHotbarShared((uint)bar), p => NativeHotbars.Read(job, p)))
                         edits.Add((job, edit.Position), edit);
 
-                void Add(Position position, SlotValue value, SlotValue retired)
+                void Add(Position position, SlotValue value, SlotValue retired, bool keyboard = false)
                 {
                     if (!position.Valid || !keep.Add(position)) throw new InvalidDataException("Invalid or duplicate layout destination.");
                     if (effectiveMaps.Any(m => m.SharedAcrossJobs && (m.Regular == position || m.Cross == position)))
@@ -93,9 +100,10 @@ internal sealed class HotbarSetup
                     if (NativeHotbars.Ready(current)->IsHotbarShared((uint)position.Bar))
                         throw new InvalidOperationException($"{position} is a shared game hotbar. Choose job-specific bars first.");
                     // With cleanup off, an unused design position is not permission
-                    // to erase an unrelated action. Only the explicitly retired selector may be removed.
+                    // to erase an unrelated action. Recognised moved/retired design actions may be removed.
                     var old = NativeHotbars.Read(job, position);
-                    if (value == default && !cleanup && (retired == default || old != retired)) return;
+                    if (value == default && !cleanup && (retired == default || old != retired) &&
+                        !(keyboard && designActions.Contains(old))) return;
                     if (old != value) edits.Add((job, position), new(job, position, old, value));
                 }
             }

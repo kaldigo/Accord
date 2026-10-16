@@ -11,7 +11,8 @@ public enum Feature
     RangedMitigationOnSt, RangedMitigationOnAoe, MchDismantleOnSt, MchDismantleOnAoe,
     BlmManawardOnAoe, WhmDivineCaressOnDamage,
     MnkMantraOnAoe, MchWildfireOnAoe, DncPartnerOnAoe,
-    DncTargetlessPrepull, DncImprovisationFinish, MchFlamethrowerContinuation,
+    DncTargetlessPrepull, // Retired, inert compatibility value; never reuse this numeric ID.
+    DncImprovisationFinish, MchFlamethrowerContinuation,
     MnkEarthOnAoe, MnkEarthReplyOnDamage, SamThirdEyeOnAoe,
 }
 

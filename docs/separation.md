@@ -112,3 +112,7 @@ Supersedes the earlier API/migration limitations above: v2 adds discovery, dry v
 
 
 Standalone interfaces suppressed by the combined prototype have now been audited and restored where appropriate. See [fork restoration audit](fork-restoration-audit.md) for findings, deliberate exclusions and native acceptance requirements.
+
+## Live hotbar recovery correction - 2026-10-17
+
+Class/character changes now wake the live update immediately; readiness or write failures remain pending and retry after 250 ms. Only the current selected class receives live hotbar writes, including variant, active-selection, cleanup and live-mode changes. Explicit static setup retains the all-selected scope. Successful behaviour and hotbar application completes the transition; failed application does not consume it. The blanket outside-edit revision pause is removed: transitions read fresh engine state and reapply Accord-owned switches while retaining detailed settings for prepared jobs. API transaction revision/sequence checks and pending-operation recovery remain enforced. This supersedes the earlier once-per-second/external-edit-pause description.

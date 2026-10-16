@@ -21,19 +21,17 @@ internal sealed class SetupController : IDisposable
     internal SetupPack Pack { get; } = new();
     private readonly HotbarSetup hotbars = new();
     private readonly List<IDtrBarEntry> entries = new();
-    private uint currentJob;
-    private ulong character;
+    private readonly LiveUpdateState updates = new();
     internal string Status { get; private set; } = "Waiting for a character.";
     internal AccordSettings Settings => Plugin.Instance.Settings;
     private readonly EngineClient engine;
-    private long nextPoll;
     private bool disposed;
     internal static bool Enabled(VariantId id) => Instance?.Settings.Enabled(id) ?? false;
 
     internal SetupController()
     {
         Instance = this;
-        engine = new EngineClient(() => nextPoll = 0);
+        engine = new EngineClient(updates.Wake);
         foreach (var definition in VariantDefinitions.All)
         {
             var entry = Svc.DtrBar.Get("Accord " + definition.Label);
@@ -65,18 +63,24 @@ internal sealed class SetupController : IDisposable
 
     internal void Tick()
     {
-        if (Environment.TickCount64 < nextPoll) return;
-        nextPoll = Environment.TickCount64 + 1000;
+        uint observed = Player.Available ? (uint)Player.Job : 0;
+        ulong observedId = Player.Available && Svc.ClientState.IsLoggedIn ? Svc.PlayerState.ContentId : 0;
+        if (!updates.Poll(Environment.TickCount64, observed, observedId)) return;
+        try { TickReady(); }
+        finally { updates.DeferRetry(Environment.TickCount64); }
+    }
+
+    private void TickReady()
+    {
         if (engine.HasPending)
         {
-            if (engine.Recover()) { currentJob = 0; UpdateEntries(); Status = "Settings operation recovered. Layout updates will resume after state verification."; }
+            if (engine.Recover()) { updates.Invalidate(); UpdateEntries(); Status = "Settings operation recovered. Layout updates will resume after state verification."; }
         }
         if (Plugin.Instance.MigrationPending) return;
         UpdateEntries();
         if (!Player.Available || !Svc.ClientState.IsLoggedIn)
         {
-            currentJob = 0;
-            character = 0;
+            updates.Invalidate();
 
             return;
         }
@@ -84,35 +88,32 @@ internal sealed class SetupController : IDisposable
 
         if (!Pack.IsActive((uint)Player.Job, Settings))
         {
-            currentJob = 0;
+            updates.Invalidate();
             Status = "Accord is inactive for this class. Choose active classes in /accord.";
             return;
         }
 
         JObject snapshot;
         try { snapshot = engine.Read(); }
-        catch { currentJob = 0; throw; }
-        if (Settings.EngineConfigurationId == snapshot.Value<string>("ConfigurationId") &&
-            Settings.LastEngineRevision == snapshot.Value<string>("LegacyRevisionV1") && Settings.LastEngineRevision != snapshot.Value<string>("Revision"))
-            Mutate(() => Settings.LastEngineRevision = snapshot.Value<string>("Revision")!);
-        if (Settings.EngineConfigurationId == snapshot.Value<string>("ConfigurationId") &&
-            Settings.LastEngineRevision.Length != 0 && Settings.LastEngineRevision != snapshot.Value<string>("Revision"))
-        {
-            Status = "Engine settings changed outside Accord. Use Set selected class hotbars or change a variant to reapply the reviewed mapping. Live updates paused.";
-            return;
-        }
-        if (Settings.EngineConfigurationId != snapshot.Value<string>("ConfigurationId")) currentJob = 0;
+        catch { updates.Invalidate(); throw; }
+        // Re-read current settings on each transition. ApplySettings changes only Accord-owned
+        // switches for prepared jobs; unrelated personal edits must not freeze live layouts.
+        if (Settings.EngineConfigurationId != snapshot.Value<string>("ConfigurationId")) updates.Invalidate();
         uint job = (uint)Player.Job;
         ulong contentId = Svc.PlayerState.ContentId;
-        if (job == currentJob && contentId == character) return;
+        if (updates.Applied) return;
         if (contentId == 0 || Pack.Find(job) is null) return;
         // Wait for the game to finish activating this job before consuming the transition.
         unsafe { NativeHotbars.Ready(job); }
-        Prepare([Pack.Find(job)!]);
-        if (Settings.LiveMode) ApplyCurrentHotbars();
-        else Status = $"{Pack.Find(job)!.Job}: behaviour ready. Static hotbars unchanged.";
-        currentJob = job;
-        character = contentId;
+        updates.Apply(job, contentId, () =>
+        {
+            if (Settings.LiveMode) ApplyCurrentHotbars();
+            else
+            {
+                Prepare([Pack.Find(job)!]);
+                Status = $"{Pack.Find(job)!.Job}: behaviour ready. Static hotbars unchanged.";
+            }
+        });
     }
 
     private void Mutate(Action mutation)
@@ -233,25 +234,30 @@ internal sealed class SetupController : IDisposable
         var desired = CloneSettings();
         desired.Variants[id] = enabled;
         ApplySettings(Pack.SelectedJobs(desired), desired);
-        if (Settings.LiveMode && Pack.SelectedJobs(Settings).Length != 0)
-        {
-            try { ApplyHotbars(); }
-            catch (Exception ex)
-            {
-                throw new InvalidOperationException("Behaviour saved; live layout failed. Retry Set selected class hotbars. " + ex.Message, ex);
-            }
-        }
+        if (Settings.LiveMode) RequestCurrentHotbars();
         else Status = "Variant saved. Static hotbars unchanged; use setup to restore any needed manual buttons.";
     }
 
     internal void SetLive(bool live)
     {
-        if (live) ApplyHotbars();
+        if (live && Pack.SelectedJobs(Settings).Length == 0)
+            throw new InvalidOperationException("Select at least one active class first.");
         Mutate(() => Settings.LiveMode = live);
-        Status = live ? "Live mode enabled for selected classes; it will refresh on variant and class changes." : "Static mode enabled. Current hotbars retained.";
+        if (live) RequestCurrentHotbars();
+        else Status = "Static mode enabled. Current hotbars retained.";
     }
 
-    internal void SetCleanup(bool value) => Mutate(() => Settings.ClearOtherActions = value);
+    internal void SetCleanup(bool value)
+    {
+        Mutate(() => Settings.ClearOtherActions = value);
+        if (Settings.LiveMode) RequestCurrentHotbars();
+    }
+
+    private void RequestCurrentHotbars()
+    {
+        updates.Request();
+        if (Settings.LiveMode) Status = "Live layout pending for the current active class; it will retry when hotbars are ready.";
+    }
 
     internal void SetActiveJobs(IEnumerable<uint> jobs)
     {
@@ -259,8 +265,8 @@ internal sealed class SetupController : IDisposable
         desired.ActiveJobs = jobs.Select(id => Pack.Find(id)?.JobId).Where(id => id.HasValue)
             .Select(id => id!.Value).ToHashSet();
         ApplySettings(Pack.SelectedJobs(desired), desired);
-        currentJob = 0;
-        if (Settings.LiveMode && desired.ActiveJobs.Count != 0) ApplyHotbars();
+        updates.Invalidate();
+        if (Settings.LiveMode) RequestCurrentHotbars();
         else Status = "Active classes saved. Existing hotbars retained; deselected classes will receive no further Accord updates.";
     }
 

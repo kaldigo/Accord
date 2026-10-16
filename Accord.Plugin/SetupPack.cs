@@ -96,7 +96,7 @@ internal sealed class SetupPack
             case 38:
                 flags[Feature.DncStandardInitiation] = mechanics; flags[Feature.DncTechnicalInitiation] = mechanics;
                 flags[Feature.DncCuringWaltz] = support; flags[Feature.DncPartnerOnAoe] = support;
-                flags[Feature.DncTargetlessPrepull] = mechanics;
+                flags[Feature.DncTargetlessPrepull] = false; // Retired: no added idle dance initiation.
                 flags[Feature.DncImprovisationFinish] = true; break;
             case 39: flags[Feature.RprCrestOnAoe] = protection; break;
             case 40: flags[Feature.SageKardiaOnStDamage] = support; flags[Feature.SageKardiaOnAoeDamage] = support; break;
@@ -194,7 +194,7 @@ internal sealed class SetupPack
             if (job.JobId == 38)
             {
                 ReplaceSlot(3, "Empty", "Technical dance initiation is delegated to ST/AoE");
-                ReplaceSlot(11, "Empty", "Standard dance, including targetless preparation, is handled by ST/AoE");
+                ReplaceSlot(11, "Empty", "Standard dance follows upstream initiation and completion through ST/AoE");
             }
         }
         if (settings.Enabled(VariantId.Support))

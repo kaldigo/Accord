@@ -39,8 +39,9 @@ internal static class AccordUi
         if (!setup.Settings.LiveMode && ImGui.Button("Set selected class hotbars")) setup.Run(setup.ApplyHotbars);
         if (ImGui.Button(setup.Settings.LiveMode ? "Disable live mode" : "Enable live mode")) setup.Run(() => setup.SetLive(!setup.Settings.LiveMode));
         ImGui.TextWrapped(setup.Settings.LiveMode
-            ? "Live: refresh selected classes on variant changes and active classes on class changes."
+            ? "Live: refresh the current selected class when variants or classes change; retry when hotbars are ready."
             : "Static: variants change behaviour. Use a setup button to update hotbars.");
+        ImGui.TextWrapped("Keyboard actions close available gaps; fixed controls and controller positions stay in place. Hotbar Bridge is required.");
         ImGui.Separator();
         ImGui.TextWrapped(setup.Status);
         if (setup.HasPendingOperation && ImGui.Button("Keep recovery record and review again")) setup.Run(setup.AbandonPendingOperation);
