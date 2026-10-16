@@ -149,4 +149,4 @@ Show the current class's explanation directly beneath each variant, labelled wit
 
 ## Distribution name — 2026-10-16
 
-The user chose **Wrathfull Combo** as the fork display name to distinguish it from upstream. Keep the existing internal identity `WrathFork`, configuration, `/wrath` and inherited IPC contracts. Publish Accord and Wrathfull Combo alongside Hotbar Bridge in the existing HotbarTools custom repository feed; source repositories remain separate.
+The user chose **Wrathful Combo** as the fork display name to distinguish it from upstream. Keep the existing internal identity `WrathFork`, configuration, `/wrath` and inherited IPC contracts. Publish Accord and Wrathful Combo alongside Hotbar Bridge in the existing HotbarTools custom repository feed; source repositories remain separate.
