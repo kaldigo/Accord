@@ -1,12 +1,13 @@
 # Separate plugin previews
 
-The local 0.2.2 preview contains two plugins. **WrathFork** (provisional name) owns rotations, settings and the settings API. **Accord** owns reviewed mappings, variants and hotbars. Both are needed for reviewed combat setup. Disable upstream Wrath and the old combined Accord before using these builds; Hotbar Bridge stays separate.
+The local 0.2.3 preview contains two plugins. **Wrathfull Combo** (internal name `WrathFork`) owns rotations, settings and the settings API. **Accord** owns reviewed mappings, variants and hotbars. Both are needed for reviewed combat setup. Disable upstream Wrath and the old combined Accord before using these builds; Hotbar Bridge stays separate.
 
-Run `pwsh -File tools/package-release.ps1` with .NET 10 and installed Dalamud API 15 development dependencies. It builds both projects, runs mapping/contract checks and validates every job/variant against the compiled engine schema, then writes `artifacts/v0.2.2-preview/`:
+Run `pwsh -File tools/package-release.ps1` with .NET 10 and installed Dalamud API 15 development dependencies. It builds both projects, runs mapping/contract checks and validates every job/variant against the compiled engine schema, then writes `artifacts/v0.2.3-preview/`:
 
 - `WrathFork.zip` and `Accord.zip`, each with its own identity and dependency notices.
 - `WrathFork.pluginmaster.testing.json` and `Accord.pluginmaster.testing.json`, separate testing feeds.
 - `SHA256SUMS.txt`, checksums for both packages.
+- `pluginmaster.json`, entries for the shared HotbarTools plugin feed.
 
 Fork output is `WrathCombo/bin/WrathFork/Release/`; client output is `Accord.Plugin/bin/Release/`. Nothing is copied into XIVLauncher or published. Generated release URLs are proposed destinations and do not work until a release is published. Previous 0.1.0 artifacts remain combined-prototype builds.
 

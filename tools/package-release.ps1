@@ -11,15 +11,16 @@ try {
     & dotnet run --project tests/Accord.Tests.csproj -c Release -- WrathCombo/bin/WrathFork/Release/WrathFork.dll
     if ($LASTEXITCODE -ne 0) { throw 'Separation tests failed.' }
     Add-Type -AssemblyName System.IO.Compression.FileSystem
-    $tag = 'v0.2.2-preview'
+    $tag = 'v0.2.3-preview'
     $out = Join-Path $repoRoot "artifacts/$tag"
     New-Item -ItemType Directory -Force -Path $out | Out-Null
     $hashes = @()
+    $feed = @()
     foreach ($name in @('WrathFork', 'Accord')) {
         $relative = if ($name -eq 'WrathFork') { 'WrathCombo/bin/WrathFork/Release/WrathFork' } else { 'Accord.Plugin/bin/Release/Accord' }
         $build = Join-Path $repoRoot $relative
         $manifest = Get-Content -LiteralPath (Join-Path $build "$name.json") -Raw | ConvertFrom-Json
-        if ($manifest.InternalName -ne $name -or $manifest.Name -ne $name -or $manifest.DalamudApiLevel -ne 15 -or [version]$manifest.AssemblyVersion -ne [version]'0.2.2.0') {
+        if ($manifest.InternalName -ne $name -or $manifest.Name -ne $(if ($name -eq 'WrathFork') { 'Wrathfull Combo' } else { 'Accord' }) -or $manifest.DalamudApiLevel -ne 15 -or [version]$manifest.AssemblyVersion -ne [version]'0.2.3.0') {
             throw "Incorrect package identity/version: $name"
         }
         $package = Join-Path $out "$name.zip"
@@ -43,12 +44,16 @@ try {
         foreach ($field in @('DownloadLinkInstall', 'DownloadLinkUpdate', 'DownloadLinkTesting')) {
             $manifest | Add-Member -NotePropertyName $field -NotePropertyValue $url -Force
         }
+        $publicManifest = $manifest | ConvertTo-Json -Depth 8 | ConvertFrom-Json
+        $publicManifest | Add-Member -NotePropertyName Changelog -NotePropertyValue 'Separate Accord setup and Wrathfull Combo engine with settings API. Development preview; native acceptance pending.' -Force
+        $feed += $publicManifest
         $manifest | Add-Member -NotePropertyName IsTestingExclusive -NotePropertyValue $true -Force
         $manifest | Add-Member -NotePropertyName TestingAssemblyVersion -NotePropertyValue $manifest.AssemblyVersion -Force
-        $manifest | Add-Member -NotePropertyName Changelog -NotePropertyValue 'Separate Accord client and WrathFork engine/API. Native acceptance pending.' -Force
+        $manifest | Add-Member -NotePropertyName Changelog -NotePropertyValue 'Accord setup UI and Wrathfull Combo engine/API. Native acceptance pending.' -Force
         ConvertTo-Json -InputObject @($manifest) -Depth 8 | Set-Content -LiteralPath (Join-Path $out "$name.pluginmaster.testing.json") -Encoding utf8NoBOM
         $hashes += (Get-FileHash -LiteralPath $package -Algorithm SHA256).Hash.ToLowerInvariant() + "  $name.zip"
     }
+    ConvertTo-Json -InputObject $feed -Depth 8 | Set-Content -LiteralPath (Join-Path $out 'pluginmaster.json') -Encoding utf8NoBOM
     $hashes | Set-Content -LiteralPath (Join-Path $out 'SHA256SUMS.txt') -Encoding utf8NoBOM
     Write-Output "Prepared two local previews in $out. Nothing installed or published."
 } finally { Pop-Location }

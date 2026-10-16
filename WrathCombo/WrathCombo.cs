@@ -181,7 +181,7 @@ public sealed partial class WrathCombo : IDalamudPlugin
     public WrathCombo(IDalamudPluginInterface pluginInterface)
     {
         if (pluginInterface.InstalledPlugins.Any(p => p.InternalName == "WrathCombo" && p.IsLoaded))
-            throw new InvalidOperationException("Disable Wrath Combo before loading WrathFork.");
+            throw new InvalidOperationException("Disable Wrath Combo before loading Wrathfull Combo.");
         P = this;
         pluginInterface.Create<Service>();
         ECommonsMain.Init(pluginInterface, this, Module.All);

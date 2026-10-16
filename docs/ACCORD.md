@@ -145,3 +145,8 @@ Class selection appears first, above variants and hotbar controls. Use an always
 Show **Set selected class hotbars** only while live mode is off. Live mode handles hotbar updates without this setup button.
 
 Show the current class's explanation directly beneath each variant, labelled with the class abbreviation. Group settings reset, hotbar restore, local troubleshooting export and legacy settings import under **Maintenance**. Explain each operation's scope beside its clearly labelled control, including that hotbar restore disables live mode and restores the previous operation's layout rather than necessarily the pre-Accord layout.
+
+
+## Distribution name — 2026-10-16
+
+The user chose **Wrathfull Combo** as the fork display name to distinguish it from upstream. Keep the existing internal identity `WrathFork`, configuration, `/wrath` and inherited IPC contracts. Publish Accord and Wrathfull Combo alongside Hotbar Bridge in the existing HotbarTools custom repository feed; source repositories remain separate.

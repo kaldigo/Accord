@@ -1,6 +1,6 @@
 {
   "Author": "kaldigo; based on Team Wrath's Wrath Combo",
-  "Name": "WrathFork",
+  "Name": "Wrathfull Combo",
   "InternalName": "WrathFork",
   "DalamudApiLevel": 15,
   "Punchline": "Configurable Wrath rotation engine and settings API.",
