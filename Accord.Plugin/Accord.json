@@ -6,5 +6,10 @@
   "Punchline": "Reviewed intent settings and matching hotbars.",
   "Description": "Configures the compatible Wrathfull Combo engine through its settings API and manages static/live hotbars. Hotbar Bridge remains separate. Development preview.",
   "RepoUrl": "https://github.com/kaldigo/Accord",
-  "Tags": ["hotbars", "configuration", "pve"]
+  "Tags": [
+    "hotbars",
+    "configuration",
+    "pve"
+  ],
+  "IconUrl": "https://raw.githubusercontent.com/kaldigo/HotbarTools/main/assets/icons/accord.png"
 }

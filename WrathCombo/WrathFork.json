@@ -10,5 +10,6 @@
     "combo",
     "hotbars",
     "pve"
-  ]
+  ],
+  "IconUrl": "https://raw.githubusercontent.com/kaldigo/HotbarTools/main/assets/icons/wrathfull-combo.png"
 }

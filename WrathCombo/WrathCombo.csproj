@@ -73,7 +73,7 @@
 
     <!-- Logo -->
     <ItemGroup>
-        <Content Include="..\res\plugin\wrathcombo.png" Link="images\wrathcombo.png" CopyToOutputDirectory="PreserveNewest" Visible="false" />
+        <Content Include="..\res\plugin\wrathfull-combo.png" Link="images\wrathcombo.png" CopyToOutputDirectory="PreserveNewest" Visible="false" />
     </ItemGroup>
 
     <!-- Dalamud Packaging -->
