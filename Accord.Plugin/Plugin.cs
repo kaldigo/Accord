@@ -15,6 +15,8 @@ public sealed class Plugin : IDalamudPlugin
     internal static Plugin Instance = null!;
     internal bool IsOpen;
     internal bool MigrationPending;
+    internal bool RequiresMigration;
+    internal string MigrationSource = "";
     internal AccordSettings Settings;
     private readonly SetupController setup;
 
@@ -22,7 +24,7 @@ public sealed class Plugin : IDalamudPlugin
     {
         Instance = this;
         ECommonsMain.Init(pluginInterface, this, Module.DalamudReflector);
-        // Reject the combined prototype's configuration rather than silently interpreting it.
+        // Preserve the combined source and require a reviewed API import before replacing it.
         var file = pluginInterface.ConfigFile;
         if (file.Exists && JObject.Parse(File.ReadAllText(file.FullName))["EnabledActionsV6"] is not null)
         {
@@ -31,12 +33,14 @@ public sealed class Plugin : IDalamudPlugin
             File.Copy(file.FullName, backup, false);
             var combined = JObject.Parse(File.ReadAllText(file.FullName));
             Settings = combined["Accord"]?.ToObject<AccordSettings>() ?? new AccordSettings();
+            MigrationSource = backup;
             Settings.PreparedJobs.Clear();
             Settings.SharedSettingsPrepared = false;
             Settings.EngineConfigurationId = "";
             Settings.LastEngineRevision = "";
             Settings.LiveMode = false;
             MigrationPending = true;
+            RequiresMigration = true;
             IsOpen = true;
         }
         else Settings = pluginInterface.GetPluginConfig() as AccordSettings ?? new AccordSettings();
@@ -49,7 +53,7 @@ public sealed class Plugin : IDalamudPlugin
     }
 
     private void Open() => IsOpen = true;
-    private void Update(IFramework _) { if (!MigrationPending) setup.Run(setup.Tick); }
+    private void Update(IFramework _) => setup.Run(setup.Tick);
     private void Draw()
     {
         if (!IsOpen) return;
@@ -57,12 +61,12 @@ public sealed class Plugin : IDalamudPlugin
         {
             if (MigrationPending)
             {
-                ImGui.TextWrapped("Your combined prototype configuration has been backed up. Your Accord choices are retained; live mode is off. Starting separate setup will apply reviewed settings to WrathFork through its API. Detailed engine customisations remain in the backup and are not imported automatically.");
-                if (ImGui.Button("Start separate setup")) setup.Run(() =>
-                {
-                    Svc.PluginInterface.SavePluginConfig(Settings);
-                    MigrationPending = false;
-                });
+                ImGui.TextWrapped(setup.MigrationSummary);
+                ImGui.TextWrapped(setup.Status);
+                if (ImGui.Button("Preview personal settings import")) setup.Run(setup.PreviewMigration);
+                if (setup.MigrationReady && ImGui.Button("Import these personal settings")) setup.Run(setup.ImportMigration);
+                if (!RequiresMigration && !setup.HasPendingOperation && ImGui.Button("Cancel import")) MigrationPending = false;
+                if (setup.HasPendingOperation && ImGui.Button("Keep recovery record and review again")) setup.Run(setup.AbandonPendingOperation);
             }
             else AccordUi.Draw();
         }

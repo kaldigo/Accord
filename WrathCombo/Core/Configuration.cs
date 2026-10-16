@@ -35,6 +35,7 @@ namespace WrathCombo.Core;
 public partial class Configuration : IPluginConfiguration
 {
     public Dictionary<uint, Dictionary<WrathFork.Contract.Feature, bool>> ForkFeatures { get; set; } = new();
+    public Newtonsoft.Json.Linq.JObject ForkOperationReceipts { get; set; } = new();
     public string ForkConfigurationId { get; set; } = Guid.NewGuid().ToString("N");
 
     /// <summary> Gets or sets the configuration version. </summary>

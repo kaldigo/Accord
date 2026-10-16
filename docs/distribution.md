@@ -1,8 +1,8 @@
 # Separate plugin previews
 
-The local 0.2.1 preview contains two plugins. **WrathFork** (provisional name) owns rotations, settings and the settings API. **Accord** owns reviewed mappings, variants and hotbars. Both are needed for reviewed combat setup. Disable upstream Wrath and the old combined Accord before using these builds; Hotbar Bridge stays separate.
+The local 0.2.2 preview contains two plugins. **WrathFork** (provisional name) owns rotations, settings and the settings API. **Accord** owns reviewed mappings, variants and hotbars. Both are needed for reviewed combat setup. Disable upstream Wrath and the old combined Accord before using these builds; Hotbar Bridge stays separate.
 
-Run `pwsh -File tools/package-release.ps1` with .NET 10 and installed Dalamud API 15 development dependencies. It builds both projects, runs mapping/contract checks and validates every job/variant against the compiled engine schema, then writes `artifacts/v0.2.1-preview/`:
+Run `pwsh -File tools/package-release.ps1` with .NET 10 and installed Dalamud API 15 development dependencies. It builds both projects, runs mapping/contract checks and validates every job/variant against the compiled engine schema, then writes `artifacts/v0.2.2-preview/`:
 
 - `WrathFork.zip` and `Accord.zip`, each with its own identity and dependency notices.
 - `WrathFork.pluginmaster.testing.json` and `Accord.pluginmaster.testing.json`, separate testing feeds.
@@ -12,7 +12,7 @@ Fork output is `WrathCombo/bin/WrathFork/Release/`; client output is `Accord.Plu
 
 `/wrathfork` opens the engine configuration; `/accord` opens setup. Accord never writes the fork configuration file. The fork backs up and persists validated API changes itself, retaining them when Accord unloads. Accord stores its own variants and hotbar recovery records. Incompatible/missing engine status blocks dependent setup/live operations; hotbar restore stays local.
 
-A combined Accord config is backed up and prompts for separate setup. Accord choices are retained, preparation state is reset and live mode is disabled. Personalised engine settings are not imported automatically; retain the backup. This migration path has not been exercised in game. See [separation implementation](separation.md) for API coverage and remaining limitations.
+A combined Accord config is backed up and prompts for separate setup. Accord choices are retained, preparation state is reset and live mode is disabled. Personalised engine settings are imported through a previewed, validated API transaction; unsupported/retired fields are listed in the local report and retained in the backup. Interrupted imports are recoverable by operation ID. This migration path has not been exercised in game. See [separation implementation](separation.md) for API coverage and remaining limitations.
 
 ## Native acceptance record
 
@@ -28,3 +28,5 @@ Local code/data checks are recorded in `docs/implementation.md`. Before stable p
 8. Logout/death/territory/class resets and the Wrath conflict guard. No hands-free action execution.
 
 Also verify engine-only operation with Accord unloaded, load order/reconnect, persistence after both reload, outside-edit detection, rejected settings updates and recovery. These native checks are pending. No damage improvement is claimed from the MCH/BLM clear-time comparison. Export diagnostics using Accord's UI when needed; exports are private and must not be uploaded with release artifacts.
+
+See [settings API and migration contract](settings-api.md) for v2 endpoints, validation and recovery semantics.

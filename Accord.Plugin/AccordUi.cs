@@ -1,5 +1,7 @@
 using System;
 using System.Linq;
+using System.IO;
+using ECommons.DalamudServices;
 using ECommons.GameHelpers;
 
 namespace Accord;
@@ -10,7 +12,7 @@ internal static class AccordUi
     {
         var setup = SetupController.Instance;
         if (setup is null) return;
-        ImGui.TextUnformatted("Accord — buttons express intent");
+        ImGui.TextUnformatted("Accord â€” buttons express intent");
         ImGui.TextWrapped("Choose which decisions to delegate to your rotation presses. A = automatic; M = manual.");
         foreach (var definition in VariantDefinitions.All)
         {
@@ -31,6 +33,7 @@ internal static class AccordUi
             : "Static: variants change behaviour. Use a setup button to update hotbars.");
         ImGui.Separator();
         ImGui.TextWrapped(setup.Status);
+        if (setup.HasPendingOperation && ImGui.Button("Keep recovery record and review again")) setup.Run(setup.AbandonPendingOperation);
         var job = Player.Available ? setup.Pack.Find((uint)Player.Job) : null;
         if (job is not null && ImGui.CollapsingHeader("Current class intents"))
             foreach (var definition in VariantDefinitions.All)
@@ -41,6 +44,13 @@ internal static class AccordUi
             ImGui.TextWrapped("Variant changes preserve detailed settings. Reset reapplies the reviewed settings for the current class and backs up the previous configuration.");
             if (ImGui.Button("Reset current class settings")) setup.Run(setup.ResetCurrentSettings);
             if (ImGui.Button("Export local diagnostics")) setup.Run(setup.ExportDiagnostics);
+            foreach (var backup in Directory.EnumerateFiles(Svc.PluginInterface.GetPluginConfigDirectory(), "combined-prototype-*.json").OrderByDescending(File.GetLastWriteTimeUtc))
+                if (ImGui.Button("Import backup: " + Path.GetFileName(backup)))
+                {
+                    Plugin.Instance.MigrationSource = backup;
+                    Plugin.Instance.MigrationPending = true;
+                    setup.Run(setup.PreviewMigration);
+                }
         }
     }
 

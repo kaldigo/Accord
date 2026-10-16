@@ -68,3 +68,10 @@ Conflict review: retained fork identity/version, kept upstream auto-rotation DTR
 Included upstream changes: MCH opener removes its former target requirement check; NIN checks learned Kassatsu upgrades at synced levels; SAM FRU opener sequence fixes; WHM Temperance/Divine Caress split-action checks; ground-action readiness guard; PvP custom-action coverage and other upstream fixes/cleanup. DNC changes are source cleanup, not a new dance-continuation change. No MCH damage-improvement claim follows from this merge.
 
 API/client/setup compatibility pins now require 1.0.4.27. Both plugin versions are 0.2.1. Packaging succeeds in artifacts/v0.2.1-preview: 5,851 checks pass including all 512 compiled-engine schema/configuration round trips. Full fork build has 79 warnings and no errors; client has no warnings/errors. Upstream-added trailing whitespace is retained to avoid unrelated source churn. No installation, live migration or publication performed; native acceptance remains pending. Earlier research sections retain their historical 1.0.4.26 context.
+
+
+## Separation completion - preview 0.2.2
+
+Implemented API v2 and personalised settings migration as described in settings-api.md. Added discovery/effective-state/events, persistent receipts and a monotonic operation sequence, pending client journals, schema bounds/conflicts/scope checks and previewed migration through the API. Detailed values and recovery paths survive migration and later class changes; unsupported fields are reported and retained in source backups. No engine settings file is written by Accord.
+
+5,901 checks pass with real compiled-engine validation for all 512 job/variant combinations plus all 16 migration variant combinations, injected persistence/rollback failures, lost acknowledgements, stale/session/configuration guards and expired replay protection. Fork builds with existing warnings (72 on this full build); client builds without warnings. Local 0.2.2 packages are produced; no native test, installation, live migration or publication performed.

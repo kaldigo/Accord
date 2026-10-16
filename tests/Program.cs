@@ -174,5 +174,6 @@ catch (AggregateException ex)
     Check(undoAttempts == edits.Count && routeUndoAttempted, "A rollback failure skipped other recovery attempts.");
     Check(ex.InnerExceptions.Count == 6, "Recovery failures were hidden.");
 }
+checks += SeparationTests.Run();
 if (args.Length > 0) checks += EngineSchema.Verify(args[0], pack);
 Console.WriteLine($"Passed {checks} assertions across 512 job/variant combinations, burst handoff, shared-slot cleanup and transaction failure recovery.");

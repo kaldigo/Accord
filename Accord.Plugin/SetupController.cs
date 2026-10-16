@@ -25,13 +25,15 @@ internal sealed class SetupController : IDisposable
     private ulong character;
     internal string Status { get; private set; } = "Waiting for a character.";
     internal AccordSettings Settings => Plugin.Instance.Settings;
-    private readonly EngineClient engine = new();
+    private readonly EngineClient engine;
     private long nextPoll;
+    private bool disposed;
     internal static bool Enabled(VariantId id) => Instance?.Settings.Enabled(id) ?? false;
 
     internal SetupController()
     {
         Instance = this;
+        engine = new EngineClient(() => nextPoll = 0);
         foreach (var definition in VariantDefinitions.All)
         {
             var entry = Svc.DtrBar.Get("Accord " + definition.Label);
@@ -44,6 +46,7 @@ internal sealed class SetupController : IDisposable
 
     internal void Run(Action operation)
     {
+        if (disposed) return;
         if (!Svc.Framework.IsInFrameworkUpdateThread)
         {
             _ = Svc.Framework.RunOnFrameworkThread(() => Run(operation));
@@ -59,6 +62,13 @@ internal sealed class SetupController : IDisposable
 
     internal void Tick()
     {
+        if (Environment.TickCount64 < nextPoll) return;
+        nextPoll = Environment.TickCount64 + 1000;
+        if (engine.HasPending)
+        {
+            if (engine.Recover()) { currentJob = 0; UpdateEntries(); Status = "Settings operation recovered. Layout updates will resume after state verification."; }
+        }
+        if (Plugin.Instance.MigrationPending) return;
         if (!Player.Available || !Svc.ClientState.IsLoggedIn)
         {
             currentJob = 0;
@@ -67,11 +77,13 @@ internal sealed class SetupController : IDisposable
             return;
         }
 
-        if (Environment.TickCount64 < nextPoll) return;
-        nextPoll = Environment.TickCount64 + 1000;
+
         JObject snapshot;
         try { snapshot = engine.Read(); }
         catch { currentJob = 0; throw; }
+        if (Settings.EngineConfigurationId == snapshot.Value<string>("ConfigurationId") &&
+            Settings.LastEngineRevision == snapshot.Value<string>("LegacyRevisionV1") && Settings.LastEngineRevision != snapshot.Value<string>("Revision"))
+            Mutate(() => Settings.LastEngineRevision = snapshot.Value<string>("Revision")!);
         if (Settings.EngineConfigurationId == snapshot.Value<string>("ConfigurationId") &&
             Settings.LastEngineRevision.Length != 0 && Settings.LastEngineRevision != snapshot.Value<string>("Revision"))
         {
@@ -150,14 +162,49 @@ internal sealed class SetupController : IDisposable
         var patch = new JObject { ["Settings"] = changes, ["Enable"] = new JArray(enable.Order()), ["Disable"] = new JArray(disable.Order()) };
         // Validate locally using the engine's published setting shape, then let the engine validate again.
         WrathFork.Contract.SettingsPatch.Apply((JObject)snapshot["Settings"]!, patch, snapshot["KnownPresets"]!.Values<int>().ToHashSet());
-        var committed = engine.Apply(snapshot, patch);
-        desired.EngineConfigurationId = committed.Value<string>("ConfigurationId")!;
-        desired.LastEngineRevision = committed.Value<string>("Revision")!;
-        Plugin.Instance.Settings = desired;
+        engine.Apply(snapshot, patch, desired);
         UpdateEntries();
-        try { Svc.PluginInterface.SavePluginConfig(desired); }
-        catch (Exception ex) { throw new InvalidOperationException("Engine settings committed, but Accord could not save its choices. Reapply setup before relying on a reload.", ex); }
     }
+
+    private JObject? migrationSnapshot;
+    private JObject? migrationPatch;
+    private AccordSettings? migrationChoices;
+    internal string MigrationSummary { get; private set; } = "Preview the import to review its contents.";
+    internal bool MigrationReady => migrationPatch is not null;
+
+    internal void PreviewMigration()
+    {
+        var sourcePath = Plugin.Instance.MigrationSource;
+        if (string.IsNullOrWhiteSpace(sourcePath)) throw new InvalidOperationException("No combined prototype backup is selected.");
+        migrationPatch = null;
+        var source = JObject.Parse(File.ReadAllText(sourcePath));
+        var snapshot = engine.Read();
+        var (plan, desired) = MigrationPreparation.Build(Pack, source, snapshot, CloneSettings());
+        var patch = (JObject)plan["Patch"]!;
+        var validation = engine.Validate(patch);
+        plan["Validation"] = validation;
+        plan["SourceFile"] = sourcePath;
+        var report = Path.Combine(Svc.PluginInterface.GetPluginConfigDirectory(), "settings-migration-preview.json");
+        File.WriteAllText(report, plan.ToString());
+        migrationSnapshot = snapshot;
+        migrationPatch = patch;
+        migrationChoices = desired;
+        MigrationSummary = $"Import from {Path.GetFileName(sourcePath)}. Personal job values and targeting settings are retained; intent-controlled switches follow your saved variants. Live mode stays off and hotbars are untouched. {plan["Omitted"]!.Count()} unsupported, retired or non-engine fields remain in the backup. Review report: {report}";
+        Status = "Migration preview ready; no settings changed.";
+    }
+
+    internal void ImportMigration()
+    {
+        if (migrationPatch is null || migrationSnapshot is null || migrationChoices is null) throw new InvalidOperationException("Preview the migration first.");
+        engine.Apply(migrationSnapshot, migrationPatch, migrationChoices);
+        Plugin.Instance.MigrationPending = false;
+        migrationPatch = null;
+        UpdateEntries();
+        Status = "Personal settings imported and backed up. Live mode remains off; hotbars unchanged.";
+    }
+
+    internal bool HasPendingOperation => engine.HasPending;
+    internal void AbandonPendingOperation() { engine.ReviewRejectedOperation(); migrationPatch = null; Status = "Previous request retained for diagnosis. Review settings before reapplying."; }
 
     internal void SetVariant(VariantId id, bool enabled)
     {
@@ -226,6 +273,7 @@ internal sealed class SetupController : IDisposable
             Settings,
             // This is a private local export, never a file in the source repository.
             Engine = engine.Read(),
+            Schema = engine.Discover(),
         }, Formatting.Indented));
         Status = "Diagnostics saved to " + path;
     }
@@ -242,6 +290,8 @@ internal sealed class SetupController : IDisposable
 
     public void Dispose()
     {
+        disposed = true;
+        engine.Dispose();
         foreach (var definition in VariantDefinitions.All) Svc.DtrBar.Remove("Accord " + definition.Label);
         Instance = null;
     }

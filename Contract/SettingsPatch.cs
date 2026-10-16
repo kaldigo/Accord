@@ -13,7 +13,10 @@ public static class SettingsPatch
         "CustomHealStack", "RaiseStack", "RetargetHealingActionsToStack", "UseCustomHealStack",
         "UseFieldMouseoverOverridesInDefaultHealStack", "UseFocusTargetOverrideInDefaultHealStack",
         "UseLowestHPOverrideInDefaultHealStack", "UseUIMouseoverOverridesInDefaultHealStack",
-        "DancerDanceCompatActionIDs", "ForkFeatures"];
+        "DancerDanceCompatActionIDs", "ForkFeatures", "BlockSpellOnMove", "ActionChanging",
+        "QueueAdjust", "QueueAdjustThreshold", "OverwriteQueue", "Throttle", "PenaltyPause", "MovementLeeway",
+        "OpenerTimeout", "MeleeOffset", "InterruptDelay", "MaximumWeavesPerWindow", "UseExperimentalHP",
+        "AddOutOfPartyNPCsToRetargeting", "CustomActionSettings", "ActiveBLUSpells", "IgnoredNPCs"];
 
     public static void NormalizePresetMaps(JObject settings, JObject presetIds)
     {
@@ -40,9 +43,23 @@ public static class SettingsPatch
                     if (!uint.TryParse(job.Name, out uint id) || id is < 1 or > 42 || job.Value is not JObject features)
                         throw new ArgumentException("Invalid feature job.");
                     foreach (var feature in features.Properties())
-                        if (!Enum.TryParse<Feature>(feature.Name, out var f) || !Enum.IsDefined(f) || feature.Name != f.ToString() || feature.Value.Type != JTokenType.Boolean)
+                        if (!Enum.TryParse<Feature>(feature.Name, out var f) || !Enum.IsDefined(f) || feature.Name != f.ToString() || !FeatureScope.Supports(id, f) || feature.Value.Type != JTokenType.Boolean)
                             throw new ArgumentException("Invalid engine feature: " + feature.Name);
                 }
+            }
+            else if (p.Name == "CustomActionSettings")
+            {
+                if (p.Value is not JObject options || current[p.Name] is not JObject schema) throw new ArgumentException("Invalid custom action settings.");
+                foreach (var option in options.Properties())
+                    if (schema[option.Name]?.Type != JTokenType.Boolean || option.Value.Type != JTokenType.Boolean) throw new ArgumentException("Invalid custom action option.");
+            }
+            else if (p.Name == "ActiveBLUSpells")
+            {
+                if (p.Value is not JArray spells || spells.Count > 256 || spells.Any(t => t.Type != JTokenType.Integer || t.Value<long>() < 0 || t.Value<long>() > uint.MaxValue)) throw new ArgumentException("Invalid BLU spell list.");
+            }
+            else if (p.Name == "IgnoredNPCs")
+            {
+                if (p.Value is not JObject npcs || npcs.Count > 10000 || npcs.Properties().Any(e => !uint.TryParse(e.Name, out _) || e.Value.Type != JTokenType.Integer || e.Value.Value<long>() < 0 || e.Value.Value<long>() > uint.MaxValue)) throw new ArgumentException("Invalid ignored NPC map.");
             }
             else if (p.Name is "AutoActions" or "BurstPresets")
             {
@@ -75,6 +92,14 @@ public static class SettingsPatch
                 ValidateValue(p.Value, current[p.Name] ?? throw new ArgumentException("Unavailable setting: " + p.Name), p.Name);
         }
         result.Merge(changes, new JsonMergeSettings { MergeArrayHandling = MergeArrayHandling.Replace });
+        // Normalise to the engine's float storage before computing a transaction revision.
+        foreach (var field in current.Properties())
+        {
+            if (field.Value.Type == JTokenType.Float && result[field.Name] is { } scalar)
+                result[field.Name] = new JValue(scalar.Value<float>());
+            if (field.Name == "CustomFloatValuesV6" && result[field.Name] is JObject floats)
+                foreach (var value in floats.Properties().ToArray()) value.Value = new JValue(value.Value.Value<float>());
+        }
         var enabled = (current["EnabledActionsV6"] ?? new JArray()).Values<int>().ToHashSet();
         foreach (string operation in new[] { "Disable", "Enable" })
         {

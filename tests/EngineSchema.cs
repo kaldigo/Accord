@@ -51,6 +51,7 @@ internal static class EngineSchema
                 changes.Merge(shared, new Newtonsoft.Json.Linq.JsonMergeSettings { MergeArrayHandling = MergeArrayHandling.Replace });
                 SettingsPatch.NormalizePresetMaps(changes, names);
                 var updated = SettingsPatch.Apply(snapshot, new JObject { ["Settings"] = changes, ["Enable"] = enable, ["Disable"] = new JArray(job.OwnedPresetIds) }, ids);
+                assembly.GetType("WrathCombo.Engine.SettingsSchema")!.GetMethod("Validate", BindingFlags.NonPublic | BindingFlags.Static)!.Invoke(null, new object[] {snapshot, updated});
                 Newtonsoft.Json.JsonConvert.PopulateObject(updated.ToString(), configuration,
                     new Newtonsoft.Json.JsonSerializerSettings { ObjectCreationHandling = Newtonsoft.Json.ObjectCreationHandling.Replace });
                 var roundtrip = JObject.FromObject(configuration);
@@ -61,6 +62,40 @@ internal static class EngineSchema
                     if (!JToken.DeepEquals(expected[field.Name], roundtrip[field.Name])) throw new Exception("Settings did not round-trip: " + job.Job + "/" + field.Name);
                 count++;
             }
+        var schemaType = assembly.GetType("WrathCombo.Engine.SettingsSchema")!;
+        var describe = schemaType.GetMethod("Describe", BindingFlags.NonPublic | BindingFlags.Static)!;
+        var validate = schemaType.GetMethod("Validate", BindingFlags.NonPublic | BindingFlags.Static)!;
+        var description = (JObject)describe.Invoke(null, new object[] { snapshot })!;
+        if (description["Fields"]!["Throttle"]!.Value<int>("Maximum") != 500) throw new Exception("Discovery lost engine range metadata.");
+        count++;
+        var outOfRange = (JObject)snapshot.DeepClone(); outOfRange["Throttle"] = 501;
+        try { validate.Invoke(null, new object[] { snapshot, outOfRange }); throw new Exception("Out-of-range throttle accepted."); }
+        catch (TargetInvocationException ex) when (ex.InnerException is ArgumentException) { count++; }
+        var brokenTarget = (JObject)snapshot.DeepClone(); brokenTarget["CustomHealStack"] = new JArray("InventedAllySelector");
+        try { validate.Invoke(null, new object[] { snapshot, brokenTarget }); throw new Exception("Unknown target selector accepted."); }
+        catch (TargetInvocationException ex) when (ex.InnerException is ArgumentException) { count++; }
+        var presets = description["Presets"]!.OfType<JObject>().ToDictionary(p => p.Value<int>("Id"));
+        var conflict = presets.Values.First(p => p["Parent"]!.Type == JTokenType.Null && p["Conflicts"]!.Values<int>().Any(id => presets[id]["Parent"]!.Type == JTokenType.Null));
+        int other = conflict["Conflicts"]!.Values<int>().First(id => presets[id]["Parent"]!.Type == JTokenType.Null);
+        var conflicting = (JObject)snapshot.DeepClone(); conflicting["EnabledActionsV6"] = new JArray(conflict.Value<int>("Id"), other);
+        try { validate.Invoke(null, new object[] { snapshot, conflicting }); throw new Exception("Conflicting root presets accepted."); }
+        catch (TargetInvocationException ex) when (ex.InnerException is ArgumentException) { count++; }
+        // Simulate importing personal combined settings with every global variant selection.
+        for (int mask = 0; mask < 16; mask++)
+        {
+            var choices = new AccordSettings { LiveMode = true, LastHotbarBackup = "retained-backup.json" };
+            foreach (var variant in VariantDefinitions.All) choices.Variants[variant.Id] = (mask & (1 << (int)variant.Id)) != 0;
+            var source = (JObject)snapshot.DeepClone();
+            source["Version"] = 6; source["Accord"] = JObject.FromObject(choices);
+            var envelope = new JObject { ["Settings"] = snapshot.DeepClone(), ["KnownPresets"] = new JArray(ids), ["PresetIds"] = names.DeepClone(), ["Revision"] = SettingsTransaction.Hash(snapshot) };
+            var (plan, importedChoices) = MigrationPreparation.Build(pack, source, envelope, new AccordSettings());
+            var imported = SettingsPatch.Apply(snapshot, (JObject)plan["Patch"]!, ids);
+            assembly.GetType("WrathCombo.Engine.SettingsSchema")!.GetMethod("Validate", BindingFlags.NonPublic | BindingFlags.Static)!.Invoke(null, new object[] {snapshot, imported});
+            if (importedChoices.LiveMode || importedChoices.LastHotbarBackup != "retained-backup.json" || !pack.Data.Jobs.All(j => importedChoices.PreparedJobs[j.JobId] == j.SetupRevision)) throw new Exception("Migration lost recovery metadata or would reset imported details.");
+            foreach (var field in SettingsPatch.Fields.Where(f => f.StartsWith("Custom") && f.EndsWith("V6")))
+                if (!JToken.DeepEquals(snapshot[field], imported[field])) throw new Exception("Migration reset personalised settings: " + field);
+            count++;
+        }
         return count;
     }
 }

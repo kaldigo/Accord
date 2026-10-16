@@ -1,6 +1,8 @@
 # Accord / Wrath fork separation assessment
 
-**Implementation update (2026-10-16):** source separation is now implemented. The assessment below records the pre-split design and intended broader contract; see the implementation record at the end for what exists and what remains.
+**Current status (2026-10-16):** separation implementation, API v2 and personalised-settings migration are complete in preview 0.2.2; native acceptance is pending. See [implemented API/migration contract](settings-api.md).
+
+**Earlier implementation update (2026-10-16):** source separation is now implemented. The assessment below records the pre-split design and intended broader contract; see the implementation record at the end for what exists and what remains.
 
 2026-10-16. Decision recorded and current working tree inspected; no runtime split performed by this assessment. Paths below refer to this currently combined repository.
 
@@ -102,3 +104,8 @@ Still required before a usable release: in-game validation of loading/unloading/
 ### Upstream refresh - 2026-10-16
 
 Current preview: 0.2.1 on Wrath 1.0.4.27 (`5365eb1edc13654be945a624b2311a8b8541a599`). The split is retained. API/client/setup compatibility pins and upstream dependency revisions were updated; both builds and 5,851 checks pass. See implementation.md for merge details. Native acceptance remains pending.
+
+
+### API and migration completion - preview 0.2.2
+
+Supersedes the earlier API/migration limitations above: v2 adds discovery, dry validation, effective preset/lease/continuation reporting, lifecycle/change notifications, canonical revisions and durable operation replay with sequence protection. Accord journals requests and recovers acknowledgement across reloads. Personalised combined settings now have a preview/import workflow, omitted-field report, retained recovery metadata and preparation markers that prevent baseline overwrite after import. See settings-api.md for the precise supported scope and validation semantics. Both packages build; 5,901 checks pass. Native game acceptance remains pending. Engine-free noncombat setup remains an optional future Accord feature, not a separation requirement.
