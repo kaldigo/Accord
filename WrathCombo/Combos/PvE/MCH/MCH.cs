@@ -91,7 +91,7 @@ internal partial class MCH : PhysicalRanged
             if (!CustomActionHelper.OneButtonRotationChecker(actionID, CustomActionType.AoEDPS, SpreadShot, Scattergun))
                 return actionID;
 
-            if (LocalPlayer.HasStatus(Buffs.Flamethrower) || JustUsed(Flamethrower, GCD))
+            if (HoldingFlamethrower)
                 return All.Cease;
 
             if (ContentSpecificActions.TryGet(ref actionID, out uint contentAction))
@@ -304,7 +304,7 @@ internal partial class MCH : PhysicalRanged
             if (!CustomActionHelper.OneButtonRotationChecker(actionID, CustomActionType.AoEDPS, SpreadShot, Scattergun))
                 return actionID;
 
-            if (LocalPlayer.HasStatus(Buffs.Flamethrower) || JustUsed(Flamethrower, GCD))
+            if (HoldingFlamethrower)
                 return All.Cease;
 
             if (ContentSpecificActions.TryGet(ref actionID, out uint contentAction))
@@ -312,6 +312,10 @@ internal partial class MCH : PhysicalRanged
 
             if (CanWeave())
             {
+                if (Engine.Options.Enabled(Feature.MchWildfireOnAoe) &&
+                    UseWildfire(WildfireHPThreshold, MCH_ST_WildfireBossOnlyOption))
+                    return Wildfire;
+
                 // Reuse the manual burst selector's Wildfire follow-through after
                 // confirmed initiation; routine automatic Hypercharge is not intent.
                 if (Engine.IntentRouting.BurstFollowThrough &&

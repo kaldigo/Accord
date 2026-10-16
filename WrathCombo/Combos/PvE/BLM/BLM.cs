@@ -243,6 +243,11 @@ internal partial class BLM : Caster
             if (ContentSpecificActions.TryGet(ref actionID, out uint contentAction))
                 return contentAction;
 
+            if (Engine.Options.Enabled(WrathFork.Contract.Feature.BlmManawardOnAoe) &&
+                IsEnabled(Preset.BLM_ST_Manaward) &&
+                UseManaward(BLM_ST_ManawardHPThreshold, false, BLM_ST_ManawardTrigger, BLM_ST_ManawardSolo))
+                return Manaward;
+
             if (CanWeave())
             {
                 if (IsEnabled(Preset.BLM_AoE_Movement) && UseAoETriplecastMovement())

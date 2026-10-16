@@ -31,6 +31,11 @@ internal static class IntentRouting
     {
         if (!Player.Available || Player.IsDead ||
             !InCombat() || !HasBattleTarget() || !CanWeave() || InPvP()) return 0;
+        // Let the DNC damage path finish the accepted channel before protection can cancel it.
+        if ((uint)Player.Job == 38 && DNC.TryImprovisationFinish(out _)) return 0;
+        // AoE already holds Flamethrower; injected protection must not bypass that hold.
+        if ((uint)Player.Job == 31 && Options.Enabled(Feature.MchFlamethrowerContinuation) &&
+            MCH.HoldingFlamethrower) return 0;
         bool generic = action is All.SingleTargetDPS or All.AoEDPS;
         bool aoe = action == All.AoEDPS || (uint)Player.Job switch
         {

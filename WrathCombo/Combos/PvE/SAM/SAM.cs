@@ -342,6 +342,10 @@ internal partial class SAM : Melee
                         return Kyuten;
                 }
 
+                if (Engine.Options.Enabled(WrathFork.Contract.Feature.SamThirdEyeOnAoe) &&
+                    IsEnabled(Preset.SAM_ST_Adv_ThirdEye) && UseThirdEye())
+                    return OriginalHook(ThirdEye);
+
                 if (IsEnabled(Preset.SAM_AoE_Adv_ComboHeals))
                 {
                     if (Role.CanSecondWind(SAM_AoE_SecondWindOption))

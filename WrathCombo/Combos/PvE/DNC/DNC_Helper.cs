@@ -154,6 +154,31 @@ internal partial class DNC
         return desiredFinish;
     }
 
+    // The native replacement is Improvised Finish only while Improvisation is active.
+    // Return it even during animation lock: falling through would cancel the channel.
+    internal static bool TryImprovisationFinish(out uint action)
+    {
+        action = 0;
+        if (!Engine.Options.Enabled(Feature.DncImprovisationFinish)) return false;
+        uint adjusted = OriginalHook(Improvisation);
+        if (adjusted == Improvisation || adjusted == 0) return false;
+        action = adjusted;
+        return true;
+    }
+
+    private static bool CanPrepareStandardDance(bool singleTarget) =>
+        Engine.Options.Enabled(Feature.DncTargetlessPrepull) &&
+        Engine.Options.Enabled(Feature.DncStandardInitiation) &&
+        !InCombat() && !HasBattleTarget() &&
+        IsEnabled(Preset.DNC_ST_Adv_SS_Prepull) &&
+        IsEnabled(singleTarget ? Preset.DNC_ST_Adv_SS : Preset.DNC_AoE_Adv_SS) &&
+        (singleTarget ? DNC_ST_ADV_SS_IncludeSS : DNC_AoE_Adv_SS_IncludeSS) == (int)IncludeStep.Yes &&
+        !LocalPlayer.HasStatus(Buffs.StandardStep) &&
+        !LocalPlayer.HasStatus(Buffs.TechnicalStep) &&
+        !LocalPlayer.HasStatus(Buffs.FinishingMoveReady) &&
+        !LocalPlayer.HasStatus(Buffs.TechnicalFinish) &&
+        ActionReady(StandardStep) && IsOffCooldown(TechnicalStep);
+
     #region GCD Evaluation
 
     private static GCDRange GCDValue =>

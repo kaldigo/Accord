@@ -58,16 +58,16 @@ foreach (var job in pack.Data.Jobs)
         pack.ApplyMembership(job, settings, current);
         Check(current.Except(pack.ControlledPresets(job)).ToHashSet().SetEquals(uncontrolled), "Feature-only switch changed unrelated presets.");
         Check(current.Intersect(pack.ControlledPresets(job)).ToHashSet().SetEquals(ids.Intersect(pack.ControlledPresets(job))), "Switch result depends on previous variants.");
-        Check(resolved.Slots.Length <= 12, $"Layout overflow: {job.Job}/{mask}");
+        Check(resolved.Slots.Length <= (job.JobId == 19 ? 13 : 12), $"Layout overflow: {job.Job}/{mask}");
         Check(resolved.Slots.Select(s => (s.RegularBar, s.RegularSlot)).Distinct().Count() == resolved.Slots.Length, $"Layout overlap: {job.Job}/{mask}");
-        Check(resolved.Slots.All(s => KeyboardLayout.Positions.Contains(new(s.RegularBar - 1, s.RegularSlot - 1))), $"Unknown layout position: {job.Job}/{mask}");
+        Check(resolved.Slots.All(s => (KeyboardLayout.Positions.Contains(new(s.RegularBar - 1, s.RegularSlot - 1)) || (job.JobId == 19 && s.LogicalSlot == 13 && new Position(s.RegularBar - 1, s.RegularSlot - 1) == ExtraJobMappings.For(19).Regular))), $"Unknown layout position: {job.Job}/{mask}");
         if (job.JobId is >= 8 and <= 18) Check(resolved.Slots.Length == 12, "Noncombat page must remain complete.");
         if (job.Job == "DNC")
         {
             Check(ids.Contains(4018) && ids.Contains(4045), "DNC completion must survive manual variants.");
-            Check(resolved.Slots.Any(s => s.Action == "Technical Step") && resolved.Slots.Any(s => s.Action == "Standard Step"), "Missing manual dance initiation.");
+            Check(resolved.Slots.Any(s => s.Action == "Technical Step") == !settings.Enabled(VariantId.ClassMechanics) && resolved.Slots.Any(s => s.Action == "Standard Step") == !settings.Enabled(VariantId.ClassMechanics), "Dance initiation/prepull access disagrees with mechanics.");
         }
-        if (job.Job == "AST") Check(resolved.Slots.Any(s => s.Action == "Astral Draw") && resolved.Slots.Any(s => s.Action == "Divination"), "Missing AST initiators.");
+        if (job.Job == "AST") Check(resolved.Slots.Any(s => s.Action == "Astral Draw") == !settings.Enabled(VariantId.ClassMechanics) && resolved.Slots.Any(s => s.Action == "Divination") == !settings.Enabled(VariantId.Burst), "AST initiators disagree with their independent variants.");
         if (job.Job == "BRD")
         {
             Check(ids.Contains(3070) == settings.Enabled(VariantId.Support), "Minne must have one owner: support.");
@@ -79,6 +79,128 @@ foreach (var job in pack.Data.Jobs)
     if (job.JobId >= 19)
         Check(JobIntents.Jobs.TryGetValue(job.JobId, out var descriptions) && descriptions.Length == 4 && descriptions.All(s => !string.IsNullOrWhiteSpace(s)), $"Incomplete intent review: {job.Job}");
 }
+
+// Every protection transition must remove general selectors while keeping distinct decisions.
+var distinctProtection = new Dictionary<uint, string[]>
+{
+    [19] = ["Clemency", "Passage of Arms", "Arm's Length", "Cover", "Sheltron", "Hallowed Ground"],
+    [21] = ["Arm's Length", "Equilibrium", "Raw Intuition", "Holmgang"],
+    [32] = ["Arm's Length", "Oblation", "The Blackest Night", "Living Dead"],
+    [37] = ["Arm's Length", "Aurora", "Heart of Stone", "Superbolide"],
+    [24] = ["Asylum", "Benediction"], [28] = ["Sacred Soil", "Deployment Tactics", "Expedient"],
+    [33] = ["Collective Unconscious"], [40] = ["Panhaima", "Pneuma"],
+    [27] = ["Radiant Aegis"], [42] = ["Tempera Coat"],
+};
+foreach (var job in pack.Data.Jobs.Where(j => j.JobId >= 19))
+    for (int mask = 0; mask < 16; mask++)
+    {
+        var settings = new AccordSettings();
+        foreach (var variant in VariantDefinitions.All) settings.Variants[variant.Id] = (mask & (1 << (int)variant.Id)) != 0;
+        var resolved = pack.Resolve(job, settings);
+        bool automatic = settings.Enabled(VariantId.Protection);
+        var ids = resolved.Settings["EnabledActionsV6"]!.AsArray().Select(n => n!.GetValue<int>()).ToHashSet();
+        if (automatic)
+        {
+            Check(!ids.Overlaps(SetupPack.ManualProtectionPresets(job.JobId)), "A general protection selector remains enabled: " + job.Job);
+            foreach (var action in distinctProtection.GetValueOrDefault(job.JobId, []))
+                Check(resolved.Slots.Any(s => s.Action == action), "Lost distinct intent: " + job.Job + "/" + action);
+            if (job.JobId is not (19 or 21 or 32 or 37 or 24 or 28 or 33 or 40))
+            {
+                var slot = resolved.Slots.Single(s => s.LogicalSlot == 5);
+                Check(slot.Action == "Empty" && slot.RetiredAction == job.Slots.Single(s => s.LogicalSlot == 5).Action,
+                    "Automated defense retains its general button or loses safe removal identity: " + job.Job);
+            }
+        }
+        else Check(resolved.Slots.Single(s => s.LogicalSlot == 5).Action == job.Slots.Single(s => s.LogicalSlot == 5).Action,
+            "Manual protection failed to restore its selector: " + job.Job);
+    }
+var extraMaps = ExtraJobMappings.Merge(Defaults.Maps(), [ExtraJobMappings.For(19), ExtraJobMappings.For(1)], new());
+Check(extraMaps.Count == Defaults.Maps().Count + 2, "Extra job mappings were not added.");
+Check(extraMaps.Where(m => m.JobId != 0).All(m => !m.Applies(37)), "Paladin overflow leaked into another class.");
+Check(ExtraJobMappings.Merge(extraMaps, [ExtraJobMappings.For(19)], new()).Count == extraMaps.Count, "Extra mapping addition is not idempotent.");
+var collision = Defaults.Maps();
+collision.Add(new SlotMap { Id = "custom", Profile = "All", RegularBar = 3, CrossSet = 2 });
+try { ExtraJobMappings.Merge(collision, [ExtraJobMappings.For(19)], new()); Check(false, "Custom mapping collision accepted."); }
+catch (InvalidDataException) { Check(collision.Count == Defaults.Maps().Count + 1, "Rejected extension mutated the map."); }
+try { ExtraJobMappings.Merge(Defaults.Maps(), [ExtraJobMappings.For(37)], new()); Check(false, "Unapproved extra job accepted."); }
+catch (InvalidDataException) { }
+
+// All four variants: explicit initiation ownership and retained, distinct controls.
+var burstSlots = new Dictionary<uint, int> { [19]=3,[21]=3,[32]=3,[20]=3,[22]=3,[34]=3,[39]=3,[41]=3,[23]=3,[31]=3,[27]=3,[35]=3,[42]=3,[37]=3,[24]=11,[28]=11,[33]=12,[38]=12 };
+var mechanicSlots = new Dictionary<uint, int> { [20]=6,[22]=6,[30]=8,[34]=6,[39]=6,[41]=6,[23]=11,[33]=11,[38]=3,[31]=6 };
+var retainedUtility = new Dictionary<uint, string[]>
+{
+    [19]=["Cover","Sheltron"], [21]=["Raw Intuition"], [32]=["The Blackest Night","Interject"], [37]=["Heart of Stone"],
+    [24]=["Cure","Medica","Swiftcast","Liturgy of the Bell","Benediction"],
+    [28]=["Physick","Succor","Swiftcast","Dissipation","Expedient"],
+    [33]=["Benefic","Helios","Swiftcast","Synastry","Macrocosmos"],
+    [40]=["Diagnosis","Prognosis","Swiftcast","Kardia","Pneuma"],
+    [20]=["Thunderclap","Riddle of Earth"], [22]=["Winged Glide","Elusive Jump"],
+    [30]=["Hide","Kassatsu","Shukuchi","Meisui"], [34]=["Hissatsu: Gyoten","Meditate"],
+    [39]=["Hell's Ingress","Soulsow"], [41]=["Slither","Second Wind"],
+    [23]=["Peloton","The Warden's Paean","Repelling Shot"], [31]=["Peloton"],
+    [38]=["Peloton","Curing Waltz","En Avant"],
+    [25]=["Ley Lines","Aetherial Manipulation","Transpose"],
+    [27]=["Astral Flow","Swiftcast","Lux Solaris","Radiant Aegis"],
+    [35]=["Vercure","Swiftcast","Displacement"], [42]=["Tempera Coat","Hammer Stamp","Smudge"],
+};
+Check(retainedUtility.Count == 21, "Utility review must cover every combat job.");
+foreach (var job in pack.Data.Jobs)
+    for (int mask=0; mask<16; mask++)
+    {
+        var choices=new AccordSettings();
+        foreach(var v in VariantDefinitions.All) choices.Variants[v.Id]=(mask & (1 << (int)v.Id)) != 0;
+        var resolved=pack.Resolve(job,choices);
+        var ids=resolved.Settings["EnabledActionsV6"]!.AsArray().Select(n=>n!.GetValue<int>()).ToHashSet();
+        foreach(int id in SetupPack.SupportPresets(job.JobId))
+            Check(ids.Contains(id)==choices.Enabled(VariantId.Support), $"Support ownership mismatch: {job.Job}/{id}");
+        if(burstSlots.TryGetValue(job.JobId,out int burstSlot))
+            Check((resolved.Slots.Single(s=>s.LogicalSlot==burstSlot).Action=="Empty")==choices.Enabled(VariantId.Burst), $"Burst button mismatch: {job.Job}/{mask}");
+        if(mechanicSlots.TryGetValue(job.JobId,out int mechanicSlot))
+            Check((resolved.Slots.Single(s=>s.LogicalSlot==mechanicSlot).Action=="Empty")==choices.Enabled(VariantId.ClassMechanics), $"Mechanic button mismatch: {job.Job}/{mask}");
+        if(job.JobId==31) Check(ids.Contains(8305)==choices.Enabled(VariantId.ClassMechanics),"Flamethrower automation and its manual initiator must have the same owner.");
+        if(job.JobId==34) Check(resolved.Slots.Any(s=>s.Action=="Third Eye") != choices.Enabled(VariantId.Protection),"Third Eye button must follow protection.");
+        if(job.JobId==32) Check(!ids.Contains(5121),"Burst selector must not consume an interrupt request.");
+        if(job.JobId==30) Check(!ids.Contains(10036) && !ids.Contains(10040),"TCJ initiation must not turn into unrelated Meisui spending.");
+        if(job.JobId is 20 or 23)
+            Check((resolved.Slots.Single(s=>s.LogicalSlot==(job.JobId==20?9:6)).Action=="Empty")==choices.Enabled(VariantId.Support),"Group healing boost button mismatches Support.");
+        if(job.JobId==38)
+        {
+            Check(!ids.Contains(4175),"Manual partner control must not override the chosen ally.");
+            foreach (string action in new[] { "Improvisation", "Closed Position" })
+                Check(resolved.Slots.Any(s => s.Action == action) == !choices.Enabled(VariantId.Support), "DNC support initiation has a duplicate or missing button: " + action);
+            Check(new[] { 4022, 4049 }.All(ids.Contains) == choices.Enabled(VariantId.Support), "Improvisation is missing an automatic damage route.");
+            Check(new[] { 4015, 4016, 4018, 4043, 4044, 4045 }.All(ids.Contains), "Manual dances lost step/finish handling.");
+            if (mask == 15) Check(resolved.Slots.Count(s => s.Action != "Empty") == 5, "All-on DNC should have five distinct controls.");
+        }
+        foreach(string action in retainedUtility.GetValueOrDefault(job.JobId,[]))
+            Check(resolved.Slots.Any(s=>s.Action==action),$"Lost distinct utility: {job.Job}/{action}/{mask}");
+        foreach(var slot in resolved.Slots.Where(s=>s.Action=="Empty"))
+        {
+            var baseline=job.Slots.SingleOrDefault(s=>s.LogicalSlot==slot.LogicalSlot);
+            if(baseline is not null && baseline.Action!="Empty")
+                Check(slot.RetiredAction==baseline.Action,$"Retired button cannot be safely cleared: {job.Job}/{slot.LogicalSlot}");
+        }
+        var features=SetupPack.EngineFeatures(job.JobId,choices);
+        if(job.JobId==20)
+        {
+            Check(features[Feature.MnkMantraOnAoe]==choices.Enabled(VariantId.Support),"Mantra AoE ownership mismatch.");
+            Check(features[Feature.MnkEarthOnAoe]==choices.Enabled(VariantId.Protection),"Riddle of Earth must follow Protection on AoE.");
+            Check(features[Feature.MnkEarthReplyOnDamage]==choices.Enabled(VariantId.Support),"Earth's Reply must follow Support independently of Riddle initiation.");
+        }
+        if(job.JobId==34) Check(features[Feature.SamThirdEyeOnAoe]==choices.Enabled(VariantId.Protection),"Third Eye must follow Protection on AoE.");
+        if(job.JobId==31) Check(features[Feature.MchFlamethrowerContinuation],"A manually started Flamethrower must retain channel protection.");
+        if(job.JobId==31) Check(features[Feature.MchWildfireOnAoe]==choices.Enabled(VariantId.Burst),"Wildfire AoE ownership mismatch.");
+        if(job.JobId==38)
+        {
+            Check(features[Feature.DncPartnerOnAoe]==choices.Enabled(VariantId.Support),"Partner AoE ownership mismatch.");
+            Check(features[Feature.DncTargetlessPrepull]==choices.Enabled(VariantId.ClassMechanics),"Targetless prepull must follow dance initiation.");
+            Check(features[Feature.DncImprovisationFinish],"An accepted Improvisation must remain finishable after switching Support off.");
+            foreach (int slot in new[] {7,9,11})
+                if (resolved.Slots.Single(s => s.LogicalSlot == slot) is { Action: "Empty" } removed)
+                    Check(!string.IsNullOrEmpty(removed.RetiredAction), "DNC duplicate cannot be retired with cleanup off.");
+        }
+    }
 
 // Contract failures must leave the original snapshot untouched.
 var snapshot = JObject.Parse("{ 'EnabledActionsV6':[1,99], 'CustomIntValuesV6':{'managed':20,'unrelated':71}, 'CustomBoolValuesV6':{'toggle':false}, 'CustomIntArrayValuesV6':{'priority':[1,2]}, 'ForkFeatures':{}, 'CustomHealStack':['Self'] }");
@@ -109,6 +231,8 @@ foreach (var job in pack.Data.Jobs)
         Check(features[Feature.BurstContinuation], "Manual burst must retain confirmed continuation.");
         if (job.JobId == 38)
             Check(features[Feature.DncStandardInitiation] == settings.Enabled(VariantId.ClassMechanics) && features[Feature.DncTechnicalInitiation] == settings.Enabled(VariantId.ClassMechanics) && features[Feature.DncCuringWaltz] == settings.Enabled(VariantId.Support), "DNC granular feature mapping has conflicting ownership.");
+        if (job.JobId == 25) Check(features[Feature.BlmManawardOnAoe] == settings.Enabled(VariantId.Protection), "Manaward AoE must follow protection.");
+        if (job.JobId == 24) Check(features[Feature.WhmDivineCaressOnDamage] == settings.Enabled(VariantId.Protection), "Divine Caress follow-through must follow protection.");
         if (job.JobId == 33) Check(features[Feature.AstCardsOnStDamage] && features[Feature.AstCardsOnAoeDamage], "Accepted AST cards must remain usable from damage in manual mechanics.");
         if (job.JobId == 23) Check(features[Feature.BardSongInitiation] == settings.Enabled(VariantId.ClassMechanics), "Song initiation has wrong owner.");
     }

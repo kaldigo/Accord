@@ -1,5 +1,9 @@
 # Completed intent mapping, 2026-10-08
 
+All-variant source recheck (2026-10-17): [current matrix, settings prerequisites and source findings](all-variant-audit.md) supersedes earlier layout-retention and completion claims below.
+
+Protection correction (2026-10-16): [current routing and action-access audit](protection-routing.md) supersedes the general-selector retention described below. Implemented locally; native acceptance remains pending.
+
 This is the implementation decision record for all 21 combat jobs. It supersedes open implementation suggestions in the earlier research, while retaining their source evidence. `WrathCombo/Accord/JobIntents.cs` exposes the category boundaries in the UI. Noncombat jobs keep their full 12-slot pages, unchanged by combat variants.
 
 | Job | Burst initiation and continuation | Additional class mechanics | Support and deliberate controls |

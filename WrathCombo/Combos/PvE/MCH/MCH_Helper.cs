@@ -13,6 +13,9 @@ namespace WrathCombo.Combos.PvE;
 
 internal partial class MCH
 {
+    internal static bool HoldingFlamethrower =>
+        LocalPlayer.HasStatus(Buffs.Flamethrower) || JustUsed(Flamethrower, GCD);
+
     static MCH()
     {
         OnStatusChanged += MCH_OnStatusChanged;

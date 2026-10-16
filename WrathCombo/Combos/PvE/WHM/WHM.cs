@@ -187,6 +187,10 @@ internal partial class WHM : Healer
 
             if (RaidwidePlenaryIndulgence())
                 return PlenaryIndulgence;
+            if (Engine.Options.Enabled(WrathFork.Contract.Feature.WhmDivineCaressOnDamage) &&
+                ActionReady(DivineCaress) && CanWeave() && GroupDamageIncoming())
+                return DivineCaress;
+
             if (RaidwideTemperance())
                 return Temperance;
             if (RaidwideAsylum())
@@ -308,6 +312,10 @@ internal partial class WHM : Healer
 
             if (RaidwidePlenaryIndulgence())
                 return PlenaryIndulgence;
+            if (Engine.Options.Enabled(WrathFork.Contract.Feature.WhmDivineCaressOnDamage) &&
+                ActionReady(DivineCaress) && CanWeave() && GroupDamageIncoming())
+                return DivineCaress;
+
             if (RaidwideTemperance())
                 return Temperance;
             if (RaidwideAsylum())

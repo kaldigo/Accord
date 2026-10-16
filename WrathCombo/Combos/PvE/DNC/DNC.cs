@@ -18,6 +18,8 @@ internal partial class DNC : PhysicalRanged
         {
             if (!CustomActionHelper.OneButtonRotationChecker(actionID, CustomActionType.SingleTargetDPS, Cascade)) return actionID;
 
+            if (TryImprovisationFinish(out uint improvisationFinish)) return improvisationFinish;
+
             #region Variables
 
             var flow = LocalPlayer.HasStatus(Buffs.SilkenFlow) ||
@@ -146,6 +148,8 @@ internal partial class DNC : PhysicalRanged
             }
 
             #endregion
+
+            if (CanPrepareStandardDance(true)) return StandardStep;
 
             #region Dance Fills
 
@@ -724,6 +728,8 @@ internal partial class DNC : PhysicalRanged
         {
             if (!CustomActionHelper.OneButtonRotationChecker(actionID, CustomActionType.AoEDPS, Windmill)) return actionID;
 
+            if (TryImprovisationFinish(out uint improvisationFinish)) return improvisationFinish;
+
             #region Variables
 
             bool flow = LocalPlayer.HasStatus(Buffs.SilkenFlow) ||
@@ -771,12 +777,14 @@ internal partial class DNC : PhysicalRanged
                 ActionReady(ClosedPosition) &&
                 CurrentPartnerNonOptimal)
                 if (InAutoMode(false, false) ||
-                    IsEnabled(Preset.DNC_DesirablePartner))
+                    IsEnabled(Preset.DNC_DesirablePartner) || Engine.Options.Enabled(Feature.DncPartnerOnAoe))
                     return ClosedPosition.Retarget(actionID, DancePartnerResolver);
                 else
                     return ClosedPosition;
 
             #endregion
+
+            if (CanPrepareStandardDance(false)) return StandardStep;
 
             #region Dance Fills
 
@@ -800,6 +808,14 @@ internal partial class DNC : PhysicalRanged
                 return contentAction;
 
             #region Weaves
+
+            // Match the configured ST partner policy without interrupting dance steps.
+            if (Engine.Options.Enabled(Feature.DncPartnerOnAoe) &&
+                IsEnabled(Preset.DNC_ST_Adv_AutoPartner) && ActionLearned(ClosedPosition) &&
+                IsOffCooldown(ClosedPosition) && CanWeave() && CurrentPartnerNonOptimal)
+                return LocalPlayer.HasStatus(Buffs.ClosedPosition)
+                    ? Ending
+                    : ClosedPosition.Retarget(actionID, DancePartnerResolver);
 
             // AoE Devilment
             if (IsEnabled(Preset.DNC_AoE_Adv_Devilment) &&

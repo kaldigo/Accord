@@ -1,5 +1,9 @@
 # Accord 0.1.0 development implementation
 
+All-variant source recheck (2026-10-17): [current matrix, settings prerequisites and source findings](job-research/all-variant-audit.md) supersedes earlier layout-retention and completion claims below.
+
+Protection correction (2026-10-16): [current routing and action-access audit](job-research/protection-routing.md) supersedes the general-selector retention described below. Implemented locally; native acceptance remains pending.
+
 **Architecture update, 2026-10-16:** this log describes the combined prototype. The agreed direction is now a separate Accord plugin configuring a Wrath fork through its API. The fork supplies granular functionality/settings; Accord owns intent/variant mappings and sets those settings. The source split and local 0.2.0 packages are now implemented; native acceptance remains pending. See [separation assessment](separation.md); earlier completion claims apply only to the combined implementation.
 
 2026-10-08. Based on the pinned Wrath 1.0.4.26 engine and the public HotbarTools Job Setup pack. This is a local development build, not a published or in-game-validated release.

@@ -46,6 +46,7 @@ internal static class EngineSchema
                 var choices = new AccordSettings();
                 foreach (var variant in VariantDefinitions.All) choices.Variants[variant.Id] = (mask & (1 << (int)variant.Id)) != 0;
                 var changes = JObject.Parse(pack.Resolve(job, choices).Settings.ToJsonString());
+                count += ActionAccess.Verify(job.Job, changes, names);
                 changes["AutoActions"] = pack.AutoModes(job, choices, names);
                 var enable = changes["EnabledActionsV6"]!; changes.Remove("EnabledActionsV6");
                 var shared = JObject.Parse(pack.Data.SharedSettings.ToJsonString()); shared.Remove("EnabledActionsV6");

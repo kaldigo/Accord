@@ -27,12 +27,13 @@ public sealed class SlotMap
     public int RegularSlot { get; set; } = 1;
     public int CrossSet { get; set; } = 1;
     public int CrossSlot { get; set; } = 1;
+    public uint JobId { get; set; } // Zero preserves existing all-job/profile mappings.
     public string Profile { get; set; } = "Combat";
     public bool SharedAcrossJobs { get; set; }
     public bool Enabled { get; set; } = true;
     public Position Regular => new(RegularBar - 1, RegularSlot - 1);
     public Position Cross => new(CrossSet + 9, CrossSlot - 1);
-    public bool Applies(uint job) => Enabled && (Profile == "All" || (Profile == "Noncombat" ? job is >=8 and <=18 : Profile == "Healer" ? Defaults.IsHealer(job) : Defaults.IsCombat(job) && !Defaults.IsHealer(job)));
+    public bool Applies(uint job) => Enabled && (JobId == 0 || JobId == job) && (Profile == "All" || (Profile == "Noncombat" ? job is >=8 and <=18 : Profile == "Healer" ? Defaults.IsHealer(job) : Defaults.IsCombat(job) && !Defaults.IsHealer(job)));
 }
 public static class Defaults
 {
@@ -57,7 +58,7 @@ public static class Defaults
         var list=maps.ToList();
         if(list.Count>128 || list.Select(m=>m.Id).Distinct().Count()!=list.Count) throw new InvalidDataException("Too many pairs or duplicate pair IDs.");
         foreach(var m in list)
-            if(!m.Regular.Valid || m.Regular.Bar>=10 || !m.Cross.Valid || m.Cross.Bar<10 || m.Profile is not ("All" or "Combat" or "Healer" or "Noncombat")) throw new InvalidDataException($"Invalid mapping: {m.Label}");
+            if(m.JobId > 42 || !m.Regular.Valid || m.Regular.Bar>=10 || !m.Cross.Valid || m.Cross.Bar<10 || m.Profile is not ("All" or "Combat" or "Healer" or "Noncombat")) throw new InvalidDataException($"Invalid mapping: {m.Label}");
         foreach(uint job in Enumerable.Range(1,42).Select(x=>(uint)x))
         {
             var used=new HashSet<Position>();
@@ -85,6 +86,7 @@ public sealed class PresetSlot
     public int RegularSlot { get; set; }
     public int CrossSlot { get; set; }
     public string Action { get; set; } = "";
+    public string RetiredAction { get; set; } = "";
     public string Function { get; set; } = "";
 }
 public sealed class JobPreset
@@ -280,3 +282,34 @@ public sealed class LayoutBackup
 }
 
 
+
+// Additional job controls are opt-in, scoped to one class, and never replace custom pairs.
+public static class ExtraJobMappings
+{
+    public static SlotMap For(uint job) => new()
+    {
+        Id = $"extra-job-{job}-13", Label = $"Job {job}: knockback immunity", Profile = "Combat",
+        JobId = job, RegularBar = 3, RegularSlot = 1, CrossSet = 2, CrossSlot = 1,
+    };
+    public static List<SlotMap> Merge(IEnumerable<SlotMap> existing, IEnumerable<SlotMap> requested,
+        Dictionary<uint, Dictionary<string, Position>> routes)
+    {
+        var result = existing.ToList();
+        foreach (var map in requested)
+        {
+            var expected = For(map.JobId);
+            if (map.JobId is not (1 or 19) || JsonSerializer.Serialize(map) != JsonSerializer.Serialize(expected))
+                throw new InvalidDataException("Unsupported extra job mapping.");
+            var old = result.SingleOrDefault(m => m.Id == map.Id);
+            if (old != null)
+            {
+                if (JsonSerializer.Serialize(old) != JsonSerializer.Serialize(expected))
+                    throw new InvalidDataException("The extra job pair was customized. Restore its mapping before setup.");
+            }
+            else result.Add(map);
+        }
+        Defaults.Validate(result);
+        foreach (var (job, route) in routes) LayoutRoutes.Effective(result.Where(m => m.Applies(job)), route);
+        return result;
+    }
+}

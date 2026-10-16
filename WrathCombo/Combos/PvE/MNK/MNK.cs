@@ -211,9 +211,10 @@ internal partial class MNK : Melee
                     UseMantra())
                     return Mantra;
 
-                if (IsEnabled(Preset.MNK_ST_UseRoE) &&
-                    (UseRoE() ||
-                     MNK_ST_EarthsReply && UseEarthsReply(MNK_ST_EarthsReplyHPThreshold)))
+                if ((IsEnabled(Preset.MNK_ST_UseRoE) &&
+                     (UseRoE() || MNK_ST_EarthsReply && UseEarthsReply(MNK_ST_EarthsReplyHPThreshold))) ||
+                    (Engine.Options.Enabled(WrathFork.Contract.Feature.MnkEarthReplyOnDamage) &&
+                     UseEarthsReply(MNK_ST_EarthsReplyHPThreshold)))
                     return OriginalHook(RiddleOfEarth);
 
                 if (IsEnabled(Preset.MNK_ST_Feint) &&
@@ -312,6 +313,17 @@ internal partial class MNK : Melee
                 if (IsEnabled(Preset.MNK_AoEUseHowlingFist) &&
                     UseChakra(true))
                     return OriginalHook(HowlingFist);
+
+                if (Engine.Options.Enabled(WrathFork.Contract.Feature.MnkMantraOnAoe) &&
+                    IsEnabled(Preset.MNK_ST_UseMantra) && UseMantra())
+                    return Mantra;
+
+                if ((Engine.Options.Enabled(WrathFork.Contract.Feature.MnkEarthOnAoe) &&
+                     IsEnabled(Preset.MNK_ST_UseRoE) &&
+                     (UseRoE() || MNK_ST_EarthsReply && UseEarthsReply(MNK_ST_EarthsReplyHPThreshold))) ||
+                    (Engine.Options.Enabled(WrathFork.Contract.Feature.MnkEarthReplyOnDamage) &&
+                     UseEarthsReply(MNK_ST_EarthsReplyHPThreshold)))
+                    return OriginalHook(RiddleOfEarth);
 
                 if (IsEnabled(Preset.MNK_AoE_ComboHeals))
                 {

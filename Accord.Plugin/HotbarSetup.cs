@@ -31,6 +31,7 @@ internal sealed class HotbarSetup
 
     internal unsafe string Apply(IEnumerable<(uint Job, JobPreset Preset)> jobs, bool cleanup)
     {
+        jobs = jobs.ToArray();
         uint current = (uint)Player.Job;
         var module = NativeHotbars.Ready(current);
         string character = NativeHotbars.CharacterKey(Svc.PlayerState.ContentId);
@@ -41,6 +42,11 @@ internal sealed class HotbarSetup
             throw new InvalidOperationException("Hotbar Bridge is busy. Try again.");
         try
         {
+            var extras = jobs.Where(j => j.Preset.Slots.Any(s => s.LogicalSlot > 12))
+                .Select(j => ExtraJobMappings.For(j.Job)).ToArray();
+            if (bridge && extras.Length > 0 &&
+                !Svc.PluginInterface.GetIpcSubscriber<string, bool>("HotbarBridge.EnsureJobMappings").InvokeFunc(JsonSerializer.Serialize(extras)))
+                throw new InvalidOperationException("Update Hotbar Bridge to support the extra Paladin control.");
             List<SlotMap>? maps = bridge ? JsonSerializer.Deserialize<List<SlotMap>>(ReadBridge("GetMapping")) : null;
             if (bridge && maps is null) throw new InvalidDataException("Bridge mapping is unavailable.");
             if (maps is not null) Defaults.Validate(maps);
@@ -54,13 +60,14 @@ internal sealed class HotbarSetup
             foreach (var (job, preset) in jobs)
             {
                 var keep = new HashSet<Position>();
-                var effectiveMaps = maps ?? Defaults.Maps();
+                var effectiveMaps = maps ?? ExtraJobMappings.Merge(Defaults.Maps(), extras, new());
                 if (routes is not null)
                 {
                     beforeRoutes![job] = oldRoutes!.GetValueOrDefault(job) ?? new();
                     routes[job] = new();
                 }
-                foreach (var source in KeyboardLayout.Positions)
+                foreach (var source in KeyboardLayout.Positions.Concat(
+                    effectiveMaps.Where(m => m.JobId == job && m.Id == ExtraJobMappings.For(job).Id).Select(m => m.Regular)).Distinct())
                 {
                     var slot = preset.Slots.SingleOrDefault(s => new Position(s.RegularBar - 1, s.RegularSlot - 1) == source);
                     var value = slot is null ? default : actions.ResolveSlot(preset.Job, slot.Action);
@@ -68,8 +75,9 @@ internal sealed class HotbarSetup
                     if (map is null || map.SharedAcrossJobs)
                         throw new InvalidOperationException($"No job-specific Bridge pair for {preset.Job} {source}.");
                     if (routes is not null) routes[job][map.Id] = source;
-                    Add(source, value);
-                    Add(map.Cross, value);
+                    var retired = string.IsNullOrEmpty(slot?.RetiredAction) ? default : actions.ResolveSlot(preset.Job, slot.RetiredAction);
+                    Add(source, value, retired);
+                    Add(map.Cross, value, retired);
                 }
                 if (routes is not null) LayoutRoutes.Effective(effectiveMaps.Where(m => m.Applies(job)), routes[job]);
                 if (cleanup)
@@ -77,7 +85,7 @@ internal sealed class HotbarSetup
                                  bar => NativeHotbars.Ready(current)->IsHotbarShared((uint)bar), p => NativeHotbars.Read(job, p)))
                         edits.Add((job, edit.Position), edit);
 
-                void Add(Position position, SlotValue value)
+                void Add(Position position, SlotValue value, SlotValue retired)
                 {
                     if (!position.Valid || !keep.Add(position)) throw new InvalidDataException("Invalid or duplicate layout destination.");
                     if (effectiveMaps.Any(m => m.SharedAcrossJobs && (m.Regular == position || m.Cross == position)))
@@ -85,9 +93,9 @@ internal sealed class HotbarSetup
                     if (NativeHotbars.Ready(current)->IsHotbarShared((uint)position.Bar))
                         throw new InvalidOperationException($"{position} is a shared game hotbar. Choose job-specific bars first.");
                     // With cleanup off, an unused design position is not permission
-                    // to erase an unrelated action the player placed there.
-                    if (value == default && !cleanup) return;
+                    // to erase an unrelated action. Only the explicitly retired selector may be removed.
                     var old = NativeHotbars.Read(job, position);
+                    if (value == default && !cleanup && (retired == default || old != retired)) return;
                     if (old != value) edits.Add((job, position), new(job, position, old, value));
                 }
             }

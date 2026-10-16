@@ -9,6 +9,10 @@ public enum Feature
     BardMinneOnAoe, PctTemperaOnAoe, RprCrestOnAoe,
     MeleeFeintOnAoe, CasterAddleOnAoe, RdmBarrierOnAoe,
     RangedMitigationOnSt, RangedMitigationOnAoe, MchDismantleOnSt, MchDismantleOnAoe,
+    BlmManawardOnAoe, WhmDivineCaressOnDamage,
+    MnkMantraOnAoe, MchWildfireOnAoe, DncPartnerOnAoe,
+    DncTargetlessPrepull, DncImprovisationFinish, MchFlamethrowerContinuation,
+    MnkEarthOnAoe, MnkEarthReplyOnDamage, SamThirdEyeOnAoe,
 }
 
 public static class FeatureDefaults
@@ -23,6 +27,12 @@ public static class FeatureScope
     public static bool Supports(uint job, Feature feature) => feature switch
     {
         Feature.BurstContinuation => job is >= 19 and <= 42 && job is not 26 and not 29,
+        Feature.BlmManawardOnAoe => job == 25,
+        Feature.WhmDivineCaressOnDamage => job == 24,
+        Feature.MnkMantraOnAoe or Feature.MnkEarthOnAoe or Feature.MnkEarthReplyOnDamage => job == 20,
+        Feature.SamThirdEyeOnAoe => job == 34,
+        Feature.MchWildfireOnAoe or Feature.MchFlamethrowerContinuation => job == 31,
+        Feature.DncPartnerOnAoe or Feature.DncTargetlessPrepull or Feature.DncImprovisationFinish => job == 38,
         Feature.TcjContinuation => job == 30,
         Feature.DncStandardInitiation or Feature.DncTechnicalInitiation or Feature.DncCuringWaltz => job == 38,
         Feature.BardSongInitiation or Feature.BardMinneOnAoe => job == 23,
