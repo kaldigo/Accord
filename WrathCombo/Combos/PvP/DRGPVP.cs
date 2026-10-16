@@ -1,8 +1,9 @@
 ﻿using WrathCombo.CustomComboNS;
 using WrathCombo.CustomComboNS.Functions;
-using static WrathCombo.Window.Functions.UserConfig;
-using static WrathCombo.Combos.PvP.DRGPvP.Config;
 using WrathCombo.Extensions;
+using WrathCombo.Native;
+using static WrathCombo.Combos.PvP.DRGPvP.Config;
+using static WrathCombo.Window.Functions.UserConfig;
 
 namespace WrathCombo.Combos.PvP;
 
@@ -80,9 +81,9 @@ internal static class DRGPvP
         protected internal override Preset Preset => Preset.DRGPvP_Burst;
         protected override uint Invoke(uint actionID)
         {
-            if (actionID is not (RaidenThrust or FangAndClaw or WheelingThrust or Drakesbane)) 
+            if (!CustomActionHelper.OneButtonRotationChecker(actionID, CustomActionType.SingleTargetDPS, RaidenThrust, FangAndClaw, WheelingThrust, Drakesbane))
                 return actionID;
-            
+
             if (!CurrentTarget.HasStatus(PvPCommon.Buffs.Guard, true))
             {
                 if (IsEnabled(Preset.DRGPvP_Smite) && PvPMelee.CanSmite() && InActionRange(PvPMelee.Smite) && HasTarget() &&
@@ -126,7 +127,17 @@ internal static class DRGPvP
                 if (IsEnabled(Preset.DRGPvP_ChaoticSpringExecute) && GetTargetCurrentHP() <= 8000) // Chaotic Spring Execute
                     return ChaoticSpring;
             }
-            return actionID;
+
+            if (ActionReady(FangAndClaw))
+                return FangAndClaw;
+
+            if (ActionReady(WheelingThrust))
+                return WheelingThrust;
+
+            if (ActionReady(Drakesbane))
+                return Drakesbane;
+
+            return RaidenThrust;
         }
     }
     internal class DRGPvP_BurstProtection : CustomCombo

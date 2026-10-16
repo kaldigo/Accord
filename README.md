@@ -2,7 +2,7 @@
 
 Accord provides reviewed job setups, intent variants and matching hotbars. The separate WrathFork plugin (provisional name) supplies rotation functionality and settings, controlled by Accord through its API.
 
-**Status:** separate local 0.2.0 preview packages build and pass 5,851 checks, including all 512 job/variant combinations against compiled engine settings. Native acceptance is pending; nothing has been installed or published. See [separation status](docs/separation.md) and [build/package instructions](docs/distribution.md).
+**Status:** separate local 0.2.1 preview packages build and pass 5,851 checks, including all 512 job/variant combinations against compiled engine settings. Native acceptance is pending; nothing has been installed or published. See [separation status](docs/separation.md) and [build/package instructions](docs/distribution.md).
 
 - [Premise, boundaries and implementation direction](docs/ACCORD.md)
 - [Development rules](AGENTS.md)

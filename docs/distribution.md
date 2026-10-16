@@ -1,8 +1,8 @@
 # Separate plugin previews
 
-The local 0.2.0 preview contains two plugins. **WrathFork** (provisional name) owns rotations, settings and the settings API. **Accord** owns reviewed mappings, variants and hotbars. Both are needed for reviewed combat setup. Disable upstream Wrath and the old combined Accord before using these builds; Hotbar Bridge stays separate.
+The local 0.2.1 preview contains two plugins. **WrathFork** (provisional name) owns rotations, settings and the settings API. **Accord** owns reviewed mappings, variants and hotbars. Both are needed for reviewed combat setup. Disable upstream Wrath and the old combined Accord before using these builds; Hotbar Bridge stays separate.
 
-Run `pwsh -File tools/package-release.ps1` with .NET 10 and installed Dalamud API 15 development dependencies. It builds both projects, runs mapping/contract checks and validates every job/variant against the compiled engine schema, then writes `artifacts/v0.2.0-preview/`:
+Run `pwsh -File tools/package-release.ps1` with .NET 10 and installed Dalamud API 15 development dependencies. It builds both projects, runs mapping/contract checks and validates every job/variant against the compiled engine schema, then writes `artifacts/v0.2.1-preview/`:
 
 - `WrathFork.zip` and `Accord.zip`, each with its own identity and dependency notices.
 - `WrathFork.pluginmaster.testing.json` and `Accord.pluginmaster.testing.json`, separate testing feeds.

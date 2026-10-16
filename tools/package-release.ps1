@@ -11,7 +11,7 @@ try {
     & dotnet run --project tests/Accord.Tests.csproj -c Release -- WrathCombo/bin/WrathFork/Release/WrathFork.dll
     if ($LASTEXITCODE -ne 0) { throw 'Separation tests failed.' }
     Add-Type -AssemblyName System.IO.Compression.FileSystem
-    $tag = 'v0.2.0-preview'
+    $tag = 'v0.2.1-preview'
     $out = Join-Path $repoRoot "artifacts/$tag"
     New-Item -ItemType Directory -Force -Path $out | Out-Null
     $hashes = @()
@@ -19,7 +19,7 @@ try {
         $relative = if ($name -eq 'WrathFork') { 'WrathCombo/bin/WrathFork/Release/WrathFork' } else { 'Accord.Plugin/bin/Release/Accord' }
         $build = Join-Path $repoRoot $relative
         $manifest = Get-Content -LiteralPath (Join-Path $build "$name.json") -Raw | ConvertFrom-Json
-        if ($manifest.InternalName -ne $name -or $manifest.Name -ne $name -or $manifest.DalamudApiLevel -ne 15 -or [version]$manifest.AssemblyVersion -ne [version]'0.2.0.0') {
+        if ($manifest.InternalName -ne $name -or $manifest.Name -ne $name -or $manifest.DalamudApiLevel -ne 15 -or [version]$manifest.AssemblyVersion -ne [version]'0.2.1.0') {
             throw "Incorrect package identity/version: $name"
         }
         $package = Join-Path $out "$name.zip"

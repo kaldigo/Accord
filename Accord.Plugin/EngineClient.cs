@@ -15,7 +15,7 @@ internal sealed class EngineClient
             throw new InvalidOperationException("Load the compatible WrathFork engine. Behaviour and live hotbar updates are unavailable.");
         var result = Decode(Svc.PluginInterface.GetIpcSubscriber<string>("WrathFork.Settings.Read.v1").InvokeFunc());
         if (result.Value<string>("Identity") != "WrathFork" || result.Value<int>("ApiVersion") != 1 || result.Value<int>("SettingsSchemaVersion") != 1 ||
-            result.Value<string>("EngineVersion") != "1.0.4.26" ||
+            result.Value<string>("EngineVersion") != "1.0.4.27" ||
             Enum.GetNames<Feature>().Except(result["Features"]!.Values<string>()).Any())
             throw new InvalidOperationException("The fork API/settings capabilities do not match this reviewed setup.");
         return result;

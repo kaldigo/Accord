@@ -50,10 +50,21 @@ Remaining validation requires the game: actual ImGui/DTR rendering; native hotba
 Local runtime changes are in `WrathCombo/Accord/` plus narrow integration points in startup, action readiness/replacement/watching, preset evaluation and the documented affected job paths. The public hotbar model/catalog/cleanup/native helpers were copied from the sibling HotbarTools `common/` directory on 2026-10-08; they are owned by this independent checkout, not linked to the parent repository at build time. Preserve both upstream and imported-source provenance when updating them.
 
 
-## Separation validation — 2026-10-16
+## Separation validation â€” 2026-10-16
 
 WrathFork and independent Accord Release builds succeed against the installed Dalamud API 15 SDK. The fork emits 72 existing-style deprecated API/nullability/unused-member warnings; Accord emits none. `tools/package-release.ps1` succeeds and creates both ZIPs, distinct testing feeds and checksums under `artifacts/v0.2.0-preview/`.
 
 5,851 assertions/check cases pass: previous mapping/handoff/hotbar recovery cases, new granular feature ownership and rejected-patch preservation checks, and 512 setup/variant cases against actual compiled fork setting registrations with configuration serialization round trips. The offline schema host excludes unsupported BST, suppresses persistence and never constructs live plugin hooks. Package validation checks required dependencies, separate identities and absence of cross-plugin engine assemblies or private configuration.
 
 Source checks confirm no engine references to Accord variants/prepared-job state and no engine assembly/configuration references in the client. The parent repository and dependency submodule checkouts remain unchanged. No game execution, IPC transport integration, live migration, installation or publication performed. See the current limitations and native acceptance list in separation.md and distribution.md.
+
+
+## Upstream 1.0.4.27 merge - 2026-10-16
+
+Merged upstream/main at `5365eb1edc13654be945a624b2311a8b8541a599` (tag 1.0.4.27). The preceding separation was checkpointed as `b831b3b26`; upstream ancestry and our engine patches are preserved. ECommons follows upstream's `26d30b9ec14c3d3c18e335a9e4c7a5421dd134db`, PunishLib `96c0cefa8ebf948b3d3d71d85994c61dc8430b5c`.
+
+Conflict review: retained fork identity/version, kept upstream auto-rotation DTR/MOTD/login-reset wiring disabled, and adopted DNC cleanup while preserving granular initiation and support switches. Automatic MCH/NIN/action-observation merges were inspected against upstream.
+
+Included upstream changes: MCH opener removes its former target requirement check; NIN checks learned Kassatsu upgrades at synced levels; SAM FRU opener sequence fixes; WHM Temperance/Divine Caress split-action checks; ground-action readiness guard; PvP custom-action coverage and other upstream fixes/cleanup. DNC changes are source cleanup, not a new dance-continuation change. No MCH damage-improvement claim follows from this merge.
+
+API/client/setup compatibility pins now require 1.0.4.27. Both plugin versions are 0.2.1. Packaging succeeds in artifacts/v0.2.1-preview: 5,851 checks pass including all 512 compiled-engine schema/configuration round trips. Full fork build has 79 warnings and no errors; client has no warnings/errors. Upstream-added trailing whitespace is retained to avoid unrelated source churn. No installation, live migration or publication performed; native acceptance remains pending. Earlier research sections retain their historical 1.0.4.26 context.

@@ -20,7 +20,7 @@ internal sealed class SetupPack
         using var stream = Assembly.GetExecutingAssembly().GetManifestResourceStream("Accord.presets.json")
                            ?? throw new InvalidDataException("Missing reviewed Accord setup pack.");
         Data = JsonSerializer.Deserialize<PresetPack>(stream) ?? throw new InvalidDataException("Invalid setup pack.");
-        if (Data.SchemaVersion != 1 || Data.WrathVersion != "1.0.4.26")
+        if (Data.SchemaVersion != 1 || Data.WrathVersion != "1.0.4.27")
             throw new InvalidDataException("The setup pack does not match the pinned engine.");
         // Dances are owned by class mechanics; Devilment is the burst initiator.
         var dancer = Data.Jobs.Single(j => j.Job == "DNC");

@@ -64,7 +64,7 @@ internal sealed class SettingsApi : IDisposable
     {
         var snapshot = Snapshot();
         return new JObject { ["Success"] = true, ["Identity"] = "WrathFork", ["ApiVersion"] = 1, ["SettingsSchemaVersion"] = 1,
-            ["EngineVersion"] = "1.0.4.26", ["Instance"] = instance, ["Revision"] = Revision(snapshot),
+            ["EngineVersion"] = "1.0.4.27", ["Instance"] = instance, ["Revision"] = Revision(snapshot),
             ["ConfigurationId"] = Service.Configuration.ForkConfigurationId,
             ["Features"] = new JArray(Enum.GetNames<Feature>()), ["Settings"] = snapshot,
             ["PresetIds"] = new JObject(Enum.GetValues<Preset>().Select(p => new JProperty(p.ToString(), (int)p))),

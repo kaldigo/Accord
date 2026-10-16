@@ -10,7 +10,11 @@ For example, the fork exposes automatic burst initiation and continuation after 
 
 This supersedes the earlier single-plugin architecture and the requirement to replace the fork's settings interface with Accord's UI. Accord retains its simplified UI; the fork's own interface is separate. The precise standalone fork UI/command surface, fork name and repository allocation are not decided by this note. Do not infer that unrelated upstream hands-free functionality must be restored.
 
-The source now builds separate Accord and provisional WrathFork plugins (0.2.0). Accord configures the fork through versioned IPC. Local build/schema tests pass; native acceptance remains pending. Older 0.1.0 preview artifacts are the combined prototype. See [code separation assessment](separation.md) for actual dependencies, API requirements and migration order. Existing gameplay, targeting, variant and static/live hotbar requirements remain in force.
+The source now builds separate Accord and provisional WrathFork plugins (0.2.1). Accord configures the fork through versioned IPC. Local build/schema tests pass; native acceptance remains pending. Older 0.1.0 preview artifacts are the combined prototype. See [code separation assessment](separation.md) for actual dependencies, API requirements and migration order. Existing gameplay, targeting, variant and static/live hotbar requirements remain in force.
+
+## Current upstream baseline
+
+Updated on 2026-10-16 to Wrath **1.0.4.27**, upstream commit `5365eb1edc13654be945a624b2311a8b8541a599`. The upstream branch was merged with history preserved; its ECommons and PunishLib pins were adopted. Accord and WrathFork previews are now 0.2.1, with the setup pack and API compatibility checks pinned to 1.0.4.27. Both builds and 5,851 checks pass. Native acceptance remains pending.
 
 ## Starting point
 

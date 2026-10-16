@@ -83,7 +83,7 @@ The current `Accord` configuration contains both engine data and nested Accord c
 Done means no engine reference to Accord variants/registry/setup data, no Accord direct engine configuration or hook access, two independently identifiable packages, correct compatibility/failure reporting, and preserved gameplay/hotbar requirements. The previous 4,766 assertions and preview are evidence for the combined implementation only.
 
 
-## Implemented source split — 2026-10-16
+## Implemented source split â€” 2026-10-16
 
 - `WrathCombo` builds provisional `WrathFork` 0.2.0: rotation hooks, confirmation/continuation, targeting, granular per-job features, native engine settings UI and `/wrathfork`. No Accord variant, setup-pack or prepared-job state is referenced by runtime engine code.
 - `Accord.Plugin` builds independent `Accord` 0.2.0: variants/mappings, reviewed baselines, DTR/UI, static/live hotbars, Bridge integration, backups and `/accord`. It has no engine assembly reference. `Contract` is shared wire/validation source, not a runtime plugin dependency.
@@ -97,3 +97,8 @@ Done means no engine reference to Accord variants/registry/setup data, no Accord
 - Schema verification exposed 93 obsolete integer options in the public tank baselines. Removed only keys documented in upstream's old-config detection plus four removed MitOptions names; current mitigation options and preset mapping remain intact. All 512 job/variant combinations are validated against actual compiled settings registrations and configuration round-tripping.
 
 Still required before a usable release: in-game validation of loading/unloading/reconnect, both UIs, API persistence/failure paths, static/live hotbars and the affected rotation/targeting cases. The broader discovery/effective-state/events contract and automatic personalised-engine migration are not claimed complete. Noncombat setup currently uses the same engine confirmation path; engine-free noncombat setup remains a possible refinement.
+
+
+### Upstream refresh - 2026-10-16
+
+Current preview: 0.2.1 on Wrath 1.0.4.27 (`5365eb1edc13654be945a624b2311a8b8541a599`). The split is retained. API/client/setup compatibility pins and upstream dependency revisions were updated; both builds and 5,851 checks pass. See implementation.md for merge details. Native acceptance remains pending.
