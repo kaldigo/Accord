@@ -37,12 +37,14 @@ internal sealed class SetupController : IDisposable
         foreach (var definition in VariantDefinitions.All)
         {
             var entry = Svc.DtrBar.Get("Accord " + definition.Label);
+            entry.Shown = false;
             entry.OnClick = _ => Run(() => SetVariant(definition.Id, !Settings.Enabled(definition.Id)));
             entry.Tooltip = definition.Label + ": click to switch A/M.\n" + definition.Description;
             entries.Add(entry);
         }
         Settings.ActiveJobs ??= Pack.SelectedJobs(Settings).Select(j => j.JobId).ToHashSet();
-        UpdateEntries();
+        // Plugin construction may run off the framework thread. Tick updates
+        // visibility and text once player state can safely be read.
     }
 
     internal void Run(Action operation)
