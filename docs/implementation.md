@@ -1,0 +1,59 @@
+# Accord 0.1.0 development implementation
+
+**Architecture update, 2026-10-16:** this log describes the combined prototype. The agreed direction is now a separate Accord plugin configuring a Wrath fork through its API. The fork supplies granular functionality/settings; Accord owns intent/variant mappings and sets those settings. The source split and local 0.2.0 packages are now implemented; native acceptance remains pending. See [separation assessment](separation.md); earlier completion claims apply only to the combined implementation.
+
+2026-10-08. Based on the pinned Wrath 1.0.4.26 engine and the public HotbarTools Job Setup pack. This is a local development build, not a published or in-game-validated release.
+
+## Setup and ownership
+
+- Independent `Accord.dll`, manifest/internal name `Accord`, configuration and `/accord` command. Debug/Release outputs use isolated repository directories. The upstream update/MOTD entry point and writable Wrath IPC registration are not exposed. `tools/package-release.ps1` prepares a validated preview ZIP, testing-only feed and checksum. Nothing is installed or published.
+- Loading refuses an already loaded Wrath Combo. If Wrath is enabled later, Accord stops action replacement and reports the conflict; disable Wrath and reload Accord before continuing. This does not unload another plugin automatically.
+- Accord replaces the main configuration window. Old sidebar/tab rendering and command registration are removed; retained upstream source is not an accessible Advanced interface. Preset metadata, setting sanitisation and upstream configuration migrations remain available outside drawing the old UI. Migrations run before preparation, not on a delayed login callback that could erase a reviewed setup.
+- Four global variants share one persisted selection across checkbox, macro and DTR entry. DTR uses native sword/tank/healer/star icons and A/M text. The inherited hands-free runner is not called.
+- Current/all-class hotbar setup covers 21 combat jobs, 11 noncombat jobs and reviewed base-class inheritance. Static switches update behaviour only. Enabling live mode applies the current class; variant/class changes refresh the current layout. Failed applications report failure and allow explicit retry instead of claiming the layout caught up.
+- Preparation applies versioned baseline settings inside Accord. Subsequent switches touch reviewed preset membership only. Resetting a class to reviewed settings is a separate control and creates a configuration backup. Local diagnostics are exported to Accord's private configuration directory.
+- Cleanup uses the actual Bridge map, including disabled shared pairs, and preserves native shared bars. Cleanup requires Bridge loaded. Without cleanup, unused design positions retain unrelated assignments. Regular and cross destinations are validated together under Bridge's external-edit lock. Compaction/custom bar relocation is not exposed in this initial interface; the reviewed regular positions are used.
+- Writes have before-state checks, character-specific backups, read-back verification and reverse rollback. Route updates participate in rollback. Restore refuses another character's backup or destinations that have since become shared, and disables live mode on success. A failed rollback keeps the recovery backup path in the error.
+
+## Rotation changes
+
+| Area | Implemented routing | Manual access and limits |
+| --- | --- | --- |
+| Burst | Explicit continuation policy: 20 seconds for MNK/DRG/BRD/NIN/DRK/RDM/GNB; 30 for MCH. Single-initiator jobs use native statuses/gauges without a timer. Confirmed effects activate handoff; follow-ups cannot extend it. | Only reviewed buff/debuff leaves and required buff parents are admitted. Manual order gaps for BRD, MNK and NIN are fixed. Rotation parents and unrelated mechanics cannot be enabled by handoff. Existing timing/resource/target checks remain. |
+| WHM/SCH/AST burst | Presence of Mind, Chain Stratagem and Divination initiation follow Auto burst independently of their proc follow-ups. | Added Presence of Mind, Chain Stratagem and Divination controls in unused reviewed positions. SGE has no new burst effect. |
+| DNC | Class mechanics owns Standard/Technical initiation, including Finishing Move's new Standard initiation. Completion presets stay enabled in manual mode. Auto burst owns Devilment. | Standard Step and Devilment added; Technical Step retained. Active dances continue through damage presses. Protection cannot interrupt dance steps. Existing flourish/proc/finisher handling is retained. |
+| AST cards | Class mechanics controls drawing. Already-held cards are follow-through of a draw, including a manual draw. Eligible Bole/Arrow/Ewer/Spire are considered in both advanced damage paths using the existing ST-heal priority, HP, role and weave checks. | Astral Draw added. ST-healing card readiness checks and execution use the same resolved recipient, including range; enemy selection remains intact. With retargeting off, native target checks remain in use. This does not route the whole healing selector into damage. |
+| BRD songs | Class mechanics delegates starting a song cycle. An active song cycle continues through ST/AoE, including when initiation is manual. | One-button song initiation is present. Mode M does not cancel an already running song cycle. |
+| Protection | Tank automatic counterparts include conditional party defenses. Feint/Addle cover AoE, as do RDM Barrier, RPR Crest and PCT Tempera. Ranged defenses cover ST/AoE; Dismantle's absent-debuff eligibility is corrected for prepared Accord jobs. Baseline delegated defenses now obey the protection variant. | Manual selectors retain deliberate entry conditions; they are not dumped into damage. Existing content/HP/threat/resource checks remain. Invulnerability, targeted protection, knockback timing and channeling retain dedicated controls. |
+| Support | BRD Paean/Minne, SMN Rekindle/Lux Solaris, conditional DNC Curing Waltz, and initial SGE Kardia assignment have support ownership on ST/AoE. Kardia captures one healing-stack recipient for readiness/range/execution and never moves an existing assignment. | Manual access retained, with Lux Solaris added. AST cards belong to mechanics. Healing selectors are distinct intents and continue in M; damage does not run the whole healing selector. |
+| MCH handoff | The AoE path can perform the existing manual selector's Wildfire follow-through after confirmed burst initiation and Hypercharge. Routine automatic heat spending does not itself signal burst. | A manual Heat Blast/Blazing Shot input that resolves to Hypercharge is remembered only for matching action confirmation within two seconds; an input alone never enables burst. Barrel Stabilizer/Wildfire confirmation also hands off. Heat Blast remains available for deliberate initiation. This does not establish or claim a fix for the unsynced BLM clear-time comparison. |
+| Other mechanics | Reviewed MNK/DRG/NIN/SAM/RPR/VPR/SCH mechanic deltas and accepted-phase continuation remain. Meisui continues after confirmed TCJ Suiton/Huton with manual initiation. | No additional mechanic effect is invented for GNB or jobs whose delta is empty. Movement, recovery, prepull and noncombat utility are retained. |
+
+The embedded source pack is kept recognisable. `SetupPack` applies ownership/layout adaptations; historical three-variant descriptions are migration evidence. The UI uses new per-job descriptions. Cover, Benediction and Lux Solaris join the added manual initiators in unused positions. See the [complete 21-job mapping and selector decisions](job-research/implemented-intents.md).
+
+## Commands
+
+`/accord` opens setup. `/accord current` and `/accord all` apply hotbars. `/accord live on|off|toggle` changes hotbar mode. `/accord burst|protection|support|mechanics on|off|toggle` changes the shared selection. `/accord restore` restores the latest recorded hotbar backup for the current character.
+
+## Validation
+
+- `dotnet build WrathCombo/WrathCombo.csproj -c Release`: successful with the same 71 warnings as the untouched upstream build; zero errors.
+- `dotnet run --project tests/Accord.Tests.csproj -c Release`: 4,766 passing assertions across all 512 combinations; four-category descriptions for all 21 combat jobs; explicit ownership and switch-order independence; preservation of unrelated membership; layout budgets, base classes and manual initiators; per-job bounded/confirmed handoff; shared-slot cleanup; and injected partial-write/route/rollback failures. The final packaging run passed these checks and built with zero errors and 71 existing warnings.
+- Distribution validates identity/API, dependencies and absence of an upstream plugin, nested archive or private configuration, then includes licences and SHA-256. Output isolation fixes an inherited build-directory artifact that otherwise included an old Wrath ZIP.
+- Added action names were checked against the previously collected official job action inventory.
+- No installed plugin, live configuration or hotbar was modified by this implementation session.
+
+Remaining validation requires the game: actual ImGui/DTR rendering; native hotbar I/O and Bridge refresh after class/variant changes; AST readiness/execution with an enemy selected and an eligible resolved ally; and confirmed manual burst continuation under real action timing, particularly MCH. Unit tests and compilation cannot establish these native outcomes. There is no claim of measured damage improvement.
+
+## Upstream maintenance
+
+Local runtime changes are in `WrathCombo/Accord/` plus narrow integration points in startup, action readiness/replacement/watching, preset evaluation and the documented affected job paths. The public hotbar model/catalog/cleanup/native helpers were copied from the sibling HotbarTools `common/` directory on 2026-10-08; they are owned by this independent checkout, not linked to the parent repository at build time. Preserve both upstream and imported-source provenance when updating them.
+
+
+## Separation validation — 2026-10-16
+
+WrathFork and independent Accord Release builds succeed against the installed Dalamud API 15 SDK. The fork emits 72 existing-style deprecated API/nullability/unused-member warnings; Accord emits none. `tools/package-release.ps1` succeeds and creates both ZIPs, distinct testing feeds and checksums under `artifacts/v0.2.0-preview/`.
+
+5,851 assertions/check cases pass: previous mapping/handoff/hotbar recovery cases, new granular feature ownership and rejected-patch preservation checks, and 512 setup/variant cases against actual compiled fork setting registrations with configuration serialization round trips. The offline schema host excludes unsupported BST, suppresses persistence and never constructs live plugin hooks. Package validation checks required dependencies, separate identities and absence of cross-plugin engine assemblies or private configuration.
+
+Source checks confirm no engine references to Accord variants/prepared-job state and no engine assembly/configuration references in the client. The parent repository and dependency submodule checkouts remain unchanged. No game execution, IPC transport integration, live migration, installation or publication performed. See the current limitations and native acceptance list in separation.md and distribution.md.

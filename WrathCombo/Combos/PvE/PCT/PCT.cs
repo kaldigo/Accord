@@ -1,4 +1,4 @@
-﻿using Dalamud.Game.ClientState.JobGauge.Types;
+using Dalamud.Game.ClientState.JobGauge.Types;
 using WrathCombo.Combos.PvE.ALL;
 using WrathCombo.CustomComboNS;
 using WrathCombo.Native;
@@ -150,6 +150,9 @@ internal partial class PCT : Caster
 
             //OGCD Spells
             if (TryOGCDSpells(comboFlags, ref actionID))
+                return actionID;
+
+            if (Engine.Options.Enabled(Feature.PctTemperaOnAoe) && TryMitigation(comboFlags, ref actionID))
                 return actionID;
 
             //Movement Options

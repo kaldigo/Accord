@@ -1,4 +1,4 @@
-﻿#region
+#region
 
 using ECommons.DalamudServices;
 using ECommons.Logging;
@@ -579,7 +579,7 @@ public static class ConflictingPluginsChecks
             if (!ThrottlePassed(forceRefresh: forceRefresh))
                 return;
 
-            OpenerDTRDisabled = P.OpenerDtr.UserHidden && Service.Configuration.ShowOpenerDtr;
+            OpenerDTRDisabled = false;
 
             if (OpenerDTRDisabled)
                 MarkConflict();

@@ -105,6 +105,19 @@ internal partial class SGE
         !LocalPlayer.HasStatus(Buffs.Kardia) &&
         Target is not null;
 
+    // Initial assignment only. A valid existing Kardia is never moved by DPS.
+    private static bool TryInitialKardia(uint replaced, bool aoe, out uint action)
+    {
+        action = 0;
+        if (!Engine.Options.Enabled(aoe ? Feature.SageKardiaOnAoeDamage : Feature.SageKardiaOnStDamage) ||
+            LocalPlayer.HasStatus(Buffs.Kardia) || LocalPlayer.HasStatus(Buffs.Eukrasia) ||
+            InCombat() && !CanWeave()) return false;
+        var target = HealStack;
+        if (target is null || !ActionReadyForTarget(Kardia, target.GameObjectId) || !InActionRange(Kardia, target)) return false;
+        action = Kardia.Retarget(replaced, target);
+        return true;
+    }
+
     private static bool UseRaidwide(ref uint actionID)
     {
         if (CanWeave())

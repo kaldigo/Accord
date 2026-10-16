@@ -1,0 +1,24 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net10.0-windows</TargetFramework>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <Nullable>enable</Nullable>
+  </PropertyGroup>
+  <ItemGroup>
+    <Compile Include="../Contract/*.cs" Link="Contract/%(Filename)%(Extension)" />
+    <Reference Include="Dalamud"><HintPath>$(appdata)/XIVLauncher/addon/Hooks/dev/Dalamud.dll</HintPath></Reference>
+    <Compile Include="../Accord.Plugin/AccordSettings.cs" Link="AccordSettings.cs" />
+    <Compile Include="../Accord.Plugin/SetupPack.cs" Link="SetupPack.cs" />
+    <Compile Include="../WrathCombo/Engine/IntentHandoff.cs" Link="IntentHandoff.cs" />
+    <Compile Include="../WrathCombo/Engine/BurstPolicy.cs" Link="BurstPolicy.cs" />
+    <Compile Include="../Accord.Plugin/JobIntents.cs" Link="JobIntents.cs" />
+    <Compile Include="../Accord.Plugin/HotbarTransaction.cs" Link="HotbarTransaction.cs" />
+    <Compile Include="../Accord.Plugin/Hotbars/Models.cs" Link="Models.cs" />
+    <Compile Include="../Accord.Plugin/Hotbars/HotbarCleanup.cs" Link="HotbarCleanup.cs" />
+    <EmbeddedResource Include="../Accord.Plugin/presets.json" LogicalName="Accord.presets.json" />
+    <Reference Include="Newtonsoft.Json">
+      <HintPath>$(appdata)/XIVLauncher/addon/Hooks/dev/Newtonsoft.Json.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+</Project>

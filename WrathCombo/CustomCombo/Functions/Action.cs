@@ -1,4 +1,4 @@
-﻿using Dalamud.Game.ClientState.Objects.Types;
+using Dalamud.Game.ClientState.Objects.Types;
 using ECommons.DalamudServices;
 using ECommons.ExcelServices;
 using ECommons.GameFunctions;
@@ -165,7 +165,12 @@ internal abstract partial class CustomComboFunctions
 
     /// <summary> Checks if an action is ready to use based on level required, current cooldown and unlock state. BLU also requires the spell to be in the active spellbook. </summary>
     /// <param name="actionId"> The action ID. </param>
-    public static unsafe bool ActionReady(uint actionId, bool recastCheck = false, bool castCheck = false)
+    public static unsafe bool ActionReady(uint actionId, bool recastCheck = false, bool castCheck = false) =>
+        ActionReadyForTarget(actionId, 0xE0000000, recastCheck, castCheck);
+
+    /// <summary>Uses the same readiness rules against an explicitly resolved recipient.</summary>
+    internal static unsafe bool ActionReadyForTarget(uint actionId, ulong targetId,
+        bool recastCheck = false, bool castCheck = false)
     {
         if (actionId == 0)
             return false;
@@ -182,7 +187,7 @@ internal abstract partial class CustomComboFunctions
         }
 
         return (HasCharges(actionId) || (GetAttackType(actionId) != ActionAttackType.Ability && GetCooldownRemainingTime(actionId) <= RemainingGCD + BaseActionQueue)) &&
-            ActionManager.Instance()->GetActionStatus(ActionType.Action, actionId, checkRecastActive: recastCheck, checkCastingActive: castCheck) is 0 or 582 or 580;
+            ActionManager.Instance()->GetActionStatus(ActionType.Action, actionId, targetId, checkRecastActive: recastCheck, checkCastingActive: castCheck) is 0 or 582 or 580;
     }
 
     /// <summary> Checks if all passed actions are ready to be used. </summary>

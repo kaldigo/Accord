@@ -126,12 +126,8 @@ public partial class WrathCombo
     /// </summary>
     private void RegisterCommands()
     {
-        EzCmd.Add(Command, OnCommand,
-            "Open a window to edit custom combo settings.\n" +
-            $"{Command} auto → Toggle Auto-rotation on/off.\n" +
-            $"{Command} debug → Dumps a debug log onto your desktop for developers.\n" +
-            $"{OldCommand} → Old alias from XIVSlothCombo, still works!");
-        EzCmd.Add(OldCommand, OnCommand);
+        EzCmd.Add("/wrathfork", (_, _) => ConfigWindow.IsOpen = true,
+            "Open WrathFork engine configuration.");
     }
 
     /// <summary>

@@ -9,4 +9,7 @@
         <PackageReference Remove="ECommons"/>
         <ProjectReference Include="$(ECommonsLocalPath)"/>
     </ItemGroup>
+    <ItemGroup Condition="'$(MSBuildProjectName)' == 'ECommons'">
+        <Using Include="Lumina.Excel.ExcelPage" Alias="ExcelPage" />
+    </ItemGroup>
 </Project>

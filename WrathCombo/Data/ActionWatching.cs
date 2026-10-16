@@ -1,4 +1,4 @@
-﻿using Dalamud.Game.ClientState.Conditions;
+using Dalamud.Game.ClientState.Conditions;
 using Dalamud.Game.ClientState.Objects.Types;
 using Dalamud.Hooking;
 using ECommons;
@@ -350,6 +350,9 @@ public static class ActionWatching
                 }
             }
 
+            if (casterEntityId == Player.Object.EntityId && actionType == ActionType.Action)
+                Engine.IntentRouting.ConfirmAction(actionId);
+
             if (casterEntityId == Player.Object.EntityId && ((actionType == ActionType.Action && ActionSheet.TryGetValue(actionId, out var actionSheet) && actionSheet.TargetArea) || actionType == ActionType.Item))
             {
                 UpdateLastUsedAction(actionId, actionType, 0, 0);
@@ -575,6 +578,8 @@ public static class ActionWatching
                 }
 
                 var replacedWith = actionManager->GetAdjustedActionId(actionId);
+                if (mode != ActionManager.UseActionMode.Queue)
+                    Engine.IntentRouting.ObserveInput(actionId, replacedWith);
                 var queuedAct = actionManager->GetAdjustedActionId(actionManager->QueuedActionId);
 
                 if (IsEnabled(Preset.NIN_Anti_Rabbit))

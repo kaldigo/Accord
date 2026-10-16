@@ -102,6 +102,36 @@ internal partial class AST
     #endregion
 
     #region Get ST Heals
+    // Held cards are the follow-through of a draw, whether initiated manually or
+    // delegated. Only card priorities are shared with damage; other healing intent
+    // remains on the healing buttons.
+    internal static bool TryDamageSupportCard(uint[] replaced, bool aoe, out uint action)
+    {
+        action = 0;
+        if (!Engine.Options.Enabled(aoe ? Feature.AstCardsOnAoeDamage : Feature.AstCardsOnStDamage) || !InCombat() || !CanWeave()) return false;
+        var target = HealRetargeting.RetargetSettingOn ? SimpleTarget.Stack.OneButtonHealLogic : SimpleTarget.HardTarget;
+        if (target is null) return false;
+        for (int priority = 1; priority <= AST_ST_SimpleHeals_Priority.Count; priority++)
+        {
+            int index = AST_ST_SimpleHeals_Priority.IndexOf(priority);
+            if (index is < 3 or > 6) continue;
+            int threshold = GetMatchingConfigST(index, target, out uint card, out bool enabled);
+            if (!enabled || GetTargetHPPercent(target, AST_ST_SimpleHeals_IncludeShields) > threshold) continue;
+            if (HealRetargeting.RetargetSettingOn)
+            {
+                if (!ActionReadyForTarget(card, target.GameObjectId) || !InActionRange(card, target)) continue;
+                action = card.Retarget(replaced, target);
+            }
+            else
+            {
+                if (!ActionReady(card)) continue;
+                action = card;
+            }
+            return true;
+        }
+        return false;
+    }
+
     internal static int GetMatchingConfigST(int i, IGameObject? target, out uint action, out bool enabled)
     {
         IGameObject? healTarget = target ?? SimpleTarget.Stack.AllyToHeal;
@@ -683,5 +713,3 @@ internal partial class AST
 
     #endregion
 }
-
-

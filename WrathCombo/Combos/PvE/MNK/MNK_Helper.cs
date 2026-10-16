@@ -520,7 +520,8 @@ internal partial class MNK
     private static bool UseBrotherhood() =>
         !IsBurstHoldReleaseReady() &&
         ActionReady(Brotherhood) &&
-        ActionReady(RiddleOfFire) &&
+        (ActionReady(RiddleOfFire) ||
+         Engine.IntentRouting.BurstFollowThrough && LocalPlayer.HasStatus(Buffs.RiddleOfFire)) &&
         !LocalPlayer.HasStatus(Buffs.Brotherhood) &&
         (InBossEncounter() || TimeStoodStill.Seconds >= 2);
 

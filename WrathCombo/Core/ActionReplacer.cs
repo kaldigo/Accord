@@ -155,6 +155,12 @@ internal sealed class ActionReplacer : IDisposable
                 (DisabledJobsPVP.Any(x => x == Player.Job) && Svc.ClientState.IsPvP))
                 return OriginalHook(actionID);
 
+            var protection = Engine.IntentRouting.Protection(actionID);
+            if (protection != 0 &&
+                !(Service.Configuration.BlockSpellOnMove && ActionManager.GetAdjustedCastTime(ActionType.Action, protection) > 0 && CustomComboFunctions.TimeMoving.Ticks > 0) &&
+                !(Service.Configuration.PenaltyPause > 0 && CustomComboFunctions.PlayerHasActionPenalty(false)))
+                return protection;
+
             foreach (CustomCombo? combo in FilteredCombos)
             {
                 if (combo.TryInvoke(actionID, out uint newActionID))

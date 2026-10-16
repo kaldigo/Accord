@@ -325,6 +325,9 @@ internal partial class RPR : Melee
                     false))
                     return actionID;
 
+                if (Engine.Options.Enabled(Feature.RprCrestOnAoe) && UseArcaneCrest())
+                    return ArcaneCrest;
+
                 if (IsEnabled(Preset.RPR_AoE_ComboHeals))
                 {
                     if (Role.CanSecondWind(RPR_AoE_SecondWindHPThreshold))

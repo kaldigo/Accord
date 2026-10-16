@@ -265,6 +265,9 @@ internal partial class AST : Healer
                 if (IsEnabled(Preset.AST_DPS_Lucid) && Role.CanLucidDream(AST_ST_DPS_LucidDreaming))
                     return Role.LucidDreaming;
 
+                if (TryDamageSupportCard(replacedActions, false, out uint supportCard))
+                    return supportCard;
+
                 //Play Card
                 if (IsEnabled(Preset.AST_DPS_AutoPlay) && HasDPSCard && ActionLearned(Play1) &&
                     (HasDivination || !cardPooling || !ActionLearned(Divination)))
@@ -401,6 +404,9 @@ internal partial class AST : Healer
                 //Lucid Dreaming
                 if (IsEnabled(Preset.AST_AOE_Lucid) && Role.CanLucidDream(AST_AOE_LucidDreaming))
                     return Role.LucidDreaming;
+
+                if (TryDamageSupportCard(actions, true, out uint supportCard))
+                    return supportCard;
 
                 //Play Card
                 if (IsEnabled(Preset.AST_AOE_AutoPlay) && HasDPSCard && ActionLearned(Play1) &&
@@ -649,9 +655,17 @@ internal partial class AST : Healer
 
                 if (enabled)
                 {
+                    // Card eligibility and execution must use the same ally. A selected
+                    // enemy is not the recipient when heal retargeting is enabled.
+                    bool retargetCard = spell is Bole or Arrow or Ewer or Spire &&
+                                        HealRetargeting.RetargetSettingOn;
                     if (GetTargetHPPercent(healTarget, AST_ST_SimpleHeals_IncludeShields) <= config &&
-                        ActionReady(spell))
-                        return spell.RetargetIfEnabled(actionID);
+                        (retargetCard
+                            ? healTarget is not null && ActionReadyForTarget(spell, healTarget.GameObjectId) && InActionRange(spell, healTarget)
+                            : ActionReady(spell)))
+                        return retargetCard
+                            ? spell.Retarget(actionID, healTarget)
+                            : spell.RetargetIfEnabled(actionID);
                 }
             }
             return !ActionLearned(Benefic2) ?

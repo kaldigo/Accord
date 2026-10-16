@@ -1,4 +1,4 @@
-﻿using ECommons.DalamudServices;
+using ECommons.DalamudServices;
 using Lumina.Excel.Sheets;
 using System;
 using System.Collections.Frozen;
@@ -11,6 +11,9 @@ internal abstract partial class CustomComboFunctions
     /// <summary> Checks if the given preset is enabled. </summary>
     public static bool IsEnabled(Preset preset)
     {
+        if (Engine.IntentRouting.PresetOverride(preset) is { } accordState)
+            return accordState;
+
         if ((int)preset < 100)
             return true;
 

@@ -233,7 +233,9 @@ internal partial class MCH : PhysicalRanged
                     if (IsEnabled(Preset.MCH_ST_Dismantle) &&
                         ActionReady(Dismantle) && GroupDamageIncoming() &&
                         !JustUsed(Tactician, 6) && CurrentTarget.CanApplyStatus(Debuffs.Dismantled) &&
-                        CurrentTarget.Status(Debuffs.Dismantled, true).RemainingTimeOrZero() > MCH_DismantledDuration)
+                        (Engine.Options.Enabled(Feature.MchDismantleOnSt)
+                            ? !CurrentTarget.HasStatus(Debuffs.Dismantled, true)
+                            : CurrentTarget.Status(Debuffs.Dismantled, true).RemainingTimeOrZero() > MCH_DismantledDuration))
                         return Dismantle;
 
                     if (IsEnabled(Preset.MCH_ST_Adv_Tactician) &&
@@ -314,6 +316,14 @@ internal partial class MCH : PhysicalRanged
 
             if (CanWeave())
             {
+                // Reuse the manual burst selector's Wildfire follow-through after
+                // confirmed initiation; routine automatic Hypercharge is not intent.
+                if (Engine.IntentRouting.BurstFollowThrough &&
+                    IsEnabled(Preset.MCH_Heatblast_Wildfire) && ActionReady(Wildfire) &&
+                    JustUsed(Hypercharge) && !LocalPlayer.HasStatus(Buffs.Wildfire) &&
+                    CurrentTarget.CanApplyStatus(Debuffs.Wildfire))
+                    return Wildfire;
+
                 if (IsEnabled(Preset.MCH_AoE_Adv_GaussRicochet) &&
                     OvercapGaussRicochetProtection(ref actionID))
                     return actionID;

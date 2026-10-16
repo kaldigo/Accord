@@ -5,18 +5,19 @@
     <PropertyGroup>
         <Authors>Team Wrath</Authors>
         <Company>-</Company>
-        <Version>1.0.4.26</Version>
+        <Version>0.2.0</Version>
         <!-- This is the version that will be used when pushing to the repo.-->
-        <Description>XIVCombo for very lazy players</Description>
+        <Description>Configurable Wrath rotation engine and settings API.</Description>
         <Copyright>Copyleft attick 2021 thanks attick UwU</Copyright>
-        <PackageProjectUrl>https://github.com/PunishXIV/WrathCombo</PackageProjectUrl>
-        <PackageId>WrathCombo</PackageId>
-        <Product>WrathCombo</Product>
+        <PackageProjectUrl>https://github.com/kaldigo/Accord</PackageProjectUrl>
+        <PackageId>WrathFork</PackageId>
+        <Product>WrathFork</Product>
     </PropertyGroup>
 
     <!-- Build Parameters -->
     <PropertyGroup>
-        <AssemblyName>WrathCombo</AssemblyName>
+        <AssemblyName>WrathFork</AssemblyName>
+        <RootNamespace>WrathCombo</RootNamespace>
         <TargetFramework>net10.0-windows</TargetFramework>
         <Configurations>Debug;Release</Configurations>
         <EnableWindowsTargeting>true</EnableWindowsTargeting>
@@ -44,8 +45,8 @@
     <!-- Required Paths -->
     <PropertyGroup>
         <DalamudLibPath>$(appdata)\XIVLauncher\addon\Hooks\dev\</DalamudLibPath>
-        <DalamudDevPlugins>$(appdata)\XIVLauncher\devPlugins\WrathCombo\</DalamudDevPlugins>
-        <DalamudPluginPath>$(appdata)\XIVLauncher\installedPlugins\WrathCombo\$(version)</DalamudPluginPath>
+        <DalamudDevPlugins>$(appdata)\XIVLauncher\devPlugins\WrathFork\</DalamudDevPlugins>
+        <DalamudPluginPath>$(appdata)\XIVLauncher\installedPlugins\WrathFork\$(version)</DalamudPluginPath>
     </PropertyGroup>
 
     <!-- Path Overrides for Linux -->
@@ -62,12 +63,12 @@
 
     <!-- Build Parameter Overrides for Debug -->
     <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
-        <OutputPath>$(DalamudDevPlugins)</OutputPath>
+        <OutputPath>bin\WrathFork\Debug</OutputPath>
     </PropertyGroup>
 
     <!-- Build Parameter Overrides for Release -->
     <PropertyGroup Condition="'$(Configuration)' == 'Release'">
-        <OutputPath>bin\Release</OutputPath>
+        <OutputPath>bin\WrathFork\Release</OutputPath>
     </PropertyGroup>
 
     <!-- Logo -->
@@ -465,7 +466,8 @@
         <None Update="Resources\WrathAutoToggle.png">
           <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </None>
-        <None Update="WrathCombo.json">
+        <Compile Include="../Contract/*.cs" Link="Contract/%(Filename)%(Extension)" />
+        <None Update="WrathFork.json">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
     </ItemGroup>

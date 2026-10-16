@@ -131,6 +131,8 @@ internal partial class SGE : Healer
             if (CustomActionHelper.CustomActionEnabled(CustomActionType.SingleTargetDPS))
                 dosisActions = [All.SingleTargetDPS];
 
+            if (TryInitialKardia(actionID, false, out uint kardia)) return kardia;
+
             if (IsEnabled(Preset.SGE_ST_Adv_DPS_Kardia) && UseKardia())
                 return Kardia.Retarget(actionID, Target);
 
@@ -198,6 +200,8 @@ internal partial class SGE : Healer
         {
             if (!CustomActionHelper.OneButtonRotationChecker(actionID, CustomActionType.AoEDPS, DyskrasiaList.ToArray()))
                 return actionID;
+
+            if (TryInitialKardia(actionID, true, out uint kardia)) return kardia;
 
             if (ContentSpecificActions.TryGet(ref actionID, out uint contentAction))
                 return contentAction;

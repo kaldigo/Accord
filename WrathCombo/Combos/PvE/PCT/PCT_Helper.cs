@@ -204,7 +204,8 @@ internal partial class PCT
             flags.HasFlag(Combo.Simple) || IsSTEnabled(flags, Preset.PCT_ST_AdvancedMode_Addle);
 
         bool temperaEnabled =
-            flags.HasFlag(Combo.Simple) || IsSTEnabled(flags, Preset.PCT_ST_AdvancedMode_Tempera);
+            flags.HasFlag(Combo.Simple) || IsSTEnabled(flags, Preset.PCT_ST_AdvancedMode_Tempera) ||
+            Engine.Options.Enabled(Feature.PctTemperaOnAoe) && flags.HasFlag(Combo.AoE);
         #endregion
 
         if (addleEnabled && Role.CanAddle() && CanWeave() && GroupDamageIncoming() && HasBattleTarget())

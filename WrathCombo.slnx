@@ -31,4 +31,5 @@
   <Project Path="WrathCombo/WrathCombo.csproj">
     <Platform Project="x64" />
   </Project>
+  <Project Path="Accord.Plugin/Accord.csproj"><Platform Project="x64" /></Project>
 </Solution>

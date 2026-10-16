@@ -262,10 +262,10 @@ internal partial class NIN
                                         (MugDebuff || MugCD >= 45 || MugDisabledAoE);
 
     internal static bool CanMugST => ActionReady(OriginalHook(Mug)) && CurrentTarget.CanApplyStatus([Debuffs.Mug, Debuffs.Dokumori]) && CanDelayedWeave(1.25f, .6f, 10) && !MudraPhase &&
-                                     (TrickCD <= 6 || TrickDisabledST) &&
+                                     (TrickCD <= 6 || TrickDisabledST || Engine.IntentRouting.BurstFollowThrough && TrickDebuff) &&
                                      (ActionLearned(Dokumori) && InActionRange(Dokumori) || InMeleeRange());
     internal static bool CanMugAoE => ActionReady(OriginalHook(Mug)) && CurrentTarget.CanApplyStatus([Debuffs.Mug, Debuffs.Dokumori]) && CanDelayedWeave(1.25f, .6f, 10) && !MudraPhase &&
-                                      (TrickCD <= 6 || TrickDisabledAoE) &&
+                                      (TrickCD <= 6 || TrickDisabledAoE || Engine.IntentRouting.BurstFollowThrough && TrickDebuff) &&
                                       (ActionLearned(Dokumori) && InActionRange(Dokumori) || InMeleeRange());
 
     internal static bool TrickDebuff => CurrentTarget.HasStatus(Debuffs.TrickAttack) || CurrentTarget.HasStatus(Debuffs.KunaisBane) || JustUsed(OriginalHook(TrickAttack));

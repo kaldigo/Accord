@@ -1,29 +1,93 @@
 # Accord: premise and direction
 
-Accord is a maintained fork of [Wrath Combo](https://github.com/PunishXIV/WrathCombo) with our curated job setup layer and a simplified, exclusive user interface. It combines reviewed automation settings and matching keyboard/controller hotbar layouts. Hotbar Bridge remains a separate synchronization plugin.
+Accord is to become a separate setup and hotbar plugin, working with a maintained fork of [Wrath Combo](https://github.com/PunishXIV/WrathCombo). The fork provides rotation functionality, granular settings and a configuration API. Accord owns the intent model, reviewed job mappings and variant choices, and applies the required settings through that API. Hotbar Bridge remains a separate synchronization plugin.
+
+## Separation decision — 2026-10-16
+
+The fork facilitates intent handling through configurable rotation functionality. **Accord decides which settings implement each intent/variant and sets them.** The engine must not know Accord's four variants, setup pack, managed-job registry or hotbar design. Successful-action tracking, sequence continuation, targeting and action selection remain engine responsibilities, enabled/configured through ordinary engine settings.
+
+For example, the fork exposes automatic burst initiation and continuation after a confirmed manual initiation as independently configurable behaviour. Accord maps Auto burst A/M to the appropriate settings for each job. No `SetAccordVariant` engine API or Accord-aware rotation checks are intended.
+
+This supersedes the earlier single-plugin architecture and the requirement to replace the fork's settings interface with Accord's UI. Accord retains its simplified UI; the fork's own interface is separate. The precise standalone fork UI/command surface, fork name and repository allocation are not decided by this note. Do not infer that unrelated upstream hands-free functionality must be restored.
+
+The source now builds separate Accord and provisional WrathFork plugins (0.2.0). Accord configures the fork through versioned IPC. Local build/schema tests pass; native acceptance remains pending. Older 0.1.0 preview artifacts are the combined prototype. See [code separation assessment](separation.md) for actual dependencies, API requirements and migration order. Existing gameplay, targeting, variant and static/live hotbar requirements remain in force.
 
 ## Starting point
 
-Created 2026-10-07 from upstream commit `5d7652004b44ff25a0e9ddc34b868e487babda2c` (Fix SCH dots). This initial checkout preserves upstream runtime code, UI, plugin identity and dependencies. Only Accord documentation has been added. It is not yet a renamed or installable Accord release; do not run this baseline alongside Wrath. No runtime behaviour, live game configuration, or existing HotbarTools release has been changed.
+Created 2026-10-07 from upstream commit `5d7652004b44ff25a0e9ddc34b868e487babda2c` (Fix SCH dots). The original checkout preserved upstream unchanged. The 2026-10-08 implementation adds an isolated Accord 0.1.0 development build, its setup interface and targeted intent-routing changes. See [implementation and validation](implementation.md) for precise coverage. It has been compiled and tested locally, not installed, published or validated in game. Existing HotbarTools releases and live game configuration have not been changed.
 
 The repository is https://github.com/kaldigo/Accord. `origin` points there; `upstream` points to PunishXIV/WrathCombo. Preserve upstream history so fixes and changes can be reviewed and merged. The sibling HotbarTools repository remains independent.
 
 ## Product premise
 
-The user configures their jobs through reviewed setups rather than Wrath's full settings UI. Accord should provide one supported configuration path: choose a setup, its automation switches and scope, preview the matching hotbar/settings changes, then apply. It must package versioned settings that match the layouts; changing automation must not leave required actions inaccessible.
+The user configures their jobs through reviewed setups rather than Wrath's full settings UI. Accord provides global variant controls, explicit current/all-class hotbar setup buttons, and optional live hotbar updates. It must package versioned settings and matching layouts. Live mode keeps the current layout matched to behaviour; static mode deliberately leaves hotbars unchanged when variants change, so restoring a required manual button may require using a setup button.
 
-The shipped plugin must expose only Accord's UI. The original Wrath UI must not be retained as a hidden Advanced screen or alternate settings route. Audit upstream windows, commands and writable IPC routes when implementing this boundary. Read-only diagnostics, effective-setting exports and reset to reviewed settings are appropriate. Identify configuration initialization or other side effects embedded in UI code and preserve those outside the UI before removing it.
+Accord exposes only its simplified setup UI. The fork's configuration interface is a separate plugin concern, not an Advanced page inside Accord. Preserve engine configuration initialization independently of either UI. Read-only diagnostics, effective-setting exports and reset to reviewed settings remain appropriate.
 
 Preserve Wrath's rotation engine, action hooks, targeting machinery, configuration semantics and timing behaviour. Do not extract a new library, rewrite the engine, simplify job logic or reorganize upstream files merely to make the code cleaner. Add our setup layer on top and change engine behaviour only for a concrete, documented requirement. Keep changes small and easy to compare with upstream.
 
-## Setup and automation
+## Agreed setup interface and hotbar modes
 
-- Retain three global user-facing choices: Auto mitigation (M), Auto burst (B), and Auto job mechanics (J). Current/all scope controls which supported jobs receive them. Their implementation is job-specific; a switch may legitimately make no additional change.
+Finalised 2026-10-07, with four variant categories agreed 2026-10-08. These are the agreed requirements; current implementation and validation status is recorded separately. Per-job action ownership follows the automation philosophy below.
+
+- Provide **Set current class hotbars** and **Set all classes hotbars** buttons. Both use the selected variants; all-class setup covers supported classes/jobs.
+- Provide one global set of variant checkboxes. The checkboxes and system information controls represent the same choices, with no separate pending selection. Preserve those choices across class/job changes and apply their behaviour to the incoming job.
+- **Clear other actions** uses the existing cleanup operation's scope: keep only the designed layout across the affected job-specific regular and cross hotbars, clearing intended empty spaces and other assignments. Preserve game-shared bars and Hotbar Bridge's configured shared slots using its actual map. This option applies to explicit setup and live hotbar updates. Retain the cleanup operation's protection checks and backups; do not guess shared positions when Bridge's map is unavailable.
+- With **live mode disabled (static hotbars)**, changing a variant updates rotation behaviour only. Hotbars change only through an explicit setup operation. Switching a variant off can leave its manual action absent until the user sets the hotbars again; this is an accepted consequence of static mode.
+- **Enable live mode** applies the selected layout to the current class/job. Subsequent variant changes update behaviour and matching hotbars for that class/job. On class/job swap, apply the unchanged global selections and matching layout to the incoming class/job. Live mode does not need to update inactive classes in the background; the all-class setup button remains an explicit bulk operation.
+- Disabling live mode leaves the current hotbars in place.
+- Replace Wrath's existing auto-rotation system information entry with one individually clickable entry per variant category. Each shows the variant icon and **A** when the variant is enabled or **M** when disabled; clicking toggles the same choice as its checkbox. A/M means exactly variant on/off, not a claim that every underlying combo or action becomes automatic/manual. These entries control reviewed variants, not Wrath's hands-free auto-rotation toggle.
+- The names and number of variants may change. Define the new setup controls and mode handling independently of the current mitigation/burst/job-mechanics trio, with stable variant identifiers and associated labels, icons and job-specific effects.
+
+## Agreed automation philosophy: buttons express intent
+
+Finalised 2026-10-07. **Buttons express intent; automation carries out that intent.** Do not make every button do everything. For each proposed integration, ask which intent the action fulfils and whether the user has expressed or delegated that intent.
+
+The manual-burst baseline is the reference example: ST/AoE maintains the chosen damage rotation; the burst button means "I now want to burst"; subsequent ST/AoE presses carry out the appropriate follow-through. With automatic burst enabled, the user additionally delegates the initiation decision. Use this distinction between initiation and follow-through when reviewing other variants; a disabled variant does not remove all underlying automation.
+
+Clarified 2026-10-08: preserve the surrounding rotation logic wherever possible. The main change is whether an initiating skill is selected through the automated intent button or has its own manual button. The manual initiator signals intent to start the sequence; its remaining handling belongs to the appropriate automation button. Manual burst must not require repeatedly visiting the burst button for each subsequent buff/resource action merely because upstream exposes a chained selector. Reuse existing status, cooldown, resource and follow-up logic; add only the narrow initiation/handoff handling needed. A press still performs at most one game action, and an unavailable/failed initiator must not be mistaken for successful activation. This does not authorize indefinite queued requests, automatic action execution without user presses, indiscriminate skill use, or a new rotation engine.
+
+### Agreed four variants
+
+Protection and support follow the same routing contract as burst and class mechanics. With a category automatic, its reviewed selector/actions run through the appropriate ST/AoE intent path. With it manual, its own button may initiate a sequence or run an automation selector. The mitigation button is an example of this general rule, not a limit on the actions covered by protection or support. Preserve action-specific usefulness, targeting and timing checks when moving the point of entry.
+
+- **Auto burst:** the automation initiates the offensive commitment. With it off, the player uses the burst initiator and resumes ST/AoE for the remaining burst handling.
+- **Auto protection:** reviewed protective actions are selected through the appropriate automation paths; manual protection access remains where deliberate timing is useful.
+- **Auto support:** reviewed allied support is selected through appropriate automation paths, with existing targeting and usefulness rules preserved unless a specific change is required.
+- **Auto class mechanics:** distinctive class systems are initiated/managed through the automation paths, such as Dancer's dances, AST cards and Bard songs. With it off, the necessary manual initiator/control remains while the appropriate automation handles the accepted sequence. Not every job has an additional effect: Gunbreaker does not acquire one merely to populate this category.
+
+Each initiating action needs one explicit variant owner. Class systems may interact with burst, so the per-job mapping must specify the boundary without competing switches or accidentally disabling follow-through. AST cards belong to class mechanics, including healing/protection cards; their effects do not make them independently owned by support/protection. The precise dance/burst boundary is a mapping task, not permission to rewrite Dancer's existing sequence. Preserve global choices across jobs even when a category has no effect. Keep the variant definitions extensible despite these four agreed initial categories.
+
+ST healing expresses intent to help the resolved ally, choosing an appropriate healing or support action. AoE healing addresses party healing needs. Mitigation expresses protection intent. Keep distinct controls where they represent meaningful timing, targeting or tactical decisions. These are functional intentions, not a requirement to impose identical buttons or sequences on every job.
+
+### Integration and retargeting
+
+- Review functionality stranded behind standalone selectors or only one rotation path. Reuse it in the appropriate existing intent path where that avoids an implementation-driven extra button. Do not merge distinct player decisions merely to reduce button count.
+- Review healer job support that currently requires pressing a healing button even when its useful conditions arise during damage play. It may belong in ST/AoE damage when consistent with that intent or an explicitly enabled automation variant. This is not blanket permission for damage buttons to activate every heal or defensive. Decide action by action, including the conditions and variant that delegate its use.
+- Retargeting must participate in action selection, not only redirect the action after selection. Resolve the intended ally before evaluating recipient-dependent HP, role, status and range conditions. Eligibility and execution must refer to the same resolved recipient; selecting an enemy must not suppress an otherwise eligible allied action solely because the enemy is the directly selected target. Preserve the offensive target when applying allied support.
+- The user's AST example is a specific investigation case: the ST-healing button remains the normal heal with an enemy selected, but offers a support card when the tank is selected directly. If retargeting resolves that same eligible tank and the card's conditions are met, the card should also be offered through the retargeted ST-healing path. This concerns eligibility as well as execution; it does not establish that all cards should always target the tank or that the cause has already been verified in game.
+- Preserve deliberate manual access where needed. Check ST and AoE coverage independently, along with healing/mitigation routes, prepull use, targeting, emergencies and timing, before removing a button.
+
+### Settings, resources and layouts
+
+The resource-holding review did not establish a need for a general spending-logic rewrite. Retain meaningful reserves, burst alignment, healing thresholds and content restrictions; review their configured values and enabled features first. Earlier suggestions to change emergency overrides or overcap logic were investigation options, not approved implementation requirements. A specific demonstrated gap can still justify a narrowly reviewed change.
+
+The existing reviewed settings and hotbars are a useful starting point, not a frozen final design. Review and adjust them where necessary to express intent more clearly and support the agreed integrations and retargeting. Earlier decisions to retain buttons may reflect upstream integration limitations; reassess those reasons against actual coverage. Preserve established placement conventions and shared utilities unless a specific reviewed change calls for an adjustment. Final variant groupings should follow the intended behaviours, rather than constrain the review to the current three switches.
+
+This section records the product direction. Consult [implementation and validation](implementation.md) for implemented changes and the boundary between local testing and in-game validation.
+
+## Setup and automation constraints
+
+The [resolved source audit](job-research/source-audit.md), dated 2026-10-08, supersedes the speculative implementation questions in the earlier [intent proposal](job-research/intent-proposal.md). It establishes existing phase continuation and support routes, records actual setup/access limitations, and separates the AST/MCH live observations from source-answerable questions. The four categories and manual-initiation contract above supersede the audit's earlier recommendation to defer those choices. Preserve its factual coverage findings; do not implement the original verification list as if every entry were missing functionality or authorization to remove controls.
+
+The [job research reference](job-research/README.md) records the 2026-10-07 gameplay/toolkit pass and a separate Wrath/setup review for all 21 supported combat jobs, with deeper AST targeting/card and MCH level-90 investigations. It includes utility and preparation outside damage rotations. The [completed intent mapping](job-research/implemented-intents.md) records the resulting implementation decisions and supersedes the exploratory candidate lists. Observe the source-version and validation limits; native acceptance is tracked separately in [distribution](distribution.md).
+
+- The existing reviewed source uses Auto mitigation, Auto burst and Auto job mechanics. These are migration evidence, not a fixed final set of Accord variants. Variant effects are job-specific; a switch may legitimately make no additional change.
 - All-on means the maximum reviewed automation through the user's rotation presses, not hands-free action execution. Preserve manual functions that automation does not cover, including deliberate movement, targeting, emergency timing and situational utilities.
 - Keep ST and AoE on separate buttons. Preserve approved controller positions, role consistency, ST/AoE/mobility positions and general tank/healer reserves. Optional keyboard compaction uses the selected variant and must preserve every remaining function.
-- Follow the existing reviewed layouts rather than inventing a uniform eight-button claim. Approved job exceptions and the one-page twelve-slot noncombat layouts remain part of the source requirements. Do not add Sprint, Limit Break, Teleport or Return to job budgets; shared utility is separate.
-- Preserve current/all application, macros, active-job status, the managed-job registry, backups, preview checks and restores. Class changes must display the actual applied state rather than merely the last global choice.
-- Apply configuration inside Accord's own runtime using validated updates and the existing save lifecycle. Plan for updates without disabling the plugin, including base targeting/sliders, while handling caches, partial failures and queued saves correctly. Do not replace a live external Wrath configuration file.
+- Use the existing reviewed layouts as the starting point for the intent-based review above rather than inventing a uniform eight-button claim. Approved job exceptions and the one-page twelve-slot noncombat layouts remain part of the source requirements. Do not add Sprint, Limit Break, Teleport or Return to job budgets; shared utility is separate.
+- Preserve current/all hotbar application, macros, active-job status, the managed-job registry, backups, validation checks and restores behind the simplified interface. Do not require the previous separate preview/apply UI for each live transition. Class changes retain global choices, but status must reflect actual application and must not report a failed or pending transition as completed.
+- Accord requests configuration changes through the fork's API. The fork validates, applies and persists its own settings and refreshes its caches. Accord persists only its own choices, setup metadata and hotbar state. Support base targeting/sliders as well as preset membership, without disabling the plugin or replacing a live external configuration file.
 - Variant switches remain feature-only after preparation: they must not silently reset targeting, sliders or user choices exposed by Accord. Versioned base-setting migrations are separate and explicit.
 - Current healer priority is eligible focus, UI/party-list mouseover, soft target, selected friendly target, selected target's friendly target, living tank, self. Exclude world/nameplate mouseover. A valid focus wins even at full HP; a fallback tank is not necessarily the main tank. Preserve documented resolver exceptions unless specifically changed.
 
@@ -43,7 +107,7 @@ Keep Hotbar Bridge independent. Its current utility defaults map regular bar 10 
 
 Record each upstream merge and local engine patch. Review settings/preset-ID migrations as well as source conflicts, test supported switch combinations and hotbar consistency, and verify affected behaviour in game before declaring it validated. Do not publish upstream merges automatically merely because they compile. Preserve upstream licensing and dependency notices and clearly identify Accord as an independent fork.
 
-## Initial implementation sequence
+## Historical combined-plugin implementation sequence
 
 1. Establish and document this untouched upstream baseline.
 2. Inventory startup/configuration/UI dependencies and the exact public preset data to import.
@@ -52,4 +116,4 @@ Record each upstream merge and local engine patch. Review settings/preset-ID mig
 5. Establish distinct plugin identity, configuration migration, updater feed and protection against loading alongside Wrath before distributing Accord.
 6. Add missing automation one job/behaviour at a time, with disabled-path comparison and in-game checks.
 
-This document records the agreed direction. Creating this repository does not mean the implementation or release steps above have already happened.
+The sequence above describes the combined prototype. The separation assessment now governs architectural work. A successful local build is not a validated release.

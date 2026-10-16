@@ -1,4 +1,4 @@
-﻿#region
+#region
 
 using WrathCombo.Combos.PvE.Enums;
 using WrathCombo.Core;
@@ -56,6 +56,7 @@ internal partial class DNC : PhysicalRanged
 
             var needToTech =
                 IsEnabled(Preset.DNC_ST_Adv_TS) &&
+                Engine.Options.Enabled(Feature.DncTechnicalInitiation) &&
                 DNC_ST_ADV_TS_IncludeTS == (int)IncludeStep.Yes &&
                 GetCooldownRemainingTime(TechnicalStep) <
                 longAlignment && // Up or about to be (some anti-drift)
@@ -77,6 +78,7 @@ internal partial class DNC : PhysicalRanged
             }
 
             var needToFinish =
+                Engine.Options.Enabled(Feature.DncStandardInitiation) &&
                 IsEnabled(Preset.DNC_ST_Adv_FM) &&
                 LocalPlayer.HasStatus(Buffs.FinishingMoveReady) &&
                 !LocalPlayer.HasStatus(Buffs.LastDanceReady) &&
@@ -91,6 +93,7 @@ internal partial class DNC : PhysicalRanged
 
             var needToStandard =
                 IsEnabled(Preset.DNC_ST_Adv_SS) &&
+                Engine.Options.Enabled(Feature.DncStandardInitiation) &&
                 DNC_ST_ADV_SS_IncludeSS == (int)IncludeStep.Yes &&
                 GetCooldownRemainingTime(StandardStep) <
                 longAlignment && // Up or about to be (some anti-drift)
@@ -129,7 +132,8 @@ internal partial class DNC : PhysicalRanged
                 // ST Standard Step (Pre-pull)
                 if (IsEnabled(Preset.DNC_ST_Adv_SS) &&
                     IsEnabled(Preset.DNC_ST_Adv_SS_Prepull) &&
-                    DNC_ST_ADV_SS_IncludeSS == (int)IncludeStep.Yes &&
+                    Engine.Options.Enabled(Feature.DncStandardInitiation) &&
+                DNC_ST_ADV_SS_IncludeSS == (int)IncludeStep.Yes &&
                     ActionReady(StandardStep) &&
                     !LocalPlayer.HasStatus(Buffs.FinishingMoveReady) &&
                     !LocalPlayer.HasStatus(Buffs.TechnicalFinish) &&
@@ -288,7 +292,7 @@ internal partial class DNC : PhysicalRanged
                 // ST Panic Heals
                 if (IsEnabled(Preset.DNC_ST_Adv_PanicHeals))
                 {
-                    if (ActionReady(CuringWaltz) &&
+                    if (Engine.Options.Enabled(Feature.DncCuringWaltz) && ActionReady(CuringWaltz) &&
                         PlayerHealthPercentageHp() <
                         DNC_ST_Adv_PanicHealWaltzPercent)
                         return CuringWaltz;
@@ -741,6 +745,7 @@ internal partial class DNC : PhysicalRanged
 
             var needToTech =
                 IsEnabled(Preset.DNC_AoE_Adv_TS) &&
+                Engine.Options.Enabled(Feature.DncTechnicalInitiation) &&
                 DNC_AoE_Adv_TS_IncludeTS == (int)IncludeStep.Yes &&
                 ActionReady(TechnicalStep) && // Up
                 !LocalPlayer.HasStatus(Buffs.StandardStep) && // After Standard
@@ -754,12 +759,14 @@ internal partial class DNC : PhysicalRanged
                 ActionLearned(StandardStep);
 
             var needToFinish =
+                Engine.Options.Enabled(Feature.DncStandardInitiation) &&
                 IsEnabled(Preset.DNC_AoE_Adv_FM) && // Enabled
                 LocalPlayer.HasStatus(Buffs.FinishingMoveReady) &&
                 !LocalPlayer.HasStatus(Buffs.LastDanceReady);
 
             var needToStandard =
                 IsEnabled(Preset.DNC_AoE_Adv_SS) && // Enabled
+                Engine.Options.Enabled(Feature.DncStandardInitiation) &&
                 DNC_AoE_Adv_SS_IncludeSS == (int)IncludeStep.Yes &&
                 !LocalPlayer.HasStatus(Buffs.FinishingMoveReady) &&
                 !ShouldHoldStandardForFinishingMove;
@@ -884,7 +891,7 @@ internal partial class DNC : PhysicalRanged
                 // AoE Panic Heals
                 if (IsEnabled(Preset.DNC_AoE_Adv_PanicHeals))
                 {
-                    if (ActionReady(CuringWaltz) &&
+                    if (Engine.Options.Enabled(Feature.DncCuringWaltz) && ActionReady(CuringWaltz) &&
                         PlayerHealthPercentageHp() <
                         DNC_AoE_Adv_PanicHealWaltzPercent)
                         return CuringWaltz;

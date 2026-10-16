@@ -1,6 +1,10 @@
 # Build Artifacts
 WrathCombo/obj/
 WrathCombo/bin/
+tests/bin/
+tests/obj/
+build-result.log
+artifacts/
 
 # IDE-specific files
 .idea/
@@ -9,3 +13,8 @@ WrathCombo/bin/
 *.v2
 /WrathCombo/packages.lock.json
 *.csproj.user
+
+Accord.Plugin/bin/
+Accord.Plugin/obj/
+split-build.log
+accord-build.log

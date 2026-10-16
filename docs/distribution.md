@@ -1,0 +1,30 @@
+# Separate plugin previews
+
+The local 0.2.0 preview contains two plugins. **WrathFork** (provisional name) owns rotations, settings and the settings API. **Accord** owns reviewed mappings, variants and hotbars. Both are needed for reviewed combat setup. Disable upstream Wrath and the old combined Accord before using these builds; Hotbar Bridge stays separate.
+
+Run `pwsh -File tools/package-release.ps1` with .NET 10 and installed Dalamud API 15 development dependencies. It builds both projects, runs mapping/contract checks and validates every job/variant against the compiled engine schema, then writes `artifacts/v0.2.0-preview/`:
+
+- `WrathFork.zip` and `Accord.zip`, each with its own identity and dependency notices.
+- `WrathFork.pluginmaster.testing.json` and `Accord.pluginmaster.testing.json`, separate testing feeds.
+- `SHA256SUMS.txt`, checksums for both packages.
+
+Fork output is `WrathCombo/bin/WrathFork/Release/`; client output is `Accord.Plugin/bin/Release/`. Nothing is copied into XIVLauncher or published. Generated release URLs are proposed destinations and do not work until a release is published. Previous 0.1.0 artifacts remain combined-prototype builds.
+
+`/wrathfork` opens the engine configuration; `/accord` opens setup. Accord never writes the fork configuration file. The fork backs up and persists validated API changes itself, retaining them when Accord unloads. Accord stores its own variants and hotbar recovery records. Incompatible/missing engine status blocks dependent setup/live operations; hotbar restore stays local.
+
+A combined Accord config is backed up and prompts for separate setup. Accord choices are retained, preparation state is reset and live mode is disabled. Personalised engine settings are not imported automatically; retain the backup. This migration path has not been exercised in game. See [separation implementation](separation.md) for API coverage and remaining limitations.
+
+## Native acceptance record
+
+Local code/data checks are recorded in `docs/implementation.md`. Before stable promotion, record the game patch, Dalamud/Bridge versions, Accord version and outcomes for:
+
+1. Separate Accord and WrathFork UIs and four clickable DTR A/M controls; choices persist across reload/class change.
+2. Static toggles change behaviour without hotbar writes; explicit current/all setup and live variant/class transitions match the selected layout.
+3. Cleanup on/off, regular/cross hotbars, actual Bridge shared pairs including disabled shared mappings, native shared bars, backup and restore. Begin with a disposable layout and retain the backup.
+4. AST with enemy selected and the same eligible resolved ally as direct selection: support-card offer and execution, range failure and manual retargeting disabled. Preserve the enemy target.
+5. Manual and automatic burst on ST and AoE: especially BRD's Raging-first path, DRK, GNB, MNK, NIN, RDM and MCH. Failed input must not initiate a handoff; no repeated button presses for buffs already handed off.
+6. DNC accepted dance completion, BRD accepted song cycle, NIN accepted TCJ/Meisui, and each manual class phase. Switching to M must not strand an accepted sequence.
+7. Protection/support A/M, AoE additions, Kardia's initial assignment without reassignment, Curing Waltz and SMN support. No utility replaces NIN mudras or DNC steps.
+8. Logout/death/territory/class resets and the Wrath conflict guard. No hands-free action execution.
+
+Also verify engine-only operation with Accord unloaded, load order/reconnect, persistence after both reload, outside-edit detection, rejected settings updates and recovery. These native checks are pending. No damage improvement is claimed from the MCH/BLM clear-time comparison. Export diagnostics using Accord's UI when needed; exports are private and must not be uploaded with release artifacts.

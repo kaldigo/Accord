@@ -1,3 +1,4 @@
+using WrathCombo.Services;
 using Dalamud.Game.ClientState.JobGauge.Enums;
 using Dalamud.Game.ClientState.JobGauge.Types;
 using Dalamud.Game.ClientState.Objects.Types;
@@ -193,9 +194,10 @@ internal partial class BRD
     {
         #region Enables
         bool songsEnabled =
-             flags.HasFlag(Combo.Simple) ||
+             (Engine.Options.Enabled(Feature.BardSongInitiation) || !SongNone) &&
+             (flags.HasFlag(Combo.Simple) ||
              IsSTEnabled(flags, Preset.BRD_Adv_Song) ||
-             IsAoEEnabled(flags, Preset.BRD_AoE_Adv_Songs);
+             IsAoEEnabled(flags, Preset.BRD_AoE_Adv_Songs));
 
         bool buffsEnabled =
             flags.HasFlag(Combo.Simple) ||
@@ -223,7 +225,8 @@ internal partial class BRD
 
         bool naturesMinneEnabled =
             flags.HasFlag(Combo.Simple) ||
-            IsSTEnabled(flags, Preset.BRD_Adv_NaturesMinne);
+            IsSTEnabled(flags, Preset.BRD_Adv_NaturesMinne) ||
+            (Engine.Options.Enabled(Feature.BardMinneOnAoe) && flags.HasFlag(Combo.AoE));
 
         bool secondWindEnabled =
             flags.HasFlag(Combo.Simple) ||
@@ -388,7 +391,11 @@ internal partial class BRD
         #region Buffs
         if (buffsEnabled && CanWeave() && GetTargetHPPercent() > buffsThreshold)
         {
-            if (allBuffsEnabled && !SongNone && ActionLearned(MagesBallad))
+            bool manualHandoff = Engine.IntentRouting.BurstFollowThrough &&
+                                 (!Service.Configuration.EnabledActions.Contains(Preset.BRD_Adv_Buffs) ||
+                                  LocalPlayer.HasStatus(Buffs.RagingStrikes) &&
+                                  (ActionReady(RadiantFinale) || ActionReady(BattleVoice)));
+            if (allBuffsEnabled && !SongNone && ActionLearned(MagesBallad) && !manualHandoff)
             {
                 if (ActionReady(RadiantFinale) && RagingCD < 2.2 && CanWeaveDelayed && !LocalPlayer.HasStatus(Buffs.RadiantEncoreReady))
                 {
@@ -412,7 +419,7 @@ internal partial class BRD
                 }
             }
 
-            if (!allBuffsEnabled || !ActionLearned(MagesBallad))
+            if (!allBuffsEnabled || !ActionLearned(MagesBallad) || manualHandoff)
             {
                 if (ActionReady(RadiantFinale) && radiantEnabled)
                 {
@@ -502,7 +509,7 @@ internal partial class BRD
             return true;
         }
 
-        if (flags.HasFlag(Combo.ST) && naturesMinneEnabled && ActionReady(NaturesMinne) && GroupDamageIncoming() && CanWeave() &&
+        if ((flags.HasFlag(Combo.ST) || Engine.Options.Enabled(Feature.BardMinneOnAoe) && flags.HasFlag(Combo.AoE)) && naturesMinneEnabled && ActionReady(NaturesMinne) && GroupDamageIncoming() && CanWeave() &&
             NumberOfAlliesInRange(NaturesMinne) >= GetPartyMembers().Count * .75 &&
             !JustUsed(Troubadour) && !LocalPlayer.HasStatusEffects([Buffs.Troubadour, Buffs.NaturesMinne], true))
         {
@@ -957,5 +964,3 @@ internal partial class BRD
     }
     #endregion
 }
-
-

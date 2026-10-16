@@ -34,6 +34,9 @@ namespace WrathCombo.Core;
 [Serializable]
 public partial class Configuration : IPluginConfiguration
 {
+    public Dictionary<uint, Dictionary<WrathFork.Contract.Feature, bool>> ForkFeatures { get; set; } = new();
+    public string ForkConfigurationId { get; set; } = Guid.NewGuid().ToString("N");
+
     /// <summary> Gets or sets the configuration version. </summary>
     public int Version { get; set; } = 6;
 
@@ -465,7 +468,7 @@ public partial class Configuration : IPluginConfiguration
     /// </summary>
     /// <seealso cref="MajorChangesWindow" />
     public Version HideMajorChangesForVersion =
-        Svc.PluginInterface.Manifest.AssemblyVersion;
+        Svc.PluginInterface?.Manifest.AssemblyVersion ?? typeof(Configuration).Assembly.GetName().Version!;
 
     #endregion
 
