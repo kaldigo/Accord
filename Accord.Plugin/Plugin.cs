@@ -1,6 +1,8 @@
 global using Dalamud.Bindings.ImGui;
 using System;
 using System.IO;
+using System.Numerics;
+using Dalamud.Interface.Utility;
 using System.Linq;
 using Dalamud.Plugin;
 using Dalamud.Plugin.Services;
@@ -15,6 +17,7 @@ public sealed class Plugin : IDalamudPlugin
 {
     internal static Plugin Instance = null!;
     internal bool IsOpen;
+    private bool firstOpen = true;
     internal bool MigrationPending;
     internal bool RequiresMigration;
     internal string MigrationSource = "";
@@ -59,6 +62,14 @@ public sealed class Plugin : IDalamudPlugin
     private void Draw()
     {
         if (!IsOpen) return;
+        var display = ImGui.GetIO().DisplaySize;
+        var maximum = Vector2.Max(new Vector2(320, 260), display - new Vector2(40, 60));
+        ImGui.SetNextWindowSizeConstraints(Vector2.Min(new Vector2(560, 360), maximum), maximum);
+        if (firstOpen)
+        {
+            ImGui.SetNextWindowSize(Vector2.Min(new Vector2(900, 600) * ImGuiHelpers.GlobalScale, maximum), ImGuiCond.Always);
+            firstOpen = false;
+        }
         if (ImGui.Begin("Accord###Accord", ref IsOpen))
         {
             if (MigrationPending)
