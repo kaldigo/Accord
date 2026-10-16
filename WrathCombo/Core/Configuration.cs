@@ -469,7 +469,7 @@ public partial class Configuration : IPluginConfiguration
     /// </summary>
     /// <seealso cref="MajorChangesWindow" />
     public Version HideMajorChangesForVersion =
-        Svc.PluginInterface?.Manifest.AssemblyVersion ?? typeof(Configuration).Assembly.GetName().Version!;
+        Engine.UpstreamVersion.Current;
 
     #endregion
 

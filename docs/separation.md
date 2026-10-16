@@ -47,7 +47,7 @@ Existing preset-only mappings (including many tank flags) can continue using eng
 
 ## API requirements and current limitation
 
-`Provider.Init()` currently omits writable IPC registration. `SetComboState` and `SetComboOptionState` call `Leasing.AddRegistrationForCombo/Option`; their semantics are leased overrides, not the persisted baseline updates currently performed by `SetupController`. The existing wrapper also has hands-free auto-rotation methods: these are not the configuration mechanism for Accord's variants.
+`Provider.Init()` omitted writable IPC registration at the initial assessment; the standalone restoration now registers it under the original `WrathCombo.*` (see [audit](fork-restoration-audit.md)). `SetComboState` and `SetComboOptionState` call `Leasing.AddRegistrationForCombo/Option`; their semantics are leased overrides, not the persisted baseline updates currently performed by `SetupController`. The existing wrapper also has hands-free auto-rotation methods: these are not the configuration mechanism for Accord's variants.
 
 Proposed contract, with exact endpoint names/schema to be designed during implementation:
 
@@ -87,14 +87,14 @@ Done means no engine reference to Accord variants/registry/setup data, no Accord
 
 ## Implemented source split — 2026-10-16
 
-- `WrathCombo` builds provisional `WrathFork` 0.2.0: rotation hooks, confirmation/continuation, targeting, granular per-job features, native engine settings UI and `/wrathfork`. No Accord variant, setup-pack or prepared-job state is referenced by runtime engine code.
+- `WrathCombo` builds provisional `WrathFork` 0.2.0: rotation hooks, confirmation/continuation, targeting, granular per-job features, native engine settings UI and `/wrath`. No Accord variant, setup-pack or prepared-job state is referenced by runtime engine code.
 - `Accord.Plugin` builds independent `Accord` 0.2.0: variants/mappings, reviewed baselines, DTR/UI, static/live hotbars, Bridge integration, backups and `/accord`. It has no engine assembly reference. `Contract` is shared wire/validation source, not a runtime plugin dependency.
 - Existing initiation presets remain saved engine flags. Twenty new granular feature switches replace Accord-aware branches. DNC Standard/Technical gates are distinct; continuation remains separate from initiation. The engine continues with its last saved settings when Accord unloads.
 - `WrathFork.Settings.Read.v1` and `WrathFork.Settings.Apply.v1` are synchronous framework-thread JSON IPC. Read reports fork identity, API/settings schema 1, pinned upstream version, instance/configuration identifiers, revision, feature names, preset identifiers and saved setting shapes. Apply accepts only whitelisted setting maps plus preset enable/disable lists; it validates keys/types, numeric representation, array limits and actual target selectors before mutation. Full UI-specific slider ranges, preset parent/conflict dependencies and job-scope validation are not yet a complete public schema.
 - Apply checks instance and expected revision, rejects existing leases, makes a private configuration backup, persists through Dalamud and refreshes combo/target/IPC state. It attempts restoration on failure and reports recovery failure explicitly. Reapplying identical values avoids a backup/write. This is persistent configuration, not a lease and not a per-action API.
 - Accord polls once per second. Absence/incompatibility blocks behaviour changes and dependent live writes. Reconnect rereads state. Outside edits pause automatic reconciliation; explicit setup or a variant change reapplies managed flags while retaining unrelated details. Read currently reports saved settings, not a full effective override/continuation trace. Events and operation-ID replay receipts remain future API work; revisions protect stale retries.
 - A combined prototype configuration is backed up before replacement. The migration screen retains Accord choices, clears preparation markers, disables live mode and requires the user's explicit start before applying reviewed settings to the new engine. It does not automatically import personalised engine settings. Recovery files remain in the existing Accord configuration directory.
-- Both local packages have separate identities, commands/configuration stores and generated testing feeds. No install, live migration, repository allocation or publication performed. `WrathFork` is provisional naming.
+- Both local packages have separate package/configuration stores and generated testing feeds; Accord uses `/accord` and the engine retains `/wrath` and `/scombo`. No install, live migration, repository allocation or publication performed. `WrathFork` is provisional naming.
 - Engine settings registration is independent of opening configuration UI. Unsupported BST's callback-installing type initializer is excluded from eager schema registration. A build-scoped Lumina ExcelPage alias resolves SDK ambiguity in ECommons without modifying its submodule checkout.
 - Schema verification exposed 93 obsolete integer options in the public tank baselines. Removed only keys documented in upstream's old-config detection plus four removed MitOptions names; current mitigation options and preset mapping remain intact. All 512 job/variant combinations are validated against actual compiled settings registrations and configuration round-tripping.
 
@@ -109,3 +109,6 @@ Current preview: 0.2.1 on Wrath 1.0.4.27 (`5365eb1edc13654be945a624b2311a8b8541a
 ### API and migration completion - preview 0.2.2
 
 Supersedes the earlier API/migration limitations above: v2 adds discovery, dry validation, effective preset/lease/continuation reporting, lifecycle/change notifications, canonical revisions and durable operation replay with sequence protection. Accord journals requests and recovers acknowledgement across reloads. Personalised combined settings now have a preview/import workflow, omitted-field report, retained recovery metadata and preparation markers that prevent baseline overwrite after import. See settings-api.md for the precise supported scope and validation semantics. Both packages build; 5,901 checks pass. Native game acceptance remains pending. Engine-free noncombat setup remains an optional future Accord feature, not a separation requirement.
+
+
+Standalone interfaces suppressed by the combined prototype have now been audited and restored where appropriate. See [fork restoration audit](fork-restoration-audit.md) for findings, deliberate exclusions and native acceptance requirements.

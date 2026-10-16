@@ -60,7 +60,8 @@ public static class ActionRequestIPCProvider
 
     public static void Initialize()
     {
-        EzIPC.Init(typeof(ActionRequestIPCProvider), $"{Svc.PluginInterface.InternalName}.ActionRequest");
+        // Keep the inherited contract even when the package has a separate internal name.
+        EzIPC.Init(typeof(ActionRequestIPCProvider), "WrathCombo.ActionRequest");
     }
 
     /// <summary>

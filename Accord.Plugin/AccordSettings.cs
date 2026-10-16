@@ -10,6 +10,8 @@ public sealed class AccordSettings : Dalamud.Configuration.IPluginConfiguration
     public string EngineConfigurationId { get; set; } = "";
     public string LastEngineRevision { get; set; } = "";
     public Dictionary<VariantId, bool> Variants { get; set; } = new();
+    // No classes are managed until explicitly selected, including upgrades.
+    public HashSet<uint>? ActiveJobs { get; set; } = new();
     public Dictionary<uint, int> PreparedJobs { get; set; } = new();
     public bool SharedSettingsPrepared { get; set; }
     public bool LiveMode { get; set; }

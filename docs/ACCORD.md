@@ -8,7 +8,7 @@ The fork facilitates intent handling through configurable rotation functionality
 
 For example, the fork exposes automatic burst initiation and continuation after a confirmed manual initiation as independently configurable behaviour. Accord maps Auto burst A/M to the appropriate settings for each job. No `SetAccordVariant` engine API or Accord-aware rotation checks are intended.
 
-This supersedes the earlier single-plugin architecture and the requirement to replace the fork's settings interface with Accord's UI. Accord retains its simplified UI; the fork's own interface is separate. The precise standalone fork UI/command surface, fork name and repository allocation are not decided by this note. Do not infer that unrelated upstream hands-free functionality must be restored.
+This supersedes the earlier single-plugin architecture and the requirement to replace the fork's settings interface with Accord's UI. Accord retains its simplified UI; the fork's own interface is separate. The fork preserves the upstream UI and functionality, including auto rotation and its status icon. Only Accord integration and separate identity justify deviations; earlier combined-plugin removals are superseded. Final fork naming and repository allocation remain undecided.
 
 The source now builds separate Accord and provisional WrathFork plugins (0.2.2). Accord configures the fork through versioned IPC. Local build/schema tests pass; native acceptance remains pending. Older 0.1.0 preview artifacts are the combined prototype. See [code separation assessment](separation.md) for actual dependencies, API requirements and migration order. Existing gameplay, targeting, variant and static/live hotbar requirements remain in force.
 
@@ -24,7 +24,7 @@ The repository is https://github.com/kaldigo/Accord. `origin` points there; `ups
 
 ## Product premise
 
-The user configures their jobs through reviewed setups rather than Wrath's full settings UI. Accord provides global variant controls, explicit current/all-class hotbar setup buttons, and optional live hotbar updates. It must package versioned settings and matching layouts. Live mode keeps the current layout matched to behaviour; static mode deliberately leaves hotbars unchanged when variants change, so restoring a required manual button may require using a setup button.
+The user configures their jobs through reviewed setups rather than Wrath's full settings UI. Accord provides global variant controls, a saved active-class selection and explicit selected-class hotbar setup, and optional live hotbar updates. It must package versioned settings and matching layouts. Live mode keeps selected layouts matched to behaviour; static mode deliberately leaves hotbars unchanged when variants change, so restoring a required manual button may require using a setup button.
 
 Accord exposes only its simplified setup UI. The fork's configuration interface is a separate plugin concern, not an Advanced page inside Accord. Preserve engine configuration initialization independently of either UI. Read-only diagnostics, effective-setting exports and reset to reviewed settings remain appropriate.
 
@@ -34,13 +34,13 @@ Preserve Wrath's rotation engine, action hooks, targeting machinery, configurati
 
 Finalised 2026-10-07, with four variant categories agreed 2026-10-08. These are the agreed requirements; current implementation and validation status is recorded separately. Per-job action ownership follows the automation philosophy below.
 
-- Provide **Set current class hotbars** and **Set all classes hotbars** buttons. Both use the selected variants; all-class setup covers supported classes/jobs.
+- Provide a saved **Active classes** selection with per-job checkboxes and Select all/Select none. **Set selected class hotbars** replaces current/all setup buttons. Base classes follow their job. New installations and upgrades without an explicit saved selection start with none selected; prepared-job history never opts classes in. Deselecting stops future Accord writes without undoing saved fork settings or hotbars. Shared engine defaults remain global; this selection does not disable the fork.
 - Provide one global set of variant checkboxes. The checkboxes and system information controls represent the same choices, with no separate pending selection. Preserve those choices across class/job changes and apply their behaviour to the incoming job.
 - **Clear other actions** uses the existing cleanup operation's scope: keep only the designed layout across the affected job-specific regular and cross hotbars, clearing intended empty spaces and other assignments. Preserve game-shared bars and Hotbar Bridge's configured shared slots using its actual map. This option applies to explicit setup and live hotbar updates. Retain the cleanup operation's protection checks and backups; do not guess shared positions when Bridge's map is unavailable.
 - With **live mode disabled (static hotbars)**, changing a variant updates rotation behaviour only. Hotbars change only through an explicit setup operation. Switching a variant off can leave its manual action absent until the user sets the hotbars again; this is an accepted consequence of static mode.
-- **Enable live mode** applies the selected layout to the current class/job. Subsequent variant changes update behaviour and matching hotbars for that class/job. On class/job swap, apply the unchanged global selections and matching layout to the incoming class/job. Live mode does not need to update inactive classes in the background; the all-class setup button remains an explicit bulk operation.
+- **Enable live mode** applies layouts to selected classes. Variant changes update settings and layouts for the selected classes. Class swaps refresh only an incoming selected class; unselected classes receive no Accord setup. Changing the selection applies settings immediately and hotbars only in live mode. Static mode retains existing hotbars. Variant system information entries are hidden on unselected classes.
 - Disabling live mode leaves the current hotbars in place.
-- Replace Wrath's existing auto-rotation system information entry with one individually clickable entry per variant category. Each shows the variant icon and **A** when the variant is enabled or **M** when disabled; clicking toggles the same choice as its checkbox. A/M means exactly variant on/off, not a claim that every underlying combo or action becomes automatic/manual. These entries control reviewed variants, not Wrath's hands-free auto-rotation toggle.
+- Accord provides one individually clickable system information entry per variant category, each showing its icon and A/M. These control Accord's variants. The separate Wrath fork retains its own upstream auto-status icon, click controls and status text; the earlier combined-plugin instruction to replace it is superseded.
 - The names and number of variants may change. Define the new setup controls and mode handling independently of the current mitigation/burst/job-mechanics trio, with stable variant identifiers and associated labels, icons and job-specific effects.
 
 ## Agreed automation philosophy: buttons express intent
@@ -121,3 +121,18 @@ Record each upstream merge and local engine patch. Review settings/preset-ID mig
 6. Add missing automation one job/behaviour at a time, with disabled-path comparison and in-game checks.
 
 The sequence above describes the combined prototype. The separation assessment now governs architectural work. A successful local build is not a validated release.
+
+
+## Wrath Auto-Mode integration — 2026-10-16
+
+For explicitly selected combat jobs, Accord enables the per-rotation Auto-Mode settings for its enabled reviewed ST/AoE damage and healing rotations, leaving unused alternative rotations off. This mapping is applied through the settings API on setup, selection, variants and selected-job migration, including already prepared jobs. It does not change the engine's master auto-rotation toggle or its global auto-rotation preferences. The fork's existing runner is restored under its own enable/pause/combat conditions and is blocked by an upstream-plugin conflict. Accord variants still describe intent delegation, independently of whether Wrath auto rotation is running.
+
+
+## True-fork preservation clarification — 2026-10-16
+
+Preserve Wrath functionality, settings and UI by default. Only change what Accord integration or separate plugin identity requires. Earlier combined-plugin removal decisions do not carry over. Wrath's own auto-status indicator coexists with Accord's variants, including left-click auto toggle, right-click configuration, active preset count, short text and locked/paused status. Upstream announcement/login behaviour and debug navigation are retained as well; they were not necessary removals.
+
+
+## Command and interface correction
+
+The fork retains `/wrath` and `/scombo`, upstream status/window names and inherited `WrathCombo.*`/`OnActionUsed` interfaces. Renaming these was an assistant assumption, not an agreed separation requirement. Separate internal packaging does not authorize changing Wrath's public controls. The new API for Accord is additive. Only changes needed for the requested Accord behaviour belong in Wrath.

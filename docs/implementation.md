@@ -9,7 +9,7 @@
 - Independent `Accord.dll`, manifest/internal name `Accord`, configuration and `/accord` command. Debug/Release outputs use isolated repository directories. The upstream update/MOTD entry point and writable Wrath IPC registration are not exposed. `tools/package-release.ps1` prepares a validated preview ZIP, testing-only feed and checksum. Nothing is installed or published.
 - Loading refuses an already loaded Wrath Combo. If Wrath is enabled later, Accord stops action replacement and reports the conflict; disable Wrath and reload Accord before continuing. This does not unload another plugin automatically.
 - Accord replaces the main configuration window. Old sidebar/tab rendering and command registration are removed; retained upstream source is not an accessible Advanced interface. Preset metadata, setting sanitisation and upstream configuration migrations remain available outside drawing the old UI. Migrations run before preparation, not on a delayed login callback that could erase a reviewed setup.
-- Four global variants share one persisted selection across checkbox, macro and DTR entry. DTR uses native sword/tank/healer/star icons and A/M text. The inherited hands-free runner is not called.
+- Four global variants share one persisted selection across checkbox, macro and DTR entry. DTR uses native sword/tank/healer/star icons and A/M text. The inherited hands-free runner was initially disconnected; the later explicit auto-mode request below supersedes this.
 - Current/all-class hotbar setup covers 21 combat jobs, 11 noncombat jobs and reviewed base-class inheritance. Static switches update behaviour only. Enabling live mode applies the current class; variant/class changes refresh the current layout. Failed applications report failure and allow explicit retry instead of claiming the layout caught up.
 - Preparation applies versioned baseline settings inside Accord. Subsequent switches touch reviewed preset membership only. Resetting a class to reviewed settings is a separate control and creates a configuration backup. Local diagnostics are exported to Accord's private configuration directory.
 - Cleanup uses the actual Bridge map, including disabled shared pairs, and preserves native shared bars. Cleanup requires Bridge loaded. Without cleanup, unused design positions retain unrelated assignments. Regular and cross destinations are validated together under Bridge's external-edit lock. Compaction/custom bar relocation is not exposed in this initial interface; the reviewed regular positions are used.
@@ -75,3 +75,44 @@ API/client/setup compatibility pins now require 1.0.4.27. Both plugin versions a
 Implemented API v2 and personalised settings migration as described in settings-api.md. Added discovery/effective-state/events, persistent receipts and a monotonic operation sequence, pending client journals, schema bounds/conflicts/scope checks and previewed migration through the API. Detailed values and recovery paths survive migration and later class changes; unsupported fields are reported and retained in source backups. No engine settings file is written by Accord.
 
 5,901 checks pass with real compiled-engine validation for all 512 job/variant combinations plus all 16 migration variant combinations, injected persistence/rollback failures, lost acknowledgements, stale/session/configuration guards and expired replay protection. Fork builds with existing warnings (72 on this full build); client builds without warnings. Local 0.2.2 packages are produced; no native test, installation, live migration or publication performed.
+
+
+## Active-class selection — 2026-10-16
+
+Replaced current/all setup with a persisted active-job selection, select-all/none controls, selected-class hotbar setup and selected-class settings reset. Variants and live bulk updates affect selected jobs; class transitions only prepare/update an active incoming class. Base classes inherit their job selection. DTR variant entries hide on inactive classes. `/accord selected` replaces the old current/all commands.
+
+New installations and upgrades without a saved selection start empty. Prepared-job history never enables classes; explicit saved selections are retained. Combined imports freeze selection before marking imported personal settings prepared, and only remap intent switches for selected jobs. Imported personal engine settings remain a full explicit import. Deselection stops subsequent Accord management without undoing previously saved settings or hotbars, and does not disable the independent engine. Shared engine defaults are still global.
+
+Validation: both plugin builds and 5,909 assertions passed, including 512 job/variant combinations, selected/base-class membership, serialization, empty selection overriding prepared history, and migration preserving inactive job features/presets. Local 0.2.2 preview artifacts rebuilt; nothing installed or published. Native UI/class-swap/hotbar acceptance remains pending.
+
+
+### Empty default and Auto-Mode follow-up
+
+Missing/null active selections now mean none on both new installs and upgrades. Explicit saved selections survive. Accord derives per-rotation AutoActions from enabled reviewed rotations using the engine's published preset IDs, including on feature-only updates and selected-job migration. The master auto toggle is unchanged. Restored the fork's existing framework runner, guarded against conflicting upstream Wrath loading.
+
+Validation: both plugins build; 5,910 assertions pass. All 512 job/variant combinations check Auto-Mode membership against enabled presets and compiled AutoAction metadata; inactive-job migration retains its Auto-Mode settings. Native auto-rotation execution remains unverified. Nothing installed or published.
+
+
+### Standalone fork restoration audit
+
+Restored full fork UI navigation, commands under `/wrath`, job-following navigation, conflict checks, optional opener DTR, inherited leased IPC under `WrathCombo.*` and action-request initialization. Removed the prototype forced-off master-auto setting on startup. Kept the explicitly removed auto-status DTR and upstream announcements out. See [audit and validation limits](fork-restoration-audit.md). Both Release builds and 5,910 regression assertions pass; native acceptance pending.
+
+
+### True-fork correction
+
+Restored Wrath's auto-status DTR (upstream entry name), preserving upstream left/right click actions and status formatting. Also restored the unnecessarily excluded login/MOTD, major-change window and debug navigation registrations. The true-fork preservation rule supersedes old combined-plugin removals; Accord's own variants remain separate. Build/regression validation does not verify native DTR rendering or clicks.
+
+
+### Complete upstream difference review
+
+Reviewed the remaining upstream diff, including identity, lifecycle, rotation edits, optional defaults, API, packaging and added client/research data. Fixed a fork-version regression suppressing upstream change notices, restored exact opener behaviour/help wording, and removed encoding-only noise. Both builds and 5,933 assertions pass. See [full review and retained-difference inventory](upstream-difference-audit.md). Native acceptance remains pending.
+
+
+### Review against actual user requests
+
+Restored Commands.cs and IPC Provider.cs exactly from the merged upstream baseline. `/wrath`, `/scombo`, inherited endpoint/event names, DTR/window names and runtime branding now follow upstream. Explicitly retained the upstream action-request prefix despite provisional internal packaging. The added Accord settings API remains separate. Removed false claims in the audit/rules that public renaming had been required or agreed. Retained rotation/API work is mapped to the actual user requests in the corrected upstream audit. Both builds and 5,935 checks pass, including compiled command constants; native compatibility remains unverified.
+
+
+### Unrelated changes removed
+
+Removed Engine/OptionsUi.cs and restored Window/ConfigWindow.cs exactly to upstream. Reverted unrelated null-safety, unused-method removal, UI unsubscription changes and login cleanup relocation in WrathCombo.cs. Its remaining lifecycle changes only attach the settings API, order historical resets before API exposure, reset continuation on territory changes and guard against duplicate engines. Upstream encoding/file endings restored for edited engine files. Both local builds and 5,935 checks pass; nothing installed or published.

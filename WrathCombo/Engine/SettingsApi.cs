@@ -28,6 +28,7 @@ internal sealed class SettingsApi : IDisposable
     private uint lastJob;
     private ulong lastCharacter;
     private bool conflict;
+    internal bool HasConflict => conflict;
     private readonly string instance = Guid.NewGuid().ToString("N");
 
     internal SettingsApi()
@@ -78,7 +79,7 @@ internal sealed class SettingsApi : IDisposable
         var legacy = new JObject(SettingsPatch.Fields.TakeWhile(n => n != "BlockSpellOnMove").Append("EnabledActionsV6")
             .Where(n => snapshot[n] is not null).Select(n => new JProperty(n, snapshot[n]!.DeepClone())));
         return new JObject { ["Success"] = true, ["Identity"] = "WrathFork", ["ApiVersion"] = 2, ["SettingsSchemaVersion"] = 2,
-            ["EngineVersion"] = "1.0.4.27", ["Instance"] = instance, ["Revision"] = Revision(snapshot),
+            ["EngineVersion"] = UpstreamVersion.Text, ["Instance"] = instance, ["Revision"] = Revision(snapshot),
             ["LegacyRevisionV1"] = Convert.ToHexString(SHA256.HashData(Encoding.UTF8.GetBytes(legacy.ToString(Formatting.None)))),
             ["ConfigurationId"] = Service.Configuration.ForkConfigurationId,
             ["Effective"] = Effective(), ["LeaseCount"] = WrathCombo.P!.IPC.Leasing.Registrations.Count,

@@ -1,10 +1,9 @@
-using WrathCombo.Combos.PvE.Enums;
+﻿using WrathCombo.Combos.PvE.Enums;
 using WrathCombo.Core;
 using WrathCombo.CustomComboNS;
 using WrathCombo.Native;
 using static WrathCombo.Combos.PvE.DNC.Config;
 using WrathCombo.Extensions;
-
 
 namespace WrathCombo.Combos.PvE;
 
@@ -85,7 +84,7 @@ internal partial class DNC : PhysicalRanged
             var needToStandard =
                 IsEnabled(Preset.DNC_ST_Adv_SS) &&
                 Engine.Options.Enabled(Feature.DncStandardInitiation) &&
-                DNC_ST_ADV_SS_IncludeSS == (int)IncludeStep.Yes &&
+                    DNC_ST_ADV_SS_IncludeSS == (int)IncludeStep.Yes &&
                 GetCooldownRemainingTime(StandardStep) <
                 longAlignment && // Up or about to be (some anti-drift)
                 !LocalPlayer.HasStatus(Buffs.FinishingMoveReady) &&
@@ -124,7 +123,7 @@ internal partial class DNC : PhysicalRanged
                 if (IsEnabled(Preset.DNC_ST_Adv_SS) &&
                     IsEnabled(Preset.DNC_ST_Adv_SS_Prepull) &&
                     Engine.Options.Enabled(Feature.DncStandardInitiation) &&
-                DNC_ST_ADV_SS_IncludeSS == (int)IncludeStep.Yes &&
+                    DNC_ST_ADV_SS_IncludeSS == (int)IncludeStep.Yes &&
                     ActionReady(StandardStep) &&
                     !LocalPlayer.HasStatus(Buffs.FinishingMoveReady) &&
                     !LocalPlayer.HasStatus(Buffs.TechnicalFinish) &&

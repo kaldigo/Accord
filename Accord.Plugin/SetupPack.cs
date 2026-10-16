@@ -41,6 +41,32 @@ internal sealed class SetupPack
 
     internal JobPreset? Find(uint job) => jobsById.GetValueOrDefault(job);
 
+    internal JobPreset[] SelectedJobs(AccordSettings settings)
+    {
+        var ids = (settings.ActiveJobs ?? new HashSet<uint>())
+            .Select(id => Find(id)?.JobId).Where(id => id.HasValue).Select(id => id!.Value).ToHashSet();
+        return Data.Jobs.Where(job => ids.Contains(job.JobId)).ToArray();
+    }
+
+    internal bool IsActive(uint job, AccordSettings settings) =>
+        SelectedJobs(settings).Any(selected => selected.JobId == Find(job)?.JobId);
+
+    // Auto-Mode eligibility is distinct from the engine's master auto-rotation toggle.
+    internal Newtonsoft.Json.Linq.JObject AutoModes(JobPreset job, AccordSettings settings, Newtonsoft.Json.Linq.JObject presetIds)
+    {
+        var resolved = Resolve(job, settings);
+        var enabled = resolved.Settings["EnabledActionsV6"]!.AsArray().Select(n => n!.GetValue<int>()).ToHashSet();
+        var result = new Newtonsoft.Json.Linq.JObject();
+        if (resolved.Settings["AutoActions"] is not JsonObject configured) return result;
+        foreach (var entry in configured)
+        {
+            int id = int.TryParse(entry.Key, out var numeric) ? numeric
+                : presetIds[entry.Key]?.ToObject<int>() ?? throw new InvalidDataException("Unknown auto-mode preset: " + entry.Key);
+            result[id.ToString()] = enabled.Contains(id);
+        }
+        return result;
+    }
+
     internal static Dictionary<Feature, bool> EngineFeatures(uint job, AccordSettings settings)
     {
         var flags = new Dictionary<Feature, bool>();

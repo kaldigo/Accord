@@ -12,7 +12,7 @@ internal static class AccordUi
     {
         var setup = SetupController.Instance;
         if (setup is null) return;
-        ImGui.TextUnformatted("Accord â€” buttons express intent");
+        ImGui.TextUnformatted("Accord — buttons express intent");
         ImGui.TextWrapped("Choose which decisions to delegate to your rotation presses. A = automatic; M = manual.");
         foreach (var definition in VariantDefinitions.All)
         {
@@ -24,12 +24,28 @@ internal static class AccordUi
         bool cleanup = setup.Settings.ClearOtherActions;
         if (ImGui.Checkbox("Clear other actions", ref cleanup)) setup.Run(() => setup.SetCleanup(cleanup));
         if (ImGui.IsItemHovered()) ImGui.SetTooltip("Keep only the designed job layout. Preserves game-shared bars and Bridge shared slots. Requires Hotbar Bridge; writes a recovery backup.");
-        if (ImGui.Button("Set current class hotbars")) setup.Run(() => setup.ApplyHotbars(false));
-        ImGui.SameLine();
-        if (ImGui.Button("Set all classes hotbars")) setup.Run(() => setup.ApplyHotbars(true));
+        if (ImGui.CollapsingHeader("Active classes"))
+        {
+            ImGui.TextWrapped("Choose which classes Accord manages. Base classes follow their job. Deselecting stops future changes and retains existing settings and hotbars.");
+            if (ImGui.Button("Select all")) setup.Run(() => setup.SetActiveJobs(setup.Pack.Data.Jobs.Select(j => j.JobId)));
+            ImGui.SameLine();
+            if (ImGui.Button("Select none")) setup.Run(() => setup.SetActiveJobs(Array.Empty<uint>()));
+            foreach (var candidate in setup.Pack.Data.Jobs)
+            {
+                bool active = setup.Pack.IsActive(candidate.JobId, setup.Settings);
+                if (ImGui.Checkbox(candidate.Job, ref active)) setup.Run(() =>
+                {
+                    var selected = setup.Pack.SelectedJobs(setup.Settings).Select(j => j.JobId).ToHashSet();
+                    if (active) selected.Add(candidate.JobId); else selected.Remove(candidate.JobId);
+                    setup.SetActiveJobs(selected);
+                });
+            }
+        }
+        ImGui.TextUnformatted($"Accord active for {setup.Pack.SelectedJobs(setup.Settings).Length} classes.");
+        if (ImGui.Button("Set selected class hotbars")) setup.Run(setup.ApplyHotbars);
         if (ImGui.Button(setup.Settings.LiveMode ? "Disable live mode" : "Enable live mode")) setup.Run(() => setup.SetLive(!setup.Settings.LiveMode));
         ImGui.TextWrapped(setup.Settings.LiveMode
-            ? "Live: refresh the current class on variant and class changes."
+            ? "Live: refresh selected classes on variant changes and active classes on class changes."
             : "Static: variants change behaviour. Use a setup button to update hotbars.");
         ImGui.Separator();
         ImGui.TextWrapped(setup.Status);
@@ -41,8 +57,8 @@ internal static class AccordUi
         if (!string.IsNullOrWhiteSpace(setup.Settings.LastHotbarBackup) && ImGui.Button("Restore last hotbar backup")) setup.Run(setup.Restore);
         if (ImGui.CollapsingHeader("Reviewed settings and diagnostics"))
         {
-            ImGui.TextWrapped("Variant changes preserve detailed settings. Reset reapplies the reviewed settings for the current class and backs up the previous configuration.");
-            if (ImGui.Button("Reset current class settings")) setup.Run(setup.ResetCurrentSettings);
+            ImGui.TextWrapped("Variant changes preserve detailed settings. Reset reapplies the reviewed settings for the selected classes and backs up the previous configuration.");
+            if (ImGui.Button("Reset selected class settings")) setup.Run(setup.ResetSelectedSettings);
             if (ImGui.Button("Export local diagnostics")) setup.Run(setup.ExportDiagnostics);
             foreach (var backup in Directory.EnumerateFiles(Svc.PluginInterface.GetPluginConfigDirectory(), "combined-prototype-*.json").OrderByDescending(File.GetLastWriteTimeUtc))
                 if (ImGui.Button("Import backup: " + Path.GetFileName(backup)))
@@ -62,8 +78,7 @@ internal static class AccordUi
         if (Plugin.Instance.MigrationPending) throw new InvalidOperationException("Open /accord to complete separate setup first.");
         switch (parts[0])
         {
-            case "current": setup.ApplyHotbars(false); return;
-            case "all": setup.ApplyHotbars(true); return;
+            case "selected": setup.ApplyHotbars(); return;
             case "live": setup.SetLive(Value(setup.Settings.LiveMode)); return;
             case "restore": setup.Restore(); return;
         }
@@ -71,7 +86,7 @@ internal static class AccordUi
         {
             "burst" => VariantId.Burst, "protection" => VariantId.Protection,
             "support" => VariantId.Support, "mechanics" => VariantId.ClassMechanics,
-            _ => throw new ArgumentException("Use /accord current, all, live, burst, protection, support or mechanics."),
+            _ => throw new ArgumentException("Use /accord selected, live, burst, protection, support or mechanics."),
         };
         setup.SetVariant(id, Value(setup.Settings.Enabled(id)));
         bool Value(bool previous) => parts.ElementAtOrDefault(1) switch

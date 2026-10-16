@@ -2,10 +2,15 @@
 
 Accord provides reviewed job setups, intent variants and matching hotbars. The separate WrathFork plugin (provisional name) supplies rotation functionality and settings, controlled by Accord through its API.
 
-**Status:** separate local 0.2.2 preview packages build and pass 5,901 checks, including all 512 job/variant combinations against compiled engine settings. Native acceptance is pending; nothing has been installed or published. See [separation status](docs/separation.md) and [build/package instructions](docs/distribution.md).
+**Status:** separate local 0.2.2 preview packages build and pass 5,935 checks, including all 512 job/variant combinations against compiled engine settings. Native acceptance is pending; nothing has been installed or published. See [separation status](docs/separation.md) and [build/package instructions](docs/distribution.md).
+
+Use `/wrath` for the engine (the upstream `/scombo` alias remains).
+
+Choose managed jobs under **Active classes** in `/accord`, then use **Set selected class hotbars** (or `/accord selected`). Variants, reviewed settings and live layouts follow that selection. Deselecting retains existing settings and hotbars.
 
 - [Premise, boundaries and implementation direction](docs/ACCORD.md)
 - [Development rules](AGENTS.md)
+- [Upstream difference audit](docs/upstream-difference-audit.md)
 - [Companion HotbarTools project](https://github.com/kaldigo/HotbarTools)
 
 The original upstream documentation and attribution are preserved below. Its installation instructions refer to upstream Wrath, not an Accord release.

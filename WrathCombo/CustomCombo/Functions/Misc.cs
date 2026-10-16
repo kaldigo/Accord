@@ -1,4 +1,4 @@
-using ECommons.DalamudServices;
+﻿using ECommons.DalamudServices;
 using Lumina.Excel.Sheets;
 using System;
 using System.Collections.Frozen;

@@ -80,7 +80,7 @@ public partial class Provider : IDisposable
         Provider output = new();
 
         // Initiate the IPC and helper services
-        // Accord retains internal caches, but does not publish the inherited writable IPC API.
+        EzIPC.Init(output, prefix: "WrathCombo");
         P.IPCSearch = new Search(output.Leasing);
         P.UIHelper = new UIHelper(output.Leasing);
 
@@ -90,7 +90,7 @@ public partial class Provider : IDisposable
         return output;
     }
 
-    public ICallGateProvider<ActionType, uint, object> OnActionUsedProvider = Svc.PluginInterface.GetIpcProvider<ActionType, uint, object>("WrathFork.OnActionUsed");
+    public ICallGateProvider<ActionType, uint, object> OnActionUsedProvider = Svc.PluginInterface.GetIpcProvider<ActionType, uint, object>("OnActionUsed");
 
     /// <summary>
     ///     A token to cancel <see cref="BuildCaches" /> if the IPC is disabled.
@@ -132,7 +132,7 @@ public partial class Provider : IDisposable
         }
 
         // Getting the IPC status early
-
+        Task.Run(() => P.IPC.Helper.IPCEnabled);
 
         // Build job-specific combo state caches
         // ReSharper disable once ReturnValueOfPureMethodIsNotUsed

@@ -46,6 +46,7 @@ internal static class EngineSchema
                 var choices = new AccordSettings();
                 foreach (var variant in VariantDefinitions.All) choices.Variants[variant.Id] = (mask & (1 << (int)variant.Id)) != 0;
                 var changes = JObject.Parse(pack.Resolve(job, choices).Settings.ToJsonString());
+                changes["AutoActions"] = pack.AutoModes(job, choices, names);
                 var enable = changes["EnabledActionsV6"]!; changes.Remove("EnabledActionsV6");
                 var shared = JObject.Parse(pack.Data.SharedSettings.ToJsonString()); shared.Remove("EnabledActionsV6");
                 changes.Merge(shared, new Newtonsoft.Json.Linq.JsonMergeSettings { MergeArrayHandling = MergeArrayHandling.Replace });
@@ -60,6 +61,14 @@ internal static class EngineSchema
                 SettingsPatch.NormalizePresetMaps(expected, names);
                 foreach (var field in changes.Properties())
                     if (!JToken.DeepEquals(expected[field.Name], roundtrip[field.Name])) throw new Exception("Settings did not round-trip: " + job.Job + "/" + field.Name);
+                foreach (var mode in ((JObject)changes["AutoActions"]!).Properties())
+                {
+                    var id = int.Parse(mode.Name);
+                    if (mode.Value.Value<bool>() != updated["EnabledActionsV6"]!.Values<int>().Contains(id)) throw new Exception("Auto-Mode did not follow the selected rotation.");
+                    var metadata = assembly.GetType("WrathCombo.Combos.Preset")!;
+                    var member = metadata.GetField(Enum.GetName(metadata, id)!)!;
+                    if (!member.GetCustomAttributesData().Any(a => a.AttributeType.Name == "AutoActionAttribute")) throw new Exception("Auto-Mode preset lacks runner metadata: " + mode.Name);
+                }
                 count++;
             }
         var schemaType = assembly.GetType("WrathCombo.Engine.SettingsSchema")!;
@@ -83,7 +92,7 @@ internal static class EngineSchema
         // Simulate importing personal combined settings with every global variant selection.
         for (int mask = 0; mask < 16; mask++)
         {
-            var choices = new AccordSettings { LiveMode = true, LastHotbarBackup = "retained-backup.json" };
+            var choices = new AccordSettings { ActiveJobs = pack.Data.Jobs.Select(j => j.JobId).ToHashSet(), LiveMode = true, LastHotbarBackup = "retained-backup.json" };
             foreach (var variant in VariantDefinitions.All) choices.Variants[variant.Id] = (mask & (1 << (int)variant.Id)) != 0;
             var source = (JObject)snapshot.DeepClone();
             source["Version"] = 6; source["Accord"] = JObject.FromObject(choices);
@@ -96,6 +105,37 @@ internal static class EngineSchema
                 if (!JToken.DeepEquals(snapshot[field], imported[field])) throw new Exception("Migration reset personalised settings: " + field);
             count++;
         }
+        foreach (var selection in new[] { new HashSet<uint>(), new HashSet<uint> { 38 } })
+        {
+            var choices = new AccordSettings { ActiveJobs = selection };
+            var source = (JObject)snapshot.DeepClone();
+            source["Version"] = 6;
+            source["Accord"] = JObject.FromObject(choices);
+            var envelope = new JObject { ["Settings"] = snapshot, ["KnownPresets"] = new JArray(ids), ["PresetIds"] = names, ["Revision"] = SettingsTransaction.Hash(snapshot) };
+            var (plan, importedChoices) = MigrationPreparation.Build(pack, source, envelope, new AccordSettings());
+            var original = SettingsMigration.Plan(source, envelope);
+            var originalSettings = SettingsPatch.Apply(snapshot, (JObject)original["Patch"]!, ids);
+            var imported = SettingsPatch.Apply(snapshot, (JObject)plan["Patch"]!, ids);
+            if (!importedChoices.ActiveJobs!.SetEquals(selection)) throw new Exception("Import expanded the active selection from prepared history.");
+            foreach (var job in pack.Data.Jobs.Where(j => !selection.Contains(j.JobId)))
+            {
+                foreach (var mode in pack.AutoModes(job, choices, names).Properties())
+                    if (!JToken.DeepEquals(imported["AutoActions"]?[mode.Name], originalSettings["AutoActions"]?[mode.Name])) throw new Exception("Import changed an inactive job's Auto-Mode.");
+                if (!JToken.DeepEquals(imported["ForkFeatures"]?[job.JobId.ToString()], originalSettings["ForkFeatures"]?[job.JobId.ToString()])) throw new Exception("Import remapped an inactive job's features.");
+                if (!imported["EnabledActionsV6"]!.Values<int>().Intersect(job.OwnedPresetIds).ToHashSet().SetEquals(originalSettings["EnabledActionsV6"]!.Values<int>().Intersect(job.OwnedPresetIds))) throw new Exception("Import remapped an inactive job's presets.");
+            }
+            count++;
+        }
+        var notice = assembly.GetType("WrathCombo.Window.MajorChangesWindow")!;
+        var upstreamVersion = (Version)assembly.GetType("WrathCombo.Engine.UpstreamVersion")!.GetField("Current", BindingFlags.Static | BindingFlags.NonPublic)!.GetValue(null)!;
+        if (upstreamVersion.ToString() != pack.Data.WrathVersion) throw new Exception("Notice version differs from the inherited engine baseline.");
+        if (!(bool)notice.GetField("DoesVersionHaveChange", BindingFlags.Static | BindingFlags.NonPublic)!.GetValue(null)!) throw new Exception("Fork package version suppressed the upstream migration notice.");
+        var freshConfiguration = Activator.CreateInstance(configuration.GetType())!;
+        if (!upstreamVersion.Equals(configuration.GetType().GetField("HideMajorChangesForVersion")!.GetValue(freshConfiguration))) throw new Exception("New config notice default uses fork package version.");
+        count += 3;
+        if ((string?)pluginType.GetField("Command", BindingFlags.NonPublic | BindingFlags.Static)!.GetRawConstantValue() != "/wrath") throw new Exception("Fork changed the upstream /wrath command.");
+        if ((string?)pluginType.GetField("OldCommand", BindingFlags.NonPublic | BindingFlags.Static)!.GetRawConstantValue() != "/scombo") throw new Exception("Fork removed the upstream /scombo alias.");
+        count += 2;
         return count;
     }
 }

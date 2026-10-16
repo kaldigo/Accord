@@ -170,7 +170,7 @@ internal class MajorChangesWindow : Dalamud.Interface.Windowing.Window
     ///     The current plugin version.
     /// </summary>
     private static readonly Version Version =
-        Svc.PluginInterface.Manifest.AssemblyVersion;
+        Engine.UpstreamVersion.Current;
 
     /// <summary>
     ///     The version where the problem was introduced.

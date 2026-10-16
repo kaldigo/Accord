@@ -12,7 +12,24 @@ void Check(bool condition, string message)
     checks++;
     if (!condition) throw new Exception(message);
 }
+// Unconfigured fork options must preserve upstream initiation and add no new routing.
+var upstreamEnabled = new HashSet<Feature> { Feature.DncStandardInitiation, Feature.DncTechnicalInitiation, Feature.BardSongInitiation, Feature.DncCuringWaltz };
+foreach (var feature in Enum.GetValues<Feature>())
+    Check(FeatureDefaults.Enabled(feature) == upstreamEnabled.Contains(feature), "Unconfigured fork changed upstream behaviour: " + feature);
 var pack = new SetupPack();
+var scope = new AccordSettings();
+Check(pack.SelectedJobs(scope).Length == 0, "New installations must wait for a class selection.");
+scope.PreparedJobs[19] = 1;
+Check(!pack.IsActive(1, scope) && !pack.IsActive(19, scope), "Prepared history must not opt classes in.");
+scope.ActiveJobs = null;
+Check(pack.SelectedJobs(scope).Length == 0, "Legacy null selection must default to none.");
+scope.ActiveJobs = new HashSet<uint>();
+Check(!pack.IsActive(19, scope), "Explicitly selecting none must not reactivate prepared classes.");
+scope.ActiveJobs = new HashSet<uint> { 1, 19, 38, 999 };
+Check(pack.SelectedJobs(scope).Select(j => j.JobId).ToHashSet().SetEquals(new uint[] {19, 38}), "Selection must deduplicate base classes and ignore unsupported IDs.");
+Check(!pack.IsActive(33, scope), "Unselected AST must remain unmanaged.");
+var savedScope = Newtonsoft.Json.JsonConvert.DeserializeObject<AccordSettings>(Newtonsoft.Json.JsonConvert.SerializeObject(scope))!;
+Check(pack.SelectedJobs(savedScope).Select(j => j.JobId).SequenceEqual(pack.SelectedJobs(scope).Select(j => j.JobId)), "Saved class selection must round-trip.");
 Check(pack.Data.Jobs.Count == 32, "Expected 21 combat and 11 noncombat jobs.");
 foreach (var job in pack.Data.Jobs)
 {

@@ -1,6 +1,7 @@
 global using Dalamud.Bindings.ImGui;
 using System;
 using System.IO;
+using System.Linq;
 using Dalamud.Plugin;
 using Dalamud.Plugin.Services;
 using ECommons;
@@ -34,6 +35,7 @@ public sealed class Plugin : IDalamudPlugin
             var combined = JObject.Parse(File.ReadAllText(file.FullName));
             Settings = combined["Accord"]?.ToObject<AccordSettings>() ?? new AccordSettings();
             MigrationSource = backup;
+            Settings.ActiveJobs = new SetupPack().SelectedJobs(Settings).Select(j => j.JobId).ToHashSet();
             Settings.PreparedJobs.Clear();
             Settings.SharedSettingsPrepared = false;
             Settings.EngineConfigurationId = "";

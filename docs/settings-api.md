@@ -51,3 +51,9 @@ Personal values and targeting preferences are retained. The four saved variants 
 5,901 automated assertions/check cases pass, including actual compiled-engine validation and round trips for 512 job/variant setups, migration across all 16 variant choices, property-order-stable revisions, stale/session/configuration rejection, replay without overwriting later edits, expired receipts, malformed imports, backup/partial-populate/cache/save failures and rollback failure reporting. Both separate packages build.
 
 Implementation is complete for this separation contract. Native in-game acceptance remains: actual Dalamud IPC transport/lifecycle, reload/reconnect, migration with real saved configuration, both interfaces and affected rotation/hotbar paths. No live configuration has been migrated, and no package has been installed or published by this work.
+
+
+Accord's active-class selection is client-owned and is not an engine API setting. It gates job mappings, baseline resets and hotbar updates. Deselection retains already persisted engine settings. During migration, all personal settings are imported explicitly, but only selected jobs have intent-controlled switches remapped; imported prepared-job history does not expand an explicit selection.
+
+
+The fork preserves the inherited leased API under `WrathCombo.*`, action requests under `WrathCombo.ActionRequest.*`, and the `OnActionUsed` event. The added persistent settings API for Accord remains `WrathFork.Settings.*.v2`; it does not replace existing interfaces. Active leases still prevent Accord persistent writes. Matching endpoint names preserves those contracts; other plugins may separately inspect plugin identity or version, which has not been tested in game.

@@ -41,6 +41,7 @@ internal sealed class SetupController : IDisposable
             entry.Tooltip = definition.Label + ": click to switch A/M.\n" + definition.Description;
             entries.Add(entry);
         }
+        Settings.ActiveJobs ??= Pack.SelectedJobs(Settings).Select(j => j.JobId).ToHashSet();
         UpdateEntries();
     }
 
@@ -69,6 +70,7 @@ internal sealed class SetupController : IDisposable
             if (engine.Recover()) { currentJob = 0; UpdateEntries(); Status = "Settings operation recovered. Layout updates will resume after state verification."; }
         }
         if (Plugin.Instance.MigrationPending) return;
+        UpdateEntries();
         if (!Player.Available || !Svc.ClientState.IsLoggedIn)
         {
             currentJob = 0;
@@ -77,6 +79,13 @@ internal sealed class SetupController : IDisposable
             return;
         }
 
+
+        if (!Pack.IsActive((uint)Player.Job, Settings))
+        {
+            currentJob = 0;
+            Status = "Accord is inactive for this class. Choose active classes in /accord.";
+            return;
+        }
 
         JObject snapshot;
         try { snapshot = engine.Read(); }
@@ -87,7 +96,7 @@ internal sealed class SetupController : IDisposable
         if (Settings.EngineConfigurationId == snapshot.Value<string>("ConfigurationId") &&
             Settings.LastEngineRevision.Length != 0 && Settings.LastEngineRevision != snapshot.Value<string>("Revision"))
         {
-            Status = "Engine settings changed outside Accord. Use Set current class hotbars or change a variant to reapply the reviewed mapping. Live updates paused.";
+            Status = "Engine settings changed outside Accord. Use Set selected class hotbars or change a variant to reapply the reviewed mapping. Live updates paused.";
             return;
         }
         if (Settings.EngineConfigurationId != snapshot.Value<string>("ConfigurationId")) currentJob = 0;
@@ -98,7 +107,7 @@ internal sealed class SetupController : IDisposable
         // Wait for the game to finish activating this job before consuming the transition.
         unsafe { NativeHotbars.Ready(job); }
         Prepare([Pack.Find(job)!]);
-        if (Settings.LiveMode) ApplyHotbars(false);
+        if (Settings.LiveMode) ApplyCurrentHotbars();
         else Status = $"{Pack.Find(job)!.Job}: behaviour ready. Static hotbars unchanged.";
         currentJob = job;
         character = contentId;
@@ -106,6 +115,7 @@ internal sealed class SetupController : IDisposable
 
     private void Mutate(Action mutation)
     {
+        if (engine.HasPending) throw new InvalidOperationException("Resolve the pending settings operation before changing Accord choices.");
         var before = JsonConvert.SerializeObject(Settings);
         try { mutation(); Svc.PluginInterface.SavePluginConfig(Settings); }
         catch { Plugin.Instance.Settings = JsonConvert.DeserializeObject<AccordSettings>(before)!; throw; }
@@ -118,6 +128,13 @@ internal sealed class SetupController : IDisposable
     private void ApplySettings(IEnumerable<JobPreset> jobs, AccordSettings desired, bool reset = false)
     {
         if (Plugin.Instance.MigrationPending) throw new InvalidOperationException("Open /accord to complete separate setup first.");
+        var managedJobs = jobs.Where(j => Pack.IsActive(j.JobId, desired)).ToArray();
+        desired.ActiveJobs = Pack.SelectedJobs(desired).Select(j => j.JobId).ToHashSet();
+        if (managedJobs.Length == 0)
+        {
+            Mutate(() => Plugin.Instance.Settings = desired);
+            return;
+        }
         var snapshot = engine.Read();
         if (desired.EngineConfigurationId != snapshot.Value<string>("ConfigurationId"))
         {
@@ -127,7 +144,7 @@ internal sealed class SetupController : IDisposable
         var changes = new JObject();
         var enable = new HashSet<int>();
         var disable = new HashSet<int>();
-        foreach (var job in jobs)
+        foreach (var job in managedJobs)
         {
             var resolved = Pack.Resolve(job, desired);
             bool baseline = reset || desired.PreparedJobs.GetValueOrDefault(job.JobId) != job.SetupRevision;
@@ -147,6 +164,9 @@ internal sealed class SetupController : IDisposable
                 disable.UnionWith(controlled);
                 enable.UnionWith(selected.Where(controlled.Contains));
             }
+            WrathFork.Contract.SettingsPatch.NormalizePresetMaps(changes, (JObject)snapshot["PresetIds"]!);
+            if (changes["AutoActions"] is not JObject) changes["AutoActions"] = new JObject();
+            ((JObject)changes["AutoActions"]!).Merge(Pack.AutoModes(job, desired, (JObject)snapshot["PresetIds"]!));
             if (changes["ForkFeatures"] is not JObject) changes["ForkFeatures"] = new JObject();
             changes["ForkFeatures"]![job.JobId.ToString()] = JObject.FromObject(SetupPack.EngineFeatures(job.JobId, desired));
         }
@@ -210,13 +230,13 @@ internal sealed class SetupController : IDisposable
     {
         var desired = CloneSettings();
         desired.Variants[id] = enabled;
-        ApplySettings(Pack.Data.Jobs.Where(j => Settings.PreparedJobs.ContainsKey(j.JobId) || Player.Available && Pack.Find((uint)Player.Job) == j), desired);
-        if (Settings.LiveMode)
+        ApplySettings(Pack.SelectedJobs(desired), desired);
+        if (Settings.LiveMode && Pack.SelectedJobs(Settings).Length != 0)
         {
-            try { ApplyHotbars(false); }
+            try { ApplyHotbars(); }
             catch (Exception ex)
             {
-                throw new InvalidOperationException("Behaviour saved; live layout failed. Retry Set current class hotbars. " + ex.Message, ex);
+                throw new InvalidOperationException("Behaviour saved; live layout failed. Retry Set selected class hotbars. " + ex.Message, ex);
             }
         }
         else Status = "Variant saved. Static hotbars unchanged; use setup to restore any needed manual buttons.";
@@ -224,26 +244,44 @@ internal sealed class SetupController : IDisposable
 
     internal void SetLive(bool live)
     {
-        if (live) ApplyHotbars(false);
+        if (live) ApplyHotbars();
         Mutate(() => Settings.LiveMode = live);
-        Status = live ? "Live mode enabled for the current class; it will refresh on class changes." : "Static mode enabled. Current hotbars retained.";
+        Status = live ? "Live mode enabled for selected classes; it will refresh on variant and class changes." : "Static mode enabled. Current hotbars retained.";
     }
 
     internal void SetCleanup(bool value) => Mutate(() => Settings.ClearOtherActions = value);
 
-    internal unsafe void ApplyHotbars(bool all)
+    internal void SetActiveJobs(IEnumerable<uint> jobs)
     {
+        var desired = CloneSettings();
+        desired.ActiveJobs = jobs.Select(id => Pack.Find(id)?.JobId).Where(id => id.HasValue)
+            .Select(id => id!.Value).ToHashSet();
+        ApplySettings(Pack.SelectedJobs(desired), desired);
+        currentJob = 0;
+        if (Settings.LiveMode && desired.ActiveJobs.Count != 0) ApplyHotbars();
+        else Status = "Active classes saved. Existing hotbars retained; deselected classes will receive no further Accord updates.";
+    }
+
+    internal void ApplyHotbars() => ApplyHotbars(Pack.SelectedJobs(Settings), null);
+    private void ApplyCurrentHotbars()
+    {
+        uint job = (uint)Player.Job;
+        if (Pack.IsActive(job, Settings)) ApplyHotbars([Pack.Find(job)!], job);
+    }
+
+    private unsafe void ApplyHotbars(JobPreset[] selected, uint? currentClass)
+    {
+        if (selected.Length == 0) throw new InvalidOperationException("Select at least one active class first.");
         if (!Player.Available || Svc.PlayerState.ContentId == 0) throw new InvalidOperationException("Log in before applying hotbars.");
         uint job = (uint)Player.Job;
         NativeHotbars.Ready(job);
-        var selected = all ? Pack.Data.Jobs.ToArray() : [Pack.Find(job) ?? throw new InvalidOperationException("Current class is not supported.")];
         Prepare(selected);
-        var layouts = selected.SelectMany(p => (all ? new[] { p.JobId }.Concat(p.BaseClasses) : [job])
+        var layouts = selected.SelectMany(p => (currentClass is null ? new[] { p.JobId }.Concat(p.BaseClasses) : [currentClass.Value])
             .Select(id => (id, Pack.Resolve(p, Settings))));
         var backup = hotbars.Apply(layouts, Settings.ClearOtherActions);
         try { Mutate(() => Settings.LastHotbarBackup = backup); }
         catch { hotbars.Restore(backup); throw; }
-        Status = all ? "All supported class hotbars applied and backed up." : $"{selected[0].Job} hotbars applied and backed up.";
+        Status = $"Hotbars for {selected.Length} selected class(es) applied and backed up.";
     }
 
     internal void Restore()
@@ -255,11 +293,12 @@ internal sealed class SetupController : IDisposable
         Status = "Hotbars restored. Live mode disabled so the restored layout is retained.";
     }
 
-    internal void ResetCurrentSettings()
+    internal void ResetSelectedSettings()
     {
-        var job = Pack.Find((uint)Player.Job) ?? throw new InvalidOperationException("Select a supported class first.");
-        Prepare([job], reset: true);
-        Status = $"{job.Job}: reviewed settings restored. Previous settings backed up; variants and hotbars retained.";
+        var selected = Pack.SelectedJobs(Settings);
+        if (selected.Length == 0) throw new InvalidOperationException("Select at least one active class first.");
+        Prepare(selected, reset: true);
+        Status = "Selected classes: reviewed settings restored. Previous settings backed up; variants and hotbars retained.";
     }
 
     internal void ExportDiagnostics()
@@ -282,6 +321,7 @@ internal sealed class SetupController : IDisposable
     {
         for (int i = 0; i < entries.Count; i++)
         {
+            entries[i].Shown = Player.Available && Pack.IsActive((uint)Player.Job, Settings);
             var definition = VariantDefinitions.All[i];
             entries[i].Text = new SeStringBuilder().AddIcon(Enum.Parse<BitmapFontIcon>(definition.Icon))
                 .AddText(" " + (Settings.Enabled(definition.Id) ? "A" : "M")).Build();

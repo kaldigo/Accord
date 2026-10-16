@@ -10,7 +10,7 @@ Run `pwsh -File tools/package-release.ps1` with .NET 10 and installed Dalamud AP
 
 Fork output is `WrathCombo/bin/WrathFork/Release/`; client output is `Accord.Plugin/bin/Release/`. Nothing is copied into XIVLauncher or published. Generated release URLs are proposed destinations and do not work until a release is published. Previous 0.1.0 artifacts remain combined-prototype builds.
 
-`/wrathfork` opens the engine configuration; `/accord` opens setup. Accord never writes the fork configuration file. The fork backs up and persists validated API changes itself, retaining them when Accord unloads. Accord stores its own variants and hotbar recovery records. Incompatible/missing engine status blocks dependent setup/live operations; hotbar restore stays local.
+`/wrath` opens the engine configuration; `/accord` opens setup. Accord never writes the fork configuration file. The fork backs up and persists validated API changes itself, retaining them when Accord unloads. Accord stores its own variants and hotbar recovery records. Incompatible/missing engine status blocks dependent setup/live operations; hotbar restore stays local.
 
 A combined Accord config is backed up and prompts for separate setup. Accord choices are retained, preparation state is reset and live mode is disabled. Personalised engine settings are imported through a previewed, validated API transaction; unsupported/retired fields are listed in the local report and retained in the backup. Interrupted imports are recoverable by operation ID. This migration path has not been exercised in game. See [separation implementation](separation.md) for API coverage and remaining limitations.
 
@@ -19,7 +19,7 @@ A combined Accord config is backed up and prompts for separate setup. Accord cho
 Local code/data checks are recorded in `docs/implementation.md`. Before stable promotion, record the game patch, Dalamud/Bridge versions, Accord version and outcomes for:
 
 1. Separate Accord and WrathFork UIs and four clickable DTR A/M controls; choices persist across reload/class change.
-2. Static toggles change behaviour without hotbar writes; explicit current/all setup and live variant/class transitions match the selected layout.
+2. Static toggles change behaviour without hotbar writes; explicit selected-class setup and live variant/class transitions match the selected layout. Unselected classes receive no job-specific Accord updates; deselection retains their saved settings/hotbars. Check selection persistence, base-class inheritance, select none and migration from prepared jobs.
 3. Cleanup on/off, regular/cross hotbars, actual Bridge shared pairs including disabled shared mappings, native shared bars, backup and restore. Begin with a disposable layout and retain the backup.
 4. AST with enemy selected and the same eligible resolved ally as direct selection: support-card offer and execution, range failure and manual retargeting disabled. Preserve the enemy target.
 5. Manual and automatic burst on ST and AoE: especially BRD's Raging-first path, DRK, GNB, MNK, NIN, RDM and MCH. Failed input must not initiate a handoff; no repeated button presses for buffs already handed off.
@@ -30,3 +30,6 @@ Local code/data checks are recorded in `docs/implementation.md`. Before stable p
 Also verify engine-only operation with Accord unloaded, load order/reconnect, persistence after both reload, outside-edit detection, rejected settings updates and recovery. These native checks are pending. No damage improvement is claimed from the MCH/BLM clear-time comparison. Export diagnostics using Accord's UI when needed; exports are private and must not be uploaded with release artifacts.
 
 See [settings API and migration contract](settings-api.md) for v2 endpoints, validation and recovery semantics.
+
+
+Standalone fork acceptance additionally covers restored Auto-Rotation/PvP/Custom Actions pages, `/wrath` subcommands, saved master-auto state, optional opener indicator, conflict checks and existing Wrath IPC consumers. See [audit](fork-restoration-audit.md).
