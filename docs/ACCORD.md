@@ -136,3 +136,12 @@ Preserve Wrath functionality, settings and UI by default. Only change what Accor
 ## Command and interface correction
 
 The fork retains `/wrath` and `/scombo`, upstream status/window names and inherited `WrathCombo.*`/`OnActionUsed` interfaces. Renaming these was an assistant assumption, not an agreed separation requirement. Separate internal packaging does not authorize changing Wrath's public controls. The new API for Accord is additive. Only changes needed for the requested Accord behaviour belong in Wrath.
+
+
+## Class selector layout — 2026-10-16
+
+Class selection appears first, above variants and hotbar controls. Use an always-visible, responsive multi-column grid of job icons: greyscale when unselected, full colour when selected, with job abbreviations and hover descriptions. Keep Select all/none and the selected count. Selection still defaults to none and retains the existing immediate settings/static/live behaviour. Wrath's own UI is unchanged.
+
+Show **Set selected class hotbars** only while live mode is off. Live mode handles hotbar updates without this setup button.
+
+Show the current class's explanation directly beneath each variant, labelled with the class abbreviation. Group settings reset, hotbar restore, local troubleshooting export and legacy settings import under **Maintenance**. Explain each operation's scope beside its clearly labelled control, including that hotbar restore disables live mode and restores the previous operation's layout rather than necessarily the pre-Accord layout.

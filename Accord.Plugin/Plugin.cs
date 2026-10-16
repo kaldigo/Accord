@@ -82,6 +82,7 @@ public sealed class Plugin : IDalamudPlugin
         Svc.PluginInterface.UiBuilder.OpenMainUi -= Open;
         Svc.Commands.RemoveHandler("/accord");
         setup.Dispose();
+        ClassIcons.Dispose();
         ECommonsMain.Dispose();
     }
 }
