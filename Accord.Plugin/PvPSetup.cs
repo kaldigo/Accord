@@ -78,7 +78,7 @@ internal sealed class PvPSetup
         if(ready.Length>0)Apply(ready,engine.Read());
         Status=$"PvP hotbars applied for {ready.Length} classes. "+(Settings.PendingLayouts.Count>0
             ? $"{Settings.PendingLayouts.Count} new PvP classes queued: each applies once when you visit PvP on that class."
-            : "Recovery backup saved.");
+            : "Recovery backup saved.")+hotbars.Notice;
     }
     private void Apply(PvPProfile[] jobs,JObject snapshot)
     {
@@ -111,7 +111,7 @@ internal sealed class PvPSetup
                 });
             else if(Settings.LiveMode && hotbars.Apply([profile],Settings,snapshot,inspect:true)!=null)
                 Apply([profile],snapshot);
-            Status=Settings.LiveMode?"PvP live layout up to date; watching for hotbar changes.":"PvP behaviour ready. Static hotbars retained.";
+            Status=(Settings.LiveMode?"PvP live layout up to date; watching for hotbar changes.":"PvP behaviour ready. Static hotbars retained.")+hotbars.Notice;
         }
         finally{updates.DeferRetry(Environment.TickCount64);}
     }

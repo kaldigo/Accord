@@ -120,3 +120,9 @@ Restored Commands.cs and IPC Provider.cs exactly from the merged upstream baseli
 ### Unrelated changes removed
 
 Removed Engine/OptionsUi.cs and restored Window/ConfigWindow.cs exactly to upstream. Reverted unrelated null-safety, unused-method removal, UI unsubscription changes and login cleanup relocation in WrathCombo.cs. Its remaining lifecycle changes only attach the settings API, order historical resets before API exposure, reset continuation on territory changes and guard against duplicate engines. Upstream encoding/file endings restored for edited engine files. Both local builds and 5,935 checks pass; nothing installed or published.
+
+## PvP shared controller overflow correction (0.2.9)
+
+An in-game report exposed a setup dependency missed by the initial tests: PvP profiles with more than twelve controls allocated cross hotbar 2 unconditionally. If that page was game-shared, the safety check rejected the entire transaction before any keyboard layout was written. The affected log had repeated shared-slot errors and no completed PvP backup.
+
+New overflow pairs use available unshared controller pages. If none are available, all keyboard controls are still placed, and unpaired controls are excluded from Bridge routes. Shared controller destinations are preserved, with a visible keyboard-only status. Existing pairs remain stable. Tests cover all 336 PvP job/variant combinations without controller overflow, allocation around protected pages, and existing pair stability. Build and 82,699 assertions pass; confirmation in the game remains pending. No engine or Bridge changes are required.

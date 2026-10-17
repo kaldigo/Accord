@@ -115,6 +115,31 @@ internal static class PvPLayout
     internal static SlotMap[] Extras(PvPProfile job) => Enumerable.Range(12, Math.Max(0,job.Controls.Length-12)).Select(i => new SlotMap {
         Id=$"pvp-{job.JobId}-{i}", Label=$"{job.Job} PvP: {job.Controls[i].Name}", JobId=job.JobId, Profile="All",
         RegularBar=Positions[i].Bar+1, RegularSlot=Positions[i].Slot+1, CrossSet=2, CrossSlot=i-11 }).ToArray();
+    // Overflow must not make keyboard setup depend on an unshared controller page.
+    // Keep existing pairs stable; only allocate new pairs where both endpoints are usable.
+    internal static SlotMap[] AvailableExtras(PvPProfile job, IReadOnlyList<SlotMap> maps, Func<Position,bool> protectedSlot)
+    {
+        var occupied=maps.Where(m=>m.Applies(job.JobId)).Select(m=>m.Cross).ToHashSet();
+        var result=new List<SlotMap>();
+        foreach(var extra in Extras(job))
+        {
+            var existing=maps.SingleOrDefault(m=>m.Id==extra.Id);
+            if(existing!=null){result.Add(existing);continue;}
+            var free=Enumerable.Range(11,7).SelectMany(bar=>Enumerable.Range(0,16).Select(slot=>new Position(bar,slot)))
+                .Where(p=>!protectedSlot(p) && !occupied.Contains(p)).Select(p=>(Position?)p).FirstOrDefault();
+            if(free is not { } cross)continue;
+            extra.CrossSet=cross.Bar-9;extra.CrossSlot=cross.Slot+1;
+            occupied.Add(cross);result.Add(extra);
+        }
+        return result.ToArray();
+    }
+    internal static SlotMap[] Pairs(PvPProfile job, IReadOnlyList<SlotMap> maps)
+    {
+        var overflow=Extras(job);
+        return job.Controls.Select((_,i)=>maps.SingleOrDefault(m=>m.Applies(job.JobId) && m.Regular==Positions[i] && !m.SharedAcrossJobs)
+            ?? (i>=12 ? overflow.Single(m=>m.Regular==Positions[i]) :
+                throw new InvalidOperationException($"No job-specific PvP Bridge pair for {job.Job}, {Positions[i]}."))).ToArray();
+    }
     internal static HashSet<int> Fixed(PvPProfile job) => job.Controls.Select((c,i)=>(c,i)).Where(x=>x.i==0 ||
         x.c.Name is "Fuma Shuriken" or "Blizzard" or "Cure II" or "Aspected Benefic" or "Adloquium" ||
         x.c.Binding.Id is 29055 or 29711 or 29056 or 29054 or 29057 or 43259 ||

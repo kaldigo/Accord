@@ -1,5 +1,5 @@
 [CmdletBinding()]
-param()
+param([ValidateSet('WrathFork','Accord')][string[]]$Plugins=@('WrathFork','Accord'))
 $ErrorActionPreference = 'Stop'
 $repoRoot = Split-Path $PSScriptRoot -Parent
 Push-Location $repoRoot
@@ -11,16 +11,17 @@ try {
     & dotnet run --project tests/Accord.Tests.csproj -c Release -- WrathCombo/bin/WrathFork/Release/WrathFork.dll
     if ($LASTEXITCODE -ne 0) { throw 'Separation tests failed.' }
     Add-Type -AssemblyName System.IO.Compression.FileSystem
-    $tag = 'v0.2.8-preview'
+    $tag = 'v0.2.9-preview'
     $out = Join-Path $repoRoot "artifacts/$tag"
     New-Item -ItemType Directory -Force -Path $out | Out-Null
     $hashes = @()
     $feed = @()
-    foreach ($name in @('WrathFork', 'Accord')) {
+    foreach ($name in $Plugins) {
         $relative = if ($name -eq 'WrathFork') { 'WrathCombo/bin/WrathFork/Release/WrathFork' } else { 'Accord.Plugin/bin/Release/Accord' }
         $build = Join-Path $repoRoot $relative
         $manifest = Get-Content -LiteralPath (Join-Path $build "$name.json") -Raw | ConvertFrom-Json
-        if ($manifest.InternalName -ne $name -or $manifest.Name -ne $(if ($name -eq 'WrathFork') { 'Wrathful Combo' } else { 'Accord' }) -or $manifest.DalamudApiLevel -ne 15 -or [version]$manifest.AssemblyVersion -ne [version]'0.2.8.0') {
+        $expectedVersion = if ($name -eq 'Accord') { '0.2.9.0' } else { '0.2.8.0' }
+        if ($manifest.InternalName -ne $name -or $manifest.Name -ne $(if ($name -eq 'WrathFork') { 'Wrathful Combo' } else { 'Accord' }) -or $manifest.DalamudApiLevel -ne 15 -or [version]$manifest.AssemblyVersion -ne [version]$expectedVersion) {
             throw "Incorrect package identity/version: $name"
         }
         $package = Join-Path $out "$name.zip"
@@ -45,7 +46,7 @@ try {
             $manifest | Add-Member -NotePropertyName $field -NotePropertyValue $url -Force
         }
         $publicManifest = $manifest | ConvertTo-Json -Depth 8 | ConvertFrom-Json
-        $publicManifest | Add-Member -NotePropertyName Changelog -NotePropertyValue 'PvP layouts and four intent variants for all 21 jobs, separate PvP selection and backups, per-bar keyboard compaction and periodic live repair. Preserves shared/linked bars and hands-free auto rotation. Update Accord and Wrathful Combo together; requires Hotbar Bridge 0.2.11.' -Force
+        $publicManifest | Add-Member -NotePropertyName Changelog -NotePropertyValue 'Fix PvP keyboard setup aborting when overflow controller bars are shared. Uses available unshared controller pages, otherwise retains overflow on keyboard with an explanatory status. Preserves shared bars. Requires Wrathful Combo 0.2.8 and Hotbar Bridge 0.2.11.' -Force
         $feed += $publicManifest
         $manifest | Add-Member -NotePropertyName IsTestingExclusive -NotePropertyValue $true -Force
         $manifest | Add-Member -NotePropertyName TestingAssemblyVersion -NotePropertyValue $manifest.AssemblyVersion -Force
@@ -55,5 +56,5 @@ try {
     }
     ConvertTo-Json -InputObject $feed -Depth 8 | Set-Content -LiteralPath (Join-Path $out 'pluginmaster.json') -Encoding utf8NoBOM
     $hashes | Set-Content -LiteralPath (Join-Path $out 'SHA256SUMS.txt') -Encoding utf8NoBOM
-    Write-Output "Prepared two local previews in $out. Nothing installed or published."
+    Write-Output "Prepared $($Plugins.Count) local previews in $out. Nothing installed or published."
 } finally { Pop-Location }
