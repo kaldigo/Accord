@@ -14,6 +14,7 @@ void Check(bool condition, string message)
 }
 // Unconfigured fork options must preserve upstream initiation and add no new routing.
 var upstreamEnabled = new HashSet<Feature> { Feature.DncStandardInitiation, Feature.DncTechnicalInitiation, Feature.BardSongInitiation, Feature.DncCuringWaltz };
+upstreamEnabled.UnionWith(Enum.GetValues<Feature>().Where(f=>f.ToString().StartsWith("PvP") && f.ToString().EndsWith("Initiation")));
 foreach (var feature in Enum.GetValues<Feature>())
     Check(FeatureDefaults.Enabled(feature) == upstreamEnabled.Contains(feature), "Unconfigured fork changed upstream behaviour: " + feature);
 var pack = new SetupPack();
@@ -26,6 +27,7 @@ for (int mask = 0; mask < 16; mask++)
     var resolved = pack.Resolve(preset, choices);
     var layout = KeyboardLayout.Compile(resolved, true);
     Check(layout.Values.Distinct().Count() == KeyboardLayout.Positions.Length, "Compaction overlaps keyboard controls.");
+    Check(layout.All(pair => pair.Key.Bar == pair.Value.Bar), "Compaction moved a function to another keyboard bar.");
     var mapsForJob = ExtraJobMappings.Merge(Defaults.Maps(), resolved.Slots.Any(s => s.LogicalSlot > 12) ? [ExtraJobMappings.For(preset.JobId)] : [], new())
         .Where(m => m.Applies(preset.JobId)).ToList();
     var routes = mapsForJob.Where(m => !m.SharedAcrossJobs).ToDictionary(m => m.Id, m => layout.GetValueOrDefault(m.Regular, m.Regular));
@@ -48,11 +50,14 @@ for (int mask = 0; mask < 16; mask++)
         (Defaults.IsCombat(preset.JobId) && !Defaults.IsHealer(preset.JobId) && s.LogicalSlot == 4 && s.Action != "Empty"))
         .Select(s => new Position(s.RegularBar - 1, s.RegularSlot - 1)).ToHashSet();
     var occupied = resolved.Slots.Where(s => s.Action != "Empty").Select(s => layout.GetValueOrDefault(new(s.RegularBar - 1, s.RegularSlot - 1), new(s.RegularBar - 1, s.RegularSlot - 1))).ToHashSet();
-    bool emptySeen = false;
-    foreach (var position in KeyboardLayout.Positions.Where(p => !locked.Contains(p)))
+    foreach (var bar in KeyboardLayout.Positions.GroupBy(p => p.Bar))
     {
-        if (!occupied.Contains(position)) emptySeen = true;
-        else Check(!emptySeen, "Compaction left a movable keyboard gap.");
+        bool emptySeen = false;
+        foreach (var position in bar.Where(p => !locked.Contains(p)))
+        {
+            if (!occupied.Contains(position)) emptySeen = true;
+            else Check(!emptySeen, "Compaction left a movable gap within a keyboard bar.");
+        }
     }
 }
 var scope = new AccordSettings();
@@ -353,6 +358,16 @@ catch (AggregateException ex)
     Check(undoAttempts == edits.Count && routeUndoAttempted, "A rollback failure skipped other recovery attempts.");
     Check(ex.InnerExceptions.Count == 6, "Recovery failures were hidden.");
 }
+// An idle live check must not write or create backups; slot or route drift must repair.
+var desiredRoutes = new Dictionary<uint, Dictionary<string, Position>> { [38] = new() { ["st"] = new(0, 0) } };
+var existingRoutes = new Dictionary<uint, Dictionary<string, Position>> { [38] = new() { ["st"] = new(0, 0) }, [31] = new() };
+Check(!HotbarRefreshPolicy.NeedsApply(0, desiredRoutes, existingRoutes), "Unchanged layout or another job caused an idle rewrite.");
+Check(HotbarRefreshPolicy.NeedsApply(1, desiredRoutes, existingRoutes), "A new leveling action was not detected as a change.");
+existingRoutes[38]["st"] = new(0, 1);
+Check(HotbarRefreshPolicy.NeedsApply(0, desiredRoutes, existingRoutes), "A changed Bridge route was missed.");
+existingRoutes.Remove(38);
+Check(HotbarRefreshPolicy.NeedsApply(0, desiredRoutes, existingRoutes), "Missing Bridge routes were missed.");
+
 // Class transitions bypass idle polling; failures remain pending without a variant click.
 var liveUpdates = new LiveUpdateState();
 Check(liveUpdates.Poll(1000, 38, 1), "First live update was delayed.");
@@ -362,6 +377,7 @@ liveUpdates.DeferRetry(1000);
 Check(!liveUpdates.Applied && !liveUpdates.Poll(1249, 38, 1) && liveUpdates.Poll(1250, 38, 1), "Failed live update did not retry with bounded delay.");
 liveUpdates.Apply(38, 1, () => { });
 Check(liveUpdates.Applied, "Successful live update remained pending.");
+Check(liveUpdates.Poll(1500, 38, 1) && !liveUpdates.Poll(2499, 38, 1) && liveUpdates.Poll(2500, 38, 1), "Settled live checks must recur once per second.");
 Check(liveUpdates.Poll(1251, 31, 1) && !liveUpdates.Applied, "Class change waited for idle poll.");
 liveUpdates.Apply(31, 1, () => { });
 Check(liveUpdates.Poll(1252, 31, 2) && !liveUpdates.Applied, "Character change did not refresh layout.");
@@ -371,4 +387,4 @@ Check(liveUpdates.Poll(1253, 31, 2) && !liveUpdates.Applied, "Variant or cleanup
 checks += UpstreamMigrationTests.Run();
 checks += SeparationTests.Run();
 if (args.Length > 0) checks += EngineSchema.Verify(args[0], pack);
-Console.WriteLine($"Passed {checks} assertions across 512 job/variant combinations, burst handoff, shared-slot cleanup and transaction failure recovery.");
+Console.WriteLine($"Passed {checks} assertions across 512 PvE job/variant combinations (plus 336 PvP combinations with engine-schema verification), burst handoff, shared-slot cleanup and transaction failure recovery.");

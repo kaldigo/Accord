@@ -18,3 +18,6 @@ Accord.Plugin/bin/
 Accord.Plugin/obj/
 split-build.log
 accord-build.log
+
+tools/PvpSheetProbe/bin/
+tools/PvpSheetProbe/obj/

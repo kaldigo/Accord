@@ -58,3 +58,9 @@ For an action-level implementation decision, record: intent; initiating control 
 - Retain the agreed settings-first approach to resource banking. No broad reserve, HP-threshold or burst-alignment rewrite follows from this research.
 
 These are review priorities, not approval to implement every candidate. Before changing a job, reconcile its affected current-patch mechanics and trace the specific route in full. Final variants and revised layouts remain design work informed by this reference.
+
+## PvP research
+
+See [PvP setup research](pvp.md) and [21-job source/action inventory](pvp-inventory.json) for the 2026-10-17 evidence pass. PvP layouts and mode-isolated Bridge support remain to be implemented. Wrath hands-free PvP auto rotation remains unchanged.
+
+Detailed PvP review: [four-variant mappings](pvp-variant-mappings.md), [complete action-access ledger](pvp-action-ledger.json). All 21 source files reviewed; exact initiation/continuation splits are recorded. Run `python tools/validate-pvp-mappings.py` to detect source drift and check semantic action coverage.

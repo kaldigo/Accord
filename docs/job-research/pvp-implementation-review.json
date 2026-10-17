@@ -1,0 +1,117 @@
+{
+  "reviewed": "2026-10-17",
+  "upstream_commit": "5365eb1edc13654be945a624b2311a8b8541a599",
+  "hash_format": "UTF-8 text, BOM removed, newlines normalized to LF",
+  "jobs": {
+    "PLD": {
+      "source": "WrathCombo/Combos/PvP/PLDPVP.cs",
+      "source_sha256": "093b285e4f3e9eddf498b22b5e745bef1a04e651a258f5aeec1599e540f39236",
+      "inventory_source_sha256": "862ac1cfb3fcc33393099a27b5f1f2a407cebbddd9497fbcde7278adf38c3783"
+    },
+    "WAR": {
+      "source": "WrathCombo/Combos/PvP/WARPVP.cs",
+      "source_sha256": "6a6a71ca08cb81b5ba1c9133422300cf0c99d755f3f15366c7ac3942cd0c6f0b",
+      "inventory_source_sha256": "af53023b14134224928aed6b6466ac7e0c1155838c2cb789e7eb8f1935485a42"
+    },
+    "DRK": {
+      "source": "WrathCombo/Combos/PvP/DRKPVP.cs",
+      "source_sha256": "d9e8823a0aa7f4fa0f2ae358315736aeb7652ec518473c707cee7647ac808583",
+      "inventory_source_sha256": "b53a619eace7cf1fc75110f579d67dd68d0268d65c3e0f41d6b0f464a4393746"
+    },
+    "GNB": {
+      "source": "WrathCombo/Combos/PvP/GNBPVP.cs",
+      "source_sha256": "95a0874f0794dde619db5e2cec3442880a71dc58762bd4b2824ed24fab948ca7",
+      "inventory_source_sha256": "3b80feb909b05b6d8a7fe9f0992a1cfe2955a453af39d054dbff1a3034c47b85"
+    },
+    "WHM": {
+      "source": "WrathCombo/Combos/PvP/WHMPVP.cs",
+      "source_sha256": "f0f0d2396791a6ceed679b0434c7e689bc5163e9ac692b0b1055b0231a9ac205",
+      "inventory_source_sha256": "cea16dfcdd36d71931c10142aa44a9e877ec41a204d96609c1758405d0f05e31"
+    },
+    "SCH": {
+      "source": "WrathCombo/Combos/PvP/SCHPVP.cs",
+      "source_sha256": "a58e1f691a8571ae7e3e4b823b4fc99c2f047c03ab821550c49fc2e93a966dfc",
+      "inventory_source_sha256": "c3c5049f5fca415d44a518d5e5f1c72f74f35a3ccc446ac18678de1a696fbc03"
+    },
+    "AST": {
+      "source": "WrathCombo/Combos/PvP/ASTPVP.cs",
+      "source_sha256": "f4455d22231fdb35068c6d630dccd76f0733b79c858c2f6660956893c30a7e2d",
+      "inventory_source_sha256": "205bcc0db6c493fdca4794d3cf52b51e80b622dec6f71e49c264b4f1a1a45e85"
+    },
+    "SGE": {
+      "source": "WrathCombo/Combos/PvP/SGEPVP.cs",
+      "source_sha256": "c43291dd61a64f803921c4e90e4c3d7723fc639965e22fa7f57e0d76950a13c2",
+      "inventory_source_sha256": "e9b194c09c8ebddf3c834c687acffe6402ab697944c5e99d757024b4dba5863d"
+    },
+    "MNK": {
+      "source": "WrathCombo/Combos/PvP/MNKPVP.cs",
+      "source_sha256": "07a6da5382a6adbd287fcd93d94038071929162112d70d1c1dcf14927c21b1a2",
+      "inventory_source_sha256": "406d710cc34b1f1f60cedd3293edda319fb1b9d8e1f9147b39993572af96e96c"
+    },
+    "DRG": {
+      "source": "WrathCombo/Combos/PvP/DRGPVP.cs",
+      "source_sha256": "8bcc28d7491837d2da47bd426be6c3d409dff583ec2145a57662ecc062e94a93",
+      "inventory_source_sha256": "f1e242245d45e32d66af5b4458ce5258fa43f321665db02b781b5e8de594b206"
+    },
+    "NIN": {
+      "source": "WrathCombo/Combos/PvP/NINPVP.cs",
+      "source_sha256": "34f93ccd257fb6bae1878a741c4fc404d821287535f6a6aa3f78216851b7d2e6",
+      "inventory_source_sha256": "e9b77e0ec3276cf67a67156fed68c6fd044e13c9db81162123cc67d1c46f8373"
+    },
+    "SAM": {
+      "source": "WrathCombo/Combos/PvP/SAMPVP.cs",
+      "source_sha256": "42e0fd230f27a5caf1900a3791375323aa1d2d0ec918897d22ae6528850dc6c6",
+      "inventory_source_sha256": "6262f1618338dc1d49a9f0a4576ec9f077abdf7ce3fc7dfa059fed166fb69844"
+    },
+    "RPR": {
+      "source": "WrathCombo/Combos/PvP/RPRPVP.cs",
+      "source_sha256": "267715e968ff2f0f0484889aaa4d6b46dda7110e21aaf15b8f39bb7c030e2c0d",
+      "inventory_source_sha256": "8cd1fabd01109318257aa3288006ba7558b2903cbe010e240fd4074944ff023f"
+    },
+    "VPR": {
+      "source": "WrathCombo/Combos/PvP/VPRPVP.cs",
+      "source_sha256": "4168ab0983e8aba9ccb278283fb9775429445eaadfa86dcd5b29c7f9f0e1a559",
+      "inventory_source_sha256": "1263843e38fbe80931897edb5ac4d1df54f8a71d0125e1eefaa21c6396ab8798"
+    },
+    "BRD": {
+      "source": "WrathCombo/Combos/PvP/BRDPVP.cs",
+      "source_sha256": "4dddb383ab3450c8a8f8c53ebbb10127f8ac7b7a0c3e505d98c53cae11aaff09",
+      "inventory_source_sha256": "959a46b9772f382ef12b45e01ae8259d77e6e5fb937ff2e29b8dee157155b2b3"
+    },
+    "MCH": {
+      "source": "WrathCombo/Combos/PvP/MCHPVP.cs",
+      "source_sha256": "d0499584dfb1a4c8d27d6cc15bd4ed816433a9575fa77367ee89143232243ce1",
+      "inventory_source_sha256": "b464688f5e87421c4c1a7d8a8a5abb0e940eb84ff3b0030ebc8fcb0b7d18abe8"
+    },
+    "DNC": {
+      "source": "WrathCombo/Combos/PvP/DNCPVP.cs",
+      "source_sha256": "4430c18560cd9cfc13f835a6a3ad6b51ad4bdcbf66914a75fce76f000861fc1e",
+      "inventory_source_sha256": "13386524976eecd9d510866f81f1fd0de6dbc50cbb832d28287100f264f97529"
+    },
+    "BLM": {
+      "source": "WrathCombo/Combos/PvP/BLMPVP.cs",
+      "source_sha256": "2ef29760161d7d9895c0091eb2a037ab2bcdd4358a63b5f8d3622bc0bedaabb1",
+      "inventory_source_sha256": "5a11fdb0f3ad5b637396aac57043c800e1206bb2fbd138b7edf794ef5504dcd4"
+    },
+    "SMN": {
+      "source": "WrathCombo/Combos/PvP/SMNPvP.cs",
+      "source_sha256": "78debca278a9a38a99a440aa289d5a2721cfadca116b1576032237f1f89783d1",
+      "inventory_source_sha256": "8ff18663a6040037412209a782ec3fbaf77d4b90c055e1e0b8f55174f5f843b7"
+    },
+    "RDM": {
+      "source": "WrathCombo/Combos/PvP/RDMPVP.cs",
+      "source_sha256": "4e43fa37a25178410c47e2136e417873604786578fcf18cdc35cd71b6cc4e90c",
+      "inventory_source_sha256": "4955fb4f027056dcd9bc701cb71e3e72ca5e16cdc15ff2ecaf19ae09b29c628b"
+    },
+    "PCT": {
+      "source": "WrathCombo/Combos/PvP/PCTPVP.cs",
+      "source_sha256": "600b3e4f03a3b0d09b734029537298bb9643af2c36e356f9e243c60c75da9edb",
+      "inventory_source_sha256": "ba609d91f8c8a99d831cc055c0b1ab12522bbf4e6a67d1f58c9d4528738ca82c"
+    }
+  },
+  "hands_free_sources": {
+    "WrathCombo/AutoRotation/AutoRotationConfig.cs": "cfba38d1af10b0d98c6c8258ceb6c7a89a2a0ac2bba47047d010ec69571bec4b",
+    "WrathCombo/AutoRotation/AutoRotationConfigIPCWrapper.cs": "1e23fdce14b31da419527d6f6678be690628359337e7fa4eb6be6af6ca83e111",
+    "WrathCombo/AutoRotation/AutoRotationController.cs": "bab4d1ea23a8682ab2657c99ab186fd9431bcafe9ba240e20ee54463c7aaf175"
+  }
+}

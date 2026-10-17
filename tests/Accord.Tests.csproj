@@ -8,6 +8,7 @@
   <ItemGroup>
     <Compile Include="../Contract/*.cs" Link="Contract/%(Filename)%(Extension)" />
     <Reference Include="Dalamud"><HintPath>$(appdata)/XIVLauncher/addon/Hooks/dev/Dalamud.dll</HintPath></Reference>
+    <Compile Include="../Accord.Plugin/HotbarRefreshPolicy.cs" Link="HotbarRefreshPolicy.cs" />
     <Compile Include="../Accord.Plugin/LiveUpdateState.cs" Link="LiveUpdateState.cs" />
     <Compile Include="../Accord.Plugin/MigrationPreparation.cs" Link="MigrationPreparation.cs" />
     <Compile Include="../Accord.Plugin/AccordSettings.cs" Link="AccordSettings.cs" />
@@ -24,4 +25,6 @@
       <HintPath>$(appdata)/XIVLauncher/addon/Hooks/dev/Newtonsoft.Json.dll</HintPath>
     </Reference>
   </ItemGroup>
+  <ItemGroup><EmbeddedResource Include="../Accord.Plugin/pvp-presets.json" LogicalName="Accord.pvp-presets.json" /></ItemGroup>
+  <ItemGroup><Compile Include="../Accord.Plugin/PvPPack.cs" Link="PvPPack.cs" /></ItemGroup>
 </Project>

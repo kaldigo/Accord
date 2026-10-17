@@ -22,14 +22,24 @@ internal sealed class HotbarSetup
             throw new InvalidOperationException("Hotbar Bridge rejected layout routes.");
     }
 
+    private HashSet<Position> ProtectedSlots() => JsonSerializer.Deserialize<HashSet<Position>>(ReadBridge("PvP.GetProtectedSlots"))
+        ?? throw new InvalidDataException("Update Hotbar Bridge to protect bars carried between PvE and PvP.");
+
     internal sealed class Backup
     {
+        public bool PvP { get; set; }
         public string Character { get; set; } = "";
         public List<SlotEdit> Edits { get; set; } = new();
         public Dictionary<uint, Dictionary<string, Position>>? Routes { get; set; }
     }
 
-    internal unsafe string Apply(IEnumerable<(uint Job, JobPreset Preset)> jobs, bool cleanup)
+    internal string Apply(IEnumerable<(uint Job, JobPreset Preset)> jobs, bool cleanup) =>
+        PlanAndApply(jobs, cleanup, false).Backup!;
+
+    internal bool NeedsRefresh(uint job, JobPreset preset, bool cleanup) =>
+        PlanAndApply([(job, preset)], cleanup, true).Changed;
+
+    private unsafe (string? Backup, bool Changed) PlanAndApply(IEnumerable<(uint Job, JobPreset Preset)> jobs, bool cleanup, bool inspectOnly)
     {
         jobs = jobs.ToArray();
         uint current = (uint)Player.Job;
@@ -38,18 +48,21 @@ internal sealed class HotbarSetup
         bool bridge = BridgeLoaded;
         if (!bridge)
             throw new InvalidOperationException("Load Hotbar Bridge before applying compact hotbars, so controller routes and shared slots can be preserved.");
-        if (bridge && !Svc.PluginInterface.GetIpcSubscriber<bool>("HotbarBridge.BeginExternalEdit").InvokeFunc())
+        if (!inspectOnly && bridge && !Svc.PluginInterface.GetIpcSubscriber<bool>("HotbarBridge.BeginExternalEdit").InvokeFunc())
             throw new InvalidOperationException("Hotbar Bridge is busy. Try again.");
         try
         {
             var extras = jobs.Where(j => j.Preset.Slots.Any(s => s.LogicalSlot > 12))
                 .Select(j => ExtraJobMappings.For(j.Job)).ToArray();
-            if (bridge && extras.Length > 0 &&
+            if (!inspectOnly && bridge && extras.Length > 0 &&
                 !Svc.PluginInterface.GetIpcSubscriber<string, bool>("HotbarBridge.EnsureJobMappings").InvokeFunc(JsonSerializer.Serialize(extras)))
                 throw new InvalidOperationException("Update Hotbar Bridge to support the extra Paladin control.");
             List<SlotMap>? maps = bridge ? JsonSerializer.Deserialize<List<SlotMap>>(ReadBridge("GetMapping")) : null;
             if (bridge && maps is null) throw new InvalidDataException("Bridge mapping is unavailable.");
             if (maps is not null) Defaults.Validate(maps);
+            if (inspectOnly && extras.Any(extra => maps!.All(map => map.Id != extra.Id || map.JobId != extra.JobId)))
+                return (null, true);
+            var protectedSlots = ProtectedSlots();
             var oldRoutes = bridge ? JsonSerializer.Deserialize<Dictionary<uint, Dictionary<string, Position>>>(ReadBridge("GetJobRoutes"))
                 ?? throw new InvalidDataException("Bridge routes are unavailable.") : null;
             var routes = bridge ? new Dictionary<uint, Dictionary<string, Position>>() : null;
@@ -90,12 +103,12 @@ internal sealed class HotbarSetup
                 if (cleanup)
                     foreach (var edit in HotbarCleanup.Plan(job, keep, effectiveMaps,
                                  bar => NativeHotbars.Ready(current)->IsHotbarShared((uint)bar), p => NativeHotbars.Read(job, p)))
-                        edits.Add((job, edit.Position), edit);
+                        if (!protectedSlots.Contains(edit.Position)) edits.Add((job, edit.Position), edit);
 
                 void Add(Position position, SlotValue value, SlotValue retired, bool keyboard = false)
                 {
                     if (!position.Valid || !keep.Add(position)) throw new InvalidDataException("Invalid or duplicate layout destination.");
-                    if (effectiveMaps.Any(m => m.SharedAcrossJobs && (m.Regular == position || m.Cross == position)))
+                    if (protectedSlots.Contains(position) || effectiveMaps.Any(m => m.SharedAcrossJobs && (m.Regular == position || m.Cross == position)))
                         throw new InvalidOperationException($"{position} overlaps a protected shared Bridge slot.");
                     if (NativeHotbars.Ready(current)->IsHotbarShared((uint)position.Bar))
                         throw new InvalidOperationException($"{position} is a shared game hotbar. Choose job-specific bars first.");
@@ -107,25 +120,28 @@ internal sealed class HotbarSetup
                     if (old != value) edits.Add((job, position), new(job, position, old, value));
                 }
             }
-            return Commit(current, new Backup { Character = character, Edits = edits.Values.ToList(), Routes = beforeRoutes }, routes);
+            if (inspectOnly) return (null, HotbarRefreshPolicy.NeedsApply(edits.Count, routes!, oldRoutes!));
+            return (Commit(current, new Backup { Character = character, Edits = edits.Values.ToList(), Routes = beforeRoutes }, routes), true);
         }
         finally
         {
-            if (bridge) Svc.PluginInterface.GetIpcSubscriber<bool>("HotbarBridge.EndExternalEdit").InvokeFunc();
+            if (!inspectOnly && bridge) Svc.PluginInterface.GetIpcSubscriber<bool>("HotbarBridge.EndExternalEdit").InvokeFunc();
         }
     }
 
     private unsafe string Commit(uint current, Backup backup, Dictionary<uint, Dictionary<string, Position>>? routes)
     {
         NativeHotbars.Ready(current);
+        if (backup.PvP) throw new InvalidDataException("A PvP backup cannot be restored to PvE hotbars.");
         if (backup.Character != NativeHotbars.CharacterKey(Svc.PlayerState.ContentId))
             throw new InvalidOperationException("Character changed during hotbar setup.");
         if (backup.Edits.Select(e => (e.Job, e.Position)).Distinct().Count() != backup.Edits.Count)
             throw new InvalidDataException("Duplicate backup destinations.");
         List<SlotMap>? map = BridgeLoaded ? JsonSerializer.Deserialize<List<SlotMap>>(ReadBridge("GetMapping")) : null;
+        var protectedSlots = ProtectedSlots();
         foreach (var edit in backup.Edits)
         {
-            if (NativeHotbars.Ready(current)->IsHotbarShared((uint)edit.Position.Bar) ||
+            if (protectedSlots.Contains(edit.Position) || NativeHotbars.Ready(current)->IsHotbarShared((uint)edit.Position.Bar) ||
                 map?.Any(m => m.SharedAcrossJobs && (m.Regular == edit.Position || m.Cross == edit.Position)) == true)
                 throw new InvalidOperationException("A backup destination is now shared. Restore was blocked to protect shared controls.");
         }
@@ -157,6 +173,7 @@ internal sealed class HotbarSetup
     {
         uint current = (uint)Player.Job;
         var backup = JsonSerializer.Deserialize<Backup>(File.ReadAllText(path)) ?? throw new InvalidDataException("Invalid Accord hotbar backup.");
+        if (backup.PvP) throw new InvalidDataException("A PvP backup cannot be restored to PvE hotbars.");
         if (backup.Character != NativeHotbars.CharacterKey(Svc.PlayerState.ContentId))
             throw new InvalidOperationException("This backup belongs to another character.");
         if (backup.Routes is not null && !BridgeLoaded) throw new InvalidOperationException("Load Bridge to restore this backup's routes.");

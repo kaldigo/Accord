@@ -1,3 +1,5 @@
+using WrathCombo.Engine;
+using WrathFork.Contract;
 using WrathCombo.CustomComboNS;
 using WrathCombo.CustomComboNS.Functions;
 using WrathCombo.Extensions;
@@ -80,7 +82,7 @@ internal static class WARPvP
                 // Bloodwhetting condition (both WARPvP BurstMode and CanWeave)
                 if (IsEnabled(Preset.WARPvP_BurstMode_Bloodwhetting))
                 {
-                    if (!GetCooldown(Bloodwhetting).IsCooldown || canWeave && IsOffCooldown(Bloodwhetting))
+                    if (Options.Enabled(Feature.PvPWarBloodwhettingInitiation) && (!GetCooldown(Bloodwhetting).IsCooldown || canWeave && IsOffCooldown(Bloodwhetting)))
                         return OriginalHook(Bloodwhetting);
                 }
 
@@ -103,7 +105,7 @@ internal static class WARPvP
                     // PrimalRend if ready or BurstMode enabled
                     if (IsEnabled(Preset.WARPvP_BurstMode_PrimalRend))
                     {
-                        if ((IsOffCooldown(PrimalRend) || LocalPlayer.HasStatus(Buffs.PrimalRuinationReady)))
+                        if (((Options.Enabled(Feature.PvPWarRendInitiation) && IsOffCooldown(PrimalRend)) || LocalPlayer.HasStatus(Buffs.PrimalRuinationReady)))
                             return OriginalHook(PrimalRend);
                     }
 
@@ -130,7 +132,7 @@ internal static class WARPvP
                     // PrimalRend if ready or BurstMode enabled
                     if (IsEnabled(Preset.WARPvP_BurstMode_PrimalRend))
                     {
-                        if (IsOffCooldown(PrimalRend) || LocalPlayer.HasStatus(Buffs.PrimalRuinationReady))
+                        if ((Options.Enabled(Feature.PvPWarRendInitiation) && IsOffCooldown(PrimalRend)) || LocalPlayer.HasStatus(Buffs.PrimalRuinationReady))
                             return OriginalHook(PrimalRend);
                     }
 

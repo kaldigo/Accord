@@ -1,4 +1,6 @@
-﻿using WrathCombo.CustomComboNS;
+using WrathCombo.Engine;
+using WrathFork.Contract;
+using WrathCombo.CustomComboNS;
 using WrathCombo.CustomComboNS.Functions;
 using WrathCombo.Extensions;
 using WrathCombo.Native;
@@ -105,7 +107,7 @@ internal static class DRGPvP
                         return HorridRoar;
                 }
                        
-                if (IsEnabled(Preset.DRGPvP_Geirskogul) && IsOffCooldown(Geirskogul)) 
+                if (IsEnabled(Preset.DRGPvP_Geirskogul) && Options.Enabled(Feature.PvPDrgGeirskogulInitiation) && IsOffCooldown(Geirskogul))
                 {
                     if (IsEnabled(Preset.DRGPvP_BurstProtection) && WasLastAbility(ElusiveJump) && LocalPlayer.HasStatus(Buffs.FirstmindsFocus))// With evasive burst mode
                         return Geirskogul;

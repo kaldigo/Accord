@@ -1,3 +1,5 @@
+using WrathCombo.Engine;
+using WrathFork.Contract;
 using WrathCombo.Combos.PvE;
 using WrathCombo.CustomComboNS;
 using WrathCombo.CustomComboNS.Functions;
@@ -93,7 +95,7 @@ internal static class RPRPvP
             #region Variables
             bool canWeave = CanWeave();                    
             bool canBind = !CurrentTarget.HasStatus(PvPCommon.Debuffs.Bind);
-            bool deathWarrantReady = IsOffCooldown(DeathWarrant);
+            bool deathWarrantReady = Options.Enabled(Feature.PvPRprWarrantInitiation) && IsOffCooldown(DeathWarrant);
             bool plentifulReady = IsOffCooldown(PlentifulHarvest);
             bool enshrouded = LocalPlayer.HasStatus(Buffs.Enshrouded);
             float enshroudStacks = LocalPlayer.Status(Buffs.Enshrouded).Stacks;
@@ -162,7 +164,7 @@ internal static class RPRPvP
                              (plentifulReady && immortalStacks <= immortalThreshold - 2))) // if plentiful is ready, but 2 grim swathes away from having the immortal threshold. Early fight. 
                             return OriginalHook(DeathWarrant);
 
-                        if (plentifulReady && immortalStacks >= immortalThreshold &&
+                        if (Options.Enabled(Feature.PvPRprPlentifulInitiation) && plentifulReady && immortalStacks >= immortalThreshold &&
                             CurrentTarget.HasStatus(Debuffs.DeathWarrant) && InActionRange(PlentifulHarvest))
                             return PlentifulHarvest;
                     }

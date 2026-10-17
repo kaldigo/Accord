@@ -1,4 +1,6 @@
-﻿using Dalamud.Game.ClientState.Objects.Types;
+using WrathCombo.Engine;
+using WrathFork.Contract;
+using Dalamud.Game.ClientState.Objects.Types;
 using ECommons.DalamudServices;
 using WrathCombo.Combos.PvE;
 using WrathCombo.CustomComboNS;
@@ -188,11 +190,11 @@ internal static class BLMPvP
             if (inCombat)
             {
                 // Burst (Defensive)
-                if (IsEnabled(Preset.BLMPvP_Burst) && BLMPvP_Burst_SubOption && IsOffCooldown(Burst) && playerCurrentPercentHp < 50)
+                if (IsEnabled(Preset.BLMPvP_Burst) && BLMPvP_Burst_SubOption && Options.Enabled(Feature.PvPBlmDefensiveBurstInitiation) && IsOffCooldown(Burst) && playerCurrentPercentHp < 50)
                     return OriginalHook(Burst);
 
                 // Elemental Weave (Defensive)
-                if (IsEnabled(Preset.BLMPvP_ElementalWeave) && BLMPvP_ElementalWeave_SubOption &&
+                if (IsEnabled(Preset.BLMPvP_ElementalWeave) && BLMPvP_ElementalWeave_SubOption && Options.Enabled(Feature.PvPBlmDefensiveWeaveInitiation) &&
                     IsOffCooldown(ElementalWeave) && hasUmbralIce && playerCurrentPercentHp < BLMPvP_ElementalWeave_PlayerHP)
                     return OriginalHook(ElementalWeave);
             }
@@ -200,7 +202,7 @@ internal static class BLMPvP
             if (hasTarget && !targetHasImmunity)
             {
                 // Elemental Weave (Offensive)
-                if (IsEnabled(Preset.BLMPvP_ElementalWeave) && IsOffCooldown(ElementalWeave) && hasAstralFire &&
+                if (IsEnabled(Preset.BLMPvP_ElementalWeave) && Options.Enabled(Feature.PvPBlmOffensiveWeaveInitiation) && IsOffCooldown(ElementalWeave) && hasAstralFire &&
                     playerCurrentPercentHp >= BLMPvP_ElementalWeave_PlayerHP)
                     return OriginalHook(ElementalWeave);
 
@@ -222,7 +224,7 @@ internal static class BLMPvP
                         return Role.PhantomDart;
 
                     // Burst (Offensive)
-                    if (IsEnabled(Preset.BLMPvP_Burst) && IsOffCooldown(Burst) && InActionRange(Burst))
+                    if (IsEnabled(Preset.BLMPvP_Burst) && Options.Enabled(Feature.PvPBlmOffensiveBurstInitiation) && IsOffCooldown(Burst) && InActionRange(Burst))
                         return OriginalHook(Burst);
 
                     // Flare Star / Frost Star
@@ -233,11 +235,11 @@ internal static class BLMPvP
                     if (IsEnabled(Preset.BLMPvP_Xenoglossy) && chargesXenoglossy > 0)
                     {
                         // Defensive
-                        if (BLMPvP_Xenoglossy_SubOption && playerCurrentPercentHp < 50)
+                        if (BLMPvP_Xenoglossy_SubOption && Options.Enabled(Feature.PvPBlmDefensiveXenoInitiation) && playerCurrentPercentHp < 50)
                             return OriginalHook(Xenoglossy);
 
                         // Offensive
-                        if (!isResonanceExpiring && (isTargetNPC ? chargesXenoglossy > 1 && hasWreathOfFire : targetCurrentPercentHp < BLMPvP_Xenoglossy_TargetHP))
+                        if (Options.Enabled(Feature.PvPBlmOffensiveXenoInitiation) && !isResonanceExpiring && (isTargetNPC ? chargesXenoglossy > 1 && hasWreathOfFire : targetCurrentPercentHp < BLMPvP_Xenoglossy_TargetHP))
                             return OriginalHook(Xenoglossy);
                     }
                 }

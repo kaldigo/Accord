@@ -22,21 +22,28 @@ internal sealed class SetupController : IDisposable
     private readonly HotbarSetup hotbars = new();
     private readonly List<IDtrBarEntry> entries = new();
     private readonly LiveUpdateState updates = new();
-    internal string Status { get; private set; } = "Waiting for a character.";
+    private string status = "Waiting for a character.";
+    internal string Status { get => status; private set => status=value; }
+    internal PvPSetup PvP { get; }
+    internal static unsafe bool IsPvP => FFXIVClientStructs.FFXIV.Client.UI.Misc.RaptureHotbarModule.Instance()!=null && FFXIVClientStructs.FFXIV.Client.UI.Misc.RaptureHotbarModule.Instance()->PvPHotbarsActive;
+    private bool previousPvP;
+    internal bool Live => IsPvP ? PvP.Settings.LiveMode : Settings.LiveMode;
+    internal bool VariantEnabled(VariantId id) => IsPvP ? PvP.Settings.Enabled(id) : Settings.Enabled(id);
     internal AccordSettings Settings => Plugin.Instance.Settings;
     private readonly EngineClient engine;
     private bool disposed;
-    internal static bool Enabled(VariantId id) => Instance?.Settings.Enabled(id) ?? false;
+    internal static bool Enabled(VariantId id) => Instance?.VariantEnabled(id) ?? false;
 
     internal SetupController()
     {
         Instance = this;
-        engine = new EngineClient(updates.Wake);
+        engine = new EngineClient(() => {updates.Wake(); PvP?.Invalidate();});
+        PvP = new PvPSetup(engine);
         foreach (var definition in VariantDefinitions.All)
         {
             var entry = Svc.DtrBar.Get("Accord " + definition.Label);
             entry.Shown = false;
-            entry.OnClick = _ => Run(() => SetVariant(definition.Id, !Settings.Enabled(definition.Id)));
+            entry.OnClick = _ => Run(() => SetVariant(definition.Id, !VariantEnabled(definition.Id)));
             entry.Tooltip = definition.Label + ": click to switch A/M.\n" + definition.Description;
             entries.Add(entry);
         }
@@ -63,6 +70,7 @@ internal sealed class SetupController : IDisposable
 
     internal void Tick()
     {
+        if (IsPvP != previousPvP) { previousPvP=IsPvP; updates.Request(); PvP.Invalidate(); }
         uint observed = Player.Available ? (uint)Player.Job : 0;
         ulong observedId = Player.Available && Svc.ClientState.IsLoggedIn ? Svc.PlayerState.ContentId : 0;
         if (!updates.Poll(Environment.TickCount64, observed, observedId)) return;
@@ -78,6 +86,7 @@ internal sealed class SetupController : IDisposable
         }
         if (Plugin.Instance.MigrationPending) return;
         UpdateEntries();
+        if(IsPvP){PvP.Tick();Status=PvP.Status;return;}
         if (!Player.Available || !Svc.ClientState.IsLoggedIn)
         {
             updates.Invalidate();
@@ -101,7 +110,22 @@ internal sealed class SetupController : IDisposable
         if (Settings.EngineConfigurationId != snapshot.Value<string>("ConfigurationId")) updates.Invalidate();
         uint job = (uint)Player.Job;
         ulong contentId = Svc.PlayerState.ContentId;
-        if (updates.Applied) return;
+        if (Svc.Condition[Dalamud.Game.ClientState.Conditions.ConditionFlag.BetweenAreas] ||
+            Svc.Condition[Dalamud.Game.ClientState.Conditions.ConditionFlag.BetweenAreas51])
+        {
+            Status = "Live layout waiting for loading to finish.";
+            return;
+        }
+        if (updates.Applied)
+        {
+            if (Settings.LiveMode)
+            {
+                if (hotbars.NeedsRefresh(job, Pack.Resolve(Pack.Find(job)!, Settings), Settings.ClearOtherActions))
+                    ApplyCurrentHotbars(prepareSettings: false);
+                else Status = "Live layout up to date; watching for hotbar changes.";
+            }
+            return;
+        }
         if (contentId == 0 || Pack.Find(job) is null) return;
         // Wait for the game to finish activating this job before consuming the transition.
         unsafe { NativeHotbars.Ready(job); }
@@ -231,6 +255,7 @@ internal sealed class SetupController : IDisposable
 
     internal void SetVariant(VariantId id, bool enabled)
     {
+        if(IsPvP){PvP.SetVariant(id,enabled);Status=PvP.Status;UpdateEntries();return;}
         var desired = CloneSettings();
         desired.Variants[id] = enabled;
         ApplySettings(Pack.SelectedJobs(desired), desired);
@@ -240,6 +265,7 @@ internal sealed class SetupController : IDisposable
 
     internal void SetLive(bool live)
     {
+        if(IsPvP){PvP.SetLive(live);Status=PvP.Status;UpdateEntries();return;}
         if (live && Pack.SelectedJobs(Settings).Length == 0)
             throw new InvalidOperationException("Select at least one active class first.");
         Mutate(() => Settings.LiveMode = live);
@@ -249,6 +275,7 @@ internal sealed class SetupController : IDisposable
 
     internal void SetCleanup(bool value)
     {
+        if(IsPvP){PvP.SetCleanup(value);Status=PvP.Status;UpdateEntries();return;}
         Mutate(() => Settings.ClearOtherActions = value);
         if (Settings.LiveMode) RequestCurrentHotbars();
     }
@@ -261,6 +288,7 @@ internal sealed class SetupController : IDisposable
 
     internal void SetActiveJobs(IEnumerable<uint> jobs)
     {
+        if(IsPvP){PvP.SetJobs(jobs);Status=PvP.Status;UpdateEntries();return;}
         var desired = CloneSettings();
         desired.ActiveJobs = jobs.Select(id => Pack.Find(id)?.JobId).Where(id => id.HasValue)
             .Select(id => id!.Value).ToHashSet();
@@ -270,20 +298,20 @@ internal sealed class SetupController : IDisposable
         else Status = "Active classes saved. Existing hotbars retained; deselected classes will receive no further Accord updates.";
     }
 
-    internal void ApplyHotbars() => ApplyHotbars(Pack.SelectedJobs(Settings), null);
-    private void ApplyCurrentHotbars()
+    internal void ApplyHotbars() {if(IsPvP){PvP.ApplySelected();Status=PvP.Status;return;} ApplyHotbars(Pack.SelectedJobs(Settings), null);}
+    private void ApplyCurrentHotbars(bool prepareSettings = true)
     {
         uint job = (uint)Player.Job;
-        if (Pack.IsActive(job, Settings)) ApplyHotbars([Pack.Find(job)!], job);
+        if (Pack.IsActive(job, Settings)) ApplyHotbars([Pack.Find(job)!], job, prepareSettings);
     }
 
-    private unsafe void ApplyHotbars(JobPreset[] selected, uint? currentClass)
+    private unsafe void ApplyHotbars(JobPreset[] selected, uint? currentClass, bool prepareSettings = true)
     {
         if (selected.Length == 0) throw new InvalidOperationException("Select at least one active class first.");
         if (!Player.Available || Svc.PlayerState.ContentId == 0) throw new InvalidOperationException("Log in before applying hotbars.");
         uint job = (uint)Player.Job;
         NativeHotbars.Ready(job);
-        Prepare(selected);
+        if (prepareSettings) Prepare(selected);
         var layouts = selected.SelectMany(p => (currentClass is null ? new[] { p.JobId }.Concat(p.BaseClasses) : [currentClass.Value])
             .Select(id => (id, Pack.Resolve(p, Settings))));
         var backup = hotbars.Apply(layouts, Settings.ClearOtherActions);
@@ -294,6 +322,7 @@ internal sealed class SetupController : IDisposable
 
     internal void Restore()
     {
+        if(IsPvP){PvP.Restore();Status=PvP.Status;UpdateEntries();return;}
         if (string.IsNullOrWhiteSpace(Settings.LastHotbarBackup)) throw new InvalidOperationException("No hotbar backup has been recorded.");
         var undo = hotbars.Restore(Settings.LastHotbarBackup);
         try { Mutate(() => { Settings.LastHotbarBackup = undo; Settings.LiveMode = false; }); }
@@ -303,6 +332,7 @@ internal sealed class SetupController : IDisposable
 
     internal void ResetSelectedSettings()
     {
+        if(IsPvP){PvP.Reset();Status=PvP.Status;UpdateEntries();return;}
         var selected = Pack.SelectedJobs(Settings);
         if (selected.Length == 0) throw new InvalidOperationException("Select at least one active class first.");
         Prepare(selected, reset: true);
@@ -329,10 +359,10 @@ internal sealed class SetupController : IDisposable
     {
         for (int i = 0; i < entries.Count; i++)
         {
-            entries[i].Shown = Player.Available && Pack.IsActive((uint)Player.Job, Settings);
+            entries[i].Shown = Player.Available && (IsPvP ? PvP.Active((uint)Player.Job) : Pack.IsActive((uint)Player.Job, Settings));
             var definition = VariantDefinitions.All[i];
             entries[i].Text = new SeStringBuilder().AddIcon(Enum.Parse<BitmapFontIcon>(definition.Icon))
-                .AddText(" " + (Settings.Enabled(definition.Id) ? "A" : "M")).Build();
+                .AddText(" " + (VariantEnabled(definition.Id) ? "A" : "M")).Build();
         }
     }
 

@@ -254,9 +254,13 @@ public static class KeyboardLayout
             (Defaults.IsCombat(preset.JobId) && !healer && s.LogicalSlot==4 && s.Action!="Empty"))
             .Select(s=>new Position(s.RegularBar-1,s.RegularSlot-1)).ToHashSet();
         var actions=preset.Slots.Where(s=>s.Action!="Empty").Select(s=>new Position(s.RegularBar-1,s.RegularSlot-1)).ToHashSet();
-        var available=Positions.Where(p=>!locked.Contains(p)).ToArray();
-        var ordered=available.Where(actions.Contains).Concat(available.Where(p=>!actions.Contains(p))).ToArray();
-        for(var i=0;i<available.Length;i++)result[ordered[i]]=available[i];
+        // Compact each bar independently; an empty slot is not permission to move a function between bars.
+        foreach(var bar in Positions.GroupBy(p=>p.Bar))
+        {
+            var available=bar.Where(p=>!locked.Contains(p)).ToArray();
+            var ordered=available.Where(actions.Contains).Concat(available.Where(p=>!actions.Contains(p))).ToArray();
+            for(var i=0;i<available.Length;i++)result[ordered[i]]=available[i];
+        }
         return result;
     }
 }

@@ -1,4 +1,6 @@
-﻿using WrathCombo.CustomComboNS;
+using WrathCombo.Engine;
+using WrathFork.Contract;
+using WrathCombo.CustomComboNS;
 using WrathCombo.CustomComboNS.Functions;
 using WrathCombo.Extensions;
 using WrathCombo.Native;
@@ -103,7 +105,7 @@ internal static class PCTPvP
             // Tempera Coat / Tempera Grassa
             if (IsEnabled(Preset.PCTPvP_TemperaCoat))
             {
-                if (IsOffCooldown(TemperaCoat) &&
+                if (Options.Enabled(Feature.PvPPctCoatInitiation) && IsOffCooldown(TemperaCoat) &&
                     InCombat() && PlayerHealthPercentageHp() < PCTPvP_TemperaHP || isTemperaCoatExpiring)
                     return OriginalHook(TemperaCoat);
             }

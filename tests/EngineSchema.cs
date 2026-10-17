@@ -138,6 +138,10 @@ internal static class EngineSchema
         if ((string?)pluginType.GetField("Command", BindingFlags.NonPublic | BindingFlags.Static)!.GetRawConstantValue() != "/wrath") throw new Exception("Fork changed the upstream /wrath command.");
         if ((string?)pluginType.GetField("OldCommand", BindingFlags.NonPublic | BindingFlags.Static)!.GetRawConstantValue() != "/scombo") throw new Exception("Fork removed the upstream /scombo alias.");
         count += 2;
+        count += PvPTests.Run(snapshot,names,ids,(before,after)=>{
+            var warnings=(JArray)validate.Invoke(null,new object[]{before,after})!;
+            if(warnings.Values<string>().Any(w=>w!.Contains("PvP")))throw new Exception("Inactive PvP parent: "+warnings);
+        });
         return count;
     }
 }

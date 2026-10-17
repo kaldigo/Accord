@@ -1,0 +1,3139 @@
+[
+  {
+    "JobId": 19,
+    "Job": "PLD",
+    "Descriptions": {
+      "Burst": "Imperator",
+      "Protection": "Holy Sheltron; self-heal Holy Spirit policy",
+      "Support": "None; Guardian stays selected-ally intent",
+      "ClassMechanics": "None"
+    },
+    "Controls": [
+      {
+        "Name": "Fast Blade combo",
+        "Binding": {
+          "Type": 26,
+          "Id": 50
+        },
+        "Intent": "Maintain damage",
+        "Custom": "SingleTargetDPS"
+      },
+      {
+        "Name": "Shield Smite",
+        "Binding": {
+          "Type": 1,
+          "Id": 41430
+        },
+        "Intent": "stun now"
+      },
+      {
+        "Name": "Holy Spirit",
+        "Binding": {
+          "Type": 1,
+          "Id": 29062
+        },
+        "Intent": "ranged damage or self healing"
+      },
+      {
+        "Name": "Imperator",
+        "Binding": {
+          "Type": 1,
+          "Id": 41431
+        },
+        "Intent": "Manual entry signals this intent; retain appropriate follow-through on the combat selector.",
+        "Variant": "Burst"
+      },
+      {
+        "Name": "Intervene",
+        "Binding": {
+          "Type": 1,
+          "Id": 29065
+        },
+        "Intent": "move to target"
+      },
+      {
+        "Name": "Holy Sheltron",
+        "Binding": {
+          "Type": 1,
+          "Id": 29067
+        },
+        "Intent": "Manual entry signals this intent; retain appropriate follow-through on the combat selector.",
+        "Variant": "Protection"
+      },
+      {
+        "Name": "Guardian",
+        "Binding": {
+          "Type": 1,
+          "Id": 29066
+        },
+        "Intent": "protect chosen ally"
+      },
+      {
+        "Name": "Phalanx",
+        "Binding": {
+          "Type": 1,
+          "Id": 29069
+        },
+        "Intent": "Deliberate limit-break initiation, with its native follow-through available."
+      },
+      {
+        "Name": "Standard-issue Elixir",
+        "Binding": {
+          "Type": 1,
+          "Id": 29055
+        },
+        "Intent": "Deliberate recovery, defence, cleanse or movement; never removed by variants."
+      },
+      {
+        "Name": "Recuperate",
+        "Binding": {
+          "Type": 1,
+          "Id": 29711
+        },
+        "Intent": "Deliberate recovery, defence, cleanse or movement; never removed by variants."
+      },
+      {
+        "Name": "Purify",
+        "Binding": {
+          "Type": 1,
+          "Id": 29056
+        },
+        "Intent": "Deliberate recovery, defence, cleanse or movement; never removed by variants."
+      },
+      {
+        "Name": "Guard",
+        "Binding": {
+          "Type": 1,
+          "Id": 29054
+        },
+        "Intent": "Deliberate recovery, defence, cleanse or movement; never removed by variants."
+      },
+      {
+        "Name": "Sprint",
+        "Binding": {
+          "Type": 1,
+          "Id": 29057
+        },
+        "Intent": "Deliberate recovery, defence, cleanse or movement; never removed by variants."
+      },
+      {
+        "Name": "Selected PvP role action",
+        "Binding": {
+          "Type": 1,
+          "Id": 43259
+        },
+        "Intent": "Use selected role action"
+      }
+    ],
+    "Always": [
+      "PLDPvP_Burst",
+      "PLDPvP_Confiteor",
+      "PLDPvP_PhalanxCombo"
+    ],
+    "Variants": {
+      "Burst": [
+        "PLDPvP_Imperator"
+      ],
+      "Protection": [
+        "PLDPvP_Sheltron",
+        "PLDPvP_HolySpirit",
+        "PLDPvP_Rampart"
+      ],
+      "Support": [],
+      "ClassMechanics": []
+    },
+    "Manual": [
+      "PLDPvP_Intervene",
+      "PLDPvP_Intervene_Melee",
+      "PLDPvP_ShieldSmite"
+    ],
+    "Features": {},
+    "RequiredBools": [],
+    "RequiredInts": {},
+    "RecipientFeatures": []
+  },
+  {
+    "JobId": 21,
+    "Job": "WAR",
+    "Descriptions": {
+      "Burst": "Primal Rend, offensive Onslaught/Orogeny",
+      "Protection": "Bloodwhetting",
+      "Support": "None",
+      "ClassMechanics": "None"
+    },
+    "Controls": [
+      {
+        "Name": "Heavy Swing combo",
+        "Binding": {
+          "Type": 26,
+          "Id": 51
+        },
+        "Intent": "Maintain damage",
+        "Custom": "SingleTargetDPS"
+      },
+      {
+        "Name": "Primal Rend",
+        "Binding": {
+          "Type": 1,
+          "Id": 29084
+        },
+        "Intent": "Manual entry signals this intent; retain appropriate follow-through on the combat selector.",
+        "Variant": "Burst"
+      },
+      {
+        "Name": "Onslaught",
+        "Binding": {
+          "Type": 1,
+          "Id": 29079
+        },
+        "Intent": "move to target"
+      },
+      {
+        "Name": "Orogeny",
+        "Binding": {
+          "Type": 1,
+          "Id": 29080
+        },
+        "Intent": "Manual entry signals this intent; retain appropriate follow-through on the combat selector.",
+        "Variant": "Burst"
+      },
+      {
+        "Name": "Blota",
+        "Binding": {
+          "Type": 1,
+          "Id": 29081
+        },
+        "Intent": "pull target"
+      },
+      {
+        "Name": "Bloodwhetting",
+        "Binding": {
+          "Type": 1,
+          "Id": 29082
+        },
+        "Intent": "Manual entry signals this intent; retain appropriate follow-through on the combat selector.",
+        "Variant": "Protection"
+      },
+      {
+        "Name": "Primal Scream",
+        "Binding": {
+          "Type": 1,
+          "Id": 29083
+        },
+        "Intent": "Deliberate limit-break initiation, with its native follow-through available."
+      },
+      {
+        "Name": "Standard-issue Elixir",
+        "Binding": {
+          "Type": 1,
+          "Id": 29055
+        },
+        "Intent": "Deliberate recovery, defence, cleanse or movement; never removed by variants."
+      },
+      {
+        "Name": "Recuperate",
+        "Binding": {
+          "Type": 1,
+          "Id": 29711
+        },
+        "Intent": "Deliberate recovery, defence, cleanse or movement; never removed by variants."
+      },
+      {
+        "Name": "Purify",
+        "Binding": {
+          "Type": 1,
+          "Id": 29056
+        },
+        "Intent": "Deliberate recovery, defence, cleanse or movement; never removed by variants."
+      },
+      {
+        "Name": "Guard",
+        "Binding": {
+          "Type": 1,
+          "Id": 29054
+        },
+        "Intent": "Deliberate recovery, defence, cleanse or movement; never removed by variants."
+      },
+      {
+        "Name": "Sprint",
+        "Binding": {
+          "Type": 1,
+          "Id": 29057
+        },
+        "Intent": "Deliberate recovery, defence, cleanse or movement; never removed by variants."
+      },
+      {
+        "Name": "Selected PvP role action",
+        "Binding": {
+          "Type": 1,
+          "Id": 43259
+        },
+        "Intent": "Use selected role action"
+      }
+    ],
+    "Always": [
+      "WARPvP_BurstMode",
+      "WARPvP_BurstMode_Bloodwhetting",
+      "WARPvP_BurstMode_PrimalRend",
+      "WARPvP_BurstMode_InnerChaos",
+      "WARPvP_BurstMode_PrimalScream"
+    ],
+    "Variants": {
+      "Burst": [
+        "WARPvP_BurstMode_Onslaught",
+        "WARPvP_BurstMode_Orogeny"
+      ],
+      "Protection": [
+        "WARPvP_Rampart"
+      ],
+      "Support": [],
+      "ClassMechanics": []
+    },
+    "Manual": [
+      "WARPvP_BurstMode_Blota"
+    ],
+    "Features": {
+      "PvPWarBloodwhettingInitiation": "Protection",
+      "PvPWarRendInitiation": "Burst"
+    },
+    "RequiredBools": [],
+    "RequiredInts": {},
+    "RecipientFeatures": []
+  },
+  {
+    "JobId": 32,
+    "Job": "DRK",
+    "Descriptions": {
+      "Burst": "Shadowbringer",
+      "Protection": "The Blackest Night self use, Salted Earth, Impalement",
+      "Support": "None; selected-ally Blackest Night remains accessible",
+      "ClassMechanics": "None"
+    },
+    "Controls": [
+      {
+        "Name": "Hard Slash combo",
+        "Binding": {
+          "Type": 26,
+          "Id": 52
+        },
+        "Intent": "Maintain damage",
+        "Custom": "SingleTargetDPS"
+      },
+      {
+        "Name": "Impalement",
+        "Binding": {
+          "Type": 1,
+          "Id": 41438
+        },
+        "Intent": "Manual entry signals this intent; retain appropriate follow-through on the combat selector.",
+        "Variant": "Protection"
+      },
+      {
+        "Name": "Shadowbringer",
+        "Binding": {
+          "Type": 1,
+          "Id": 29091
+        },
+        "Intent": "Manual entry signals this intent; retain appropriate follow-through on the combat selector.",
+        "Variant": "Burst"
+      },
+      {
+        "Name": "Plunge",
+        "Binding": {
+          "Type": 1,
+          "Id": 29092
+        },
+        "Intent": "move to target"
+      },
+      {
+        "Name": "The Blackest Night",
+        "Binding": {
+          "Type": 1,
+          "Id": 29093
+        },
+        "Intent": "shield chosen ally"
+      },
+      {
+        "Name": "Salted Earth",
+        "Binding": {
+          "Type": 1,
+          "Id": 29094
+        },
+        "Intent": "Manual entry signals this intent; retain appropriate follow-through on the combat selector.",
+        "Variant": "Protection"
+      },
+      {
+        "Name": "Eventide",
+        "Binding": {
+          "Type": 1,
+          "Id": 29097
+        },
+        "Intent": "Deliberate limit-break initiation, with its native follow-through available."
+      },
+      {
+        "Name": "Standard-issue Elixir",
+        "Binding": {
+          "Type": 1,
+          "Id": 29055
+        },
+        "Intent": "Deliberate recovery, defence, cleanse or movement; never removed by variants."
+      },
+      {
+        "Name": "Recuperate",
+        "Binding": {
+          "Type": 1,
+          "Id": 29711
+        },
+        "Intent": "Deliberate recovery, defence, cleanse or movement; never removed by variants."
+      },
+      {
+        "Name": "Purify",
+        "Binding": {
+          "Type": 1,
+          "Id": 29056
+        },
+        "Intent": "Deliberate recovery, defence, cleanse or movement; never removed by variants."
+      },
+      {
+        "Name": "Guard",
+        "Binding": {
+          "Type": 1,
+          "Id": 29054
+        },
+        "Intent": "Deliberate recovery, defence, cleanse or movement; never removed by variants."
+      },
+      {
+        "Name": "Sprint",
+        "Binding": {
+          "Type": 1,
+          "Id": 29057
+        },
+        "Intent": "Deliberate recovery, defence, cleanse or movement; never removed by variants."
+      },
+      {
+        "Name": "Selected PvP role action",
+        "Binding": {
+          "Type": 1,
+          "Id": 43259
+        },
+        "Intent": "Use selected role action"
+      }
+    ],
+    "Always": [
+      "DRKPvP_Burst",
+      "DRKPvP_SaltAndDarkness",
+      "DRKPvP_Scorn"
+    ],
+    "Variants": {
+      "Burst": [
+        "DRKPvP_Shadowbringer"
+      ],
+      "Protection": [
+        "DRKPvP_BlackestNight",
+        "DRKPvP_SaltedEarth",
+        "DRKPvP_Impalement",
+        "DRKPvP_Rampart"
+      ],
+      "Support": [],
+      "ClassMechanics": []
+    },
+    "Manual": [
+      "DRKPvP_Plunge",
+      "DRKPvP_PlungeMelee"
+    ],
+    "Features": {},
+    "RequiredBools": [],
+    "RequiredInts": {},
+    "RecipientFeatures": []
+  },
+  {
+    "JobId": 37,
+    "Job": "GNB",
+    "Descriptions": {
+      "Burst": "Rough Divide's No Mercy entry, Gnashing Fang, Fated Circle, Blasting Zone",
+      "Protection": "Heart of Corundum self use",
+      "Support": "None; selected-ally Corundum remains accessible",
+      "ClassMechanics": "None"
+    },
+    "Controls": [
+      {
+        "Name": "Keen Edge combo",
+        "Binding": {
+          "Type": 26,
+          "Id": 53
+        },
+        "Intent": "Maintain damage",
+        "Custom": "SingleTargetDPS"
+      },
+      {
+        "Name": "Gnashing Fang",
+        "Binding": {
+          "Type": 1,
+          "Id": 29102
+        },
+        "Intent": "Manual entry signals this intent; retain appropriate follow-through on the combat selector.",
+        "Variant": "Burst"
+      },
+      {
+        "Name": "Fated Circle",
+        "Binding": {
+          "Type": 1,
+          "Id": 41511
+        },
+        "Intent": "Manual entry signals this intent; retain appropriate follow-through on the combat selector.",
+        "Variant": "Burst"
+      },
+      {
+        "Name": "Rough Divide",
+        "Binding": {
+          "Type": 1,
+          "Id": 29123
+        },
+        "Intent": "move to target"
+      },
+      {
+        "Name": "Blasting Zone",
+        "Binding": {
+          "Type": 1,
+          "Id": 29128
+        },
+        "Intent": "Manual entry signals this intent; retain appropriate follow-through on the combat selector.",
+        "Variant": "Burst"
+      },
+      {
+        "Name": "Heart of Corundum",
+        "Binding": {
+          "Type": 1,
+          "Id": 41443
+        },
+        "Intent": "protect chosen ally"
+      },
+      {
+        "Name": "Relentless Rush",
+        "Binding": {
+          "Type": 1,
+          "Id": 29130
+        },
+        "Intent": "Deliberate limit-break initiation, with its native follow-through available."
+      },
+      {
+        "Name": "Standard-issue Elixir",
+        "Binding": {
+          "Type": 1,
+          "Id": 29055
+        },
+        "Intent": "Deliberate recovery, defence, cleanse or movement; never removed by variants."
+      },
+      {
+        "Name": "Recuperate",
+        "Binding": {
+          "Type": 1,
+          "Id": 29711
+        },
+        "Intent": "Deliberate recovery, defence, cleanse or movement; never removed by variants."
+      },
+      {
+        "Name": "Purify",
+        "Binding": {
+          "Type": 1,
+          "Id": 29056
+        },
+        "Intent": "Deliberate recovery, defence, cleanse or movement; never removed by variants."
+      },
+      {
+        "Name": "Guard",
+        "Binding": {
+          "Type": 1,
+          "Id": 29054
+        },
+        "Intent": "Deliberate recovery, defence, cleanse or movement; never removed by variants."
+      },
+      {
+        "Name": "Sprint",
+        "Binding": {
+          "Type": 1,
+          "Id": 29057
+        },
+        "Intent": "Deliberate recovery, defence, cleanse or movement; never removed by variants."
+      },
+      {
+        "Name": "Selected PvP role action",
+        "Binding": {
+          "Type": 1,
+          "Id": 43259
+        },
+        "Intent": "Use selected role action"
+      }
+    ],
+    "Always": [
+      "GNBPvP_Burst",
+      "GNBPvP_ST_GnashingFang",
+      "GNBPvP_ST_Continuation"
+    ],
+    "Variants": {
+      "Burst": [
+        "GNBPvP_RoughDivide",
+        "GNBPvP_FatedCircle",
+        "GNBPvP_BlastingZone"
+      ],
+      "Protection": [
+        "GNBPvP_Corundum",
+        "GNBPvP_Rampart"
+      ],
+      "Support": [],
+      "ClassMechanics": []
+    },
+    "Manual": [],
+    "Features": {
+      "PvPGnbGnashingInitiation": "Burst"
+    },
+    "RequiredBools": [],
+    "RequiredInts": {},
+    "RecipientFeatures": []
+  },
+  {
+    "JobId": 24,
+    "Job": "WHM",
+    "Descriptions": {
+      "Burst": "Seraph Strike, Afflatus Misery",
+      "Protection": "None beyond common controls",
+      "Support": "Cure II/III and Aquaveil on Glare, with resolved ally",
+      "ClassMechanics": "None"
+    },
+    "Controls": [
+      {
+        "Name": "Glare III",
+        "Binding": {
+          "Type": 1,
+          "Id": 29223
+        },
+        "Intent": "Maintain damage",
+        "Custom": "SingleTargetDPS"
+      },
+      {
+        "Name": "Cure II",
+        "Binding": {
+          "Type": 1,
+          "Id": 29224
+        },
+        "Intent": "heal chosen ally"
+      },
+      {
+        "Name": "Afflatus Misery",
+        "Binding": {
+          "Type": 1,
+          "Id": 29226
+        },
+        "Intent": "Manual entry signals this intent; retain appropriate follow-through on the combat selector.",
+        "Variant": "Burst"
+      },
+      {
+        "Name": "Aquaveil",
+        "Binding": {
+          "Type": 1,
+          "Id": 29227
+        },
+        "Intent": "barrier and cleanse chosen ally"
+      },
+      {
+        "Name": "Miracle of Nature",
+        "Binding": {
+          "Type": 1,
+          "Id": 29228
+        },
+        "Intent": "interrupt/control now"
+      },
+      {
+        "Name": "Seraph Strike",
+        "Binding": {
+          "Type": 1,
+          "Id": 29229
+        },
+        "Intent": "move to enemy"
+      },
+      {
+        "Name": "Afflatus Purgation",
+        "Binding": {
+          "Type": 1,
+          "Id": 29230
+        },
+        "Intent": "Deliberate limit-break initiation, with its native follow-through available."
+      },
+      {
+        "Name": "Standard-issue Elixir",
+        "Binding": {
+          "Type": 1,
+          "Id": 29055
+        },
+        "Intent": "Deliberate recovery, defence, cleanse or movement; never removed by variants."
+      },
+      {
+        "Name": "Recuperate",
+        "Binding": {
+          "Type": 1,
+          "Id": 29711
+        },
+        "Intent": "Deliberate recovery, defence, cleanse or movement; never removed by variants."
+      },
+      {
+        "Name": "Purify",
+        "Binding": {
+          "Type": 1,
+          "Id": 29056
+        },
+        "Intent": "Deliberate recovery, defence, cleanse or movement; never removed by variants."
+      },
+      {
+        "Name": "Guard",
+        "Binding": {
+          "Type": 1,
+          "Id": 29054
+        },
+        "Intent": "Deliberate recovery, defence, cleanse or movement; never removed by variants."
+      },
+      {
+        "Name": "Sprint",
+        "Binding": {
+          "Type": 1,
+          "Id": 29057
+        },
+        "Intent": "Deliberate recovery, defence, cleanse or movement; never removed by variants."
+      },
+      {
+        "Name": "Selected PvP role action",
+        "Binding": {
+          "Type": 1,
+          "Id": 43259
+        },
+        "Intent": "Use selected role action"
+      }
+    ],
+    "Always": [
+      "WHMPvP_Burst",
+      "WHMPvP_Heals",
+      "WHMPvP_Cure3",
+      "WHMPvP_Aquaveil"
+    ],
+    "Variants": {
+      "Burst": [
+        "WHMPvP_Seraph_Strike",
+        "WHMPvP_Afflatus_Misery",
+        "WHMPvP_Diabrosis"
+      ],
+      "Protection": [],
+      "Support": [
+        "WHMPvP_Burst_Heals"
+      ],
+      "ClassMechanics": []
+    },
+    "Manual": [
+      "WHMPvP_AfflatusPurgation",
+      "WHMPvP_Mirace_of_Nature",
+      "WHMPvP_Seraphstrike"
+    ],
+    "Features": {},
+    "RequiredBools": [],
+    "RequiredInts": {},
+    "RecipientFeatures": []
+  },
+  {
+    "JobId": 28,
+    "Job": "SCH",
+    "Descriptions": {
+      "Burst": "Chain Stratagem",
+      "Protection": "None beyond common controls",
+      "Support": "Adloquium; Expedient's party utility",
+      "ClassMechanics": "None; Biolysis maintenance is baseline"
+    },
+    "Controls": [
+      {
+        "Name": "Broil IV",
+        "Binding": {
+          "Type": 1,
+          "Id": 29231
+        },
+        "Intent": "Maintain damage",
+        "Custom": "SingleTargetDPS"
+      },
+      {
+        "Name": "Adloquium",
+        "Binding": {
+          "Type": 1,
+          "Id": 29232
+        },
+        "Intent": "shield chosen ally"
+      },
+      {
+        "Name": "Deployment Tactics",
+        "Binding": {
+          "Type": 1,
+          "Id": 29234
+        },
+        "Intent": "spread chosen enemy debuff or ally shield"
+      },
+      {
+        "Name": "Chain Stratagem",
+        "Binding": {
+          "Type": 1,
+          "Id": 29716
+        },
+        "Intent": "Manual entry signals this intent; retain appropriate follow-through on the combat selector.",
+        "Variant": "Burst"
+      },
+      {
+        "Name": "Expedient",
+        "Binding": {
+          "Type": 1,
+          "Id": 29236
+        },
+        "Intent": "party movement and protection"
+      },
+      {
+        "Name": "Summon Seraph",
+        "Binding": {
+          "Type": 1,
+          "Id": 29237
+        },
+        "Intent": "deploy healing summon"
+      },
+      {
+        "Name": "Seraphism",
+        "Binding": {
+          "Type": 1,
+          "Id": 41502
+        },
+        "Intent": "Deliberate limit-break initiation, with its native follow-through available."
+      },
+      {
+        "Name": "Standard-issue Elixir",
+        "Binding": {
+          "Type": 1,
+          "Id": 29055
+        },
+        "Intent": "Deliberate recovery, defence, cleanse or movement; never removed by variants."
+      },
+      {
+        "Name": "Recuperate",
+        "Binding": {
+          "Type": 1,
+          "Id": 29711
+        },
+        "Intent": "Deliberate recovery, defence, cleanse or movement; never removed by variants."
+      },
+      {
+        "Name": "Purify",
+        "Binding": {
+          "Type": 1,
+          "Id": 29056
+        },
+        "Intent": "Deliberate recovery, defence, cleanse or movement; never removed by variants."
+      },
+      {
+        "Name": "Guard",
+        "Binding": {
+          "Type": 1,
+          "Id": 29054
+        },
+        "Intent": "Deliberate recovery, defence, cleanse or movement; never removed by variants."
+      },
+      {
+        "Name": "Sprint",
+        "Binding": {
+          "Type": 1,
+          "Id": 29057
+        },
+        "Intent": "Deliberate recovery, defence, cleanse or movement; never removed by variants."
+      },
+      {
+        "Name": "Selected PvP role action",
+        "Binding": {
+          "Type": 1,
+          "Id": 43259
+        },
+        "Intent": "Use selected role action"
+      }
+    ],
+    "Always": [
+      "SCHPvP_Burst",
+      "SCHPvP_Biolysis",
+      "SCHPvP_RetargetAdlo"
+    ],
+    "Variants": {
+      "Burst": [
+        "SCHPvP_ChainStratagem",
+        "SCHPvP_Diabrosis"
+      ],
+      "Protection": [],
+      "Support": [
+        "SCHPvP_Adlo",
+        "SCHPvP_Expedient"
+      ],
+      "ClassMechanics": []
+    },
+    "Manual": [
+      "SCHPvP_DeploymentTactics"
+    ],
+    "Features": {},
+    "RequiredBools": [],
+    "RequiredInts": {},
+    "RecipientFeatures": []
+  },
+  {
+    "JobId": 33,
+    "Job": "AST",
+    "Descriptions": {
+      "Burst": "Gravity II, Macrocosmos offensive entry",
+      "Protection": "None beyond common controls",
+      "Support": "Aspected Benefic on Malefic",
+      "ClassMechanics": "Minor Arcana draw; existing card play follows draw"
+    },
+    "Controls": [
+      {
+        "Name": "Fall Malefic",
+        "Binding": {
+          "Type": 1,
+          "Id": 29242
+        },
+        "Intent": "Maintain damage",
+        "Custom": "SingleTargetDPS"
+      },
+      {
+        "Name": "Aspected Benefic",
+        "Binding": {
+          "Type": 1,
+          "Id": 29243
+        },
+        "Intent": "heal chosen ally"
+      },
+      {
+        "Name": "Gravity II",
+        "Binding": {
+          "Type": 1,
+          "Id": 29244
+        },
+        "Intent": "Manual entry signals this intent; retain appropriate follow-through on the combat selector.",
+        "Variant": "Burst"
+      },
+      {
+        "Name": "Double Cast",
+        "Binding": {
+          "Type": 1,
+          "Id": 29245
+        },
+        "Intent": "duplicate chosen spell"
+      },
+      {
+        "Name": "Minor Arcana",
+        "Binding": {
+          "Type": 1,
+          "Id": 41503
+        },
+        "Intent": "Manual entry signals this intent; retain appropriate follow-through on the combat selector.",
+        "Variant": "ClassMechanics"
+      },
+      {
+        "Name": "Macrocosmos",
+        "Binding": {
+          "Type": 1,
+          "Id": 29253
+        },
+        "Intent": "group healing and timed Microcosmos release"
+      },
+      {
+        "Name": "Epicycle",
+        "Binding": {
+          "Type": 1,
+          "Id": 41506
+        },
+        "Intent": "move and return"
+      },
+      {
+        "Name": "Celestial River",
+        "Binding": {
+          "Type": 1,
+          "Id": 29255
+        },
+        "Intent": "Deliberate limit-break initiation, with its native follow-through available."
+      },
+      {
+        "Name": "Standard-issue Elixir",
+        "Binding": {
+          "Type": 1,
+          "Id": 29055
+        },
+        "Intent": "Deliberate recovery, defence, cleanse or movement; never removed by variants."
+      },
+      {
+        "Name": "Recuperate",
+        "Binding": {
+          "Type": 1,
+          "Id": 29711
+        },
+        "Intent": "Deliberate recovery, defence, cleanse or movement; never removed by variants."
+      },
+      {
+        "Name": "Purify",
+        "Binding": {
+          "Type": 1,
+          "Id": 29056
+        },
+        "Intent": "Deliberate recovery, defence, cleanse or movement; never removed by variants."
+      },
+      {
+        "Name": "Guard",
+        "Binding": {
+          "Type": 1,
+          "Id": 29054
+        },
+        "Intent": "Deliberate recovery, defence, cleanse or movement; never removed by variants."
+      },
+      {
+        "Name": "Sprint",
+        "Binding": {
+          "Type": 1,
+          "Id": 29057
+        },
+        "Intent": "Deliberate recovery, defence, cleanse or movement; never removed by variants."
+      },
+      {
+        "Name": "Selected PvP role action",
+        "Binding": {
+          "Type": 1,
+          "Id": 43259
+        },
+        "Intent": "Use selected role action"
+      }
+    ],
+    "Always": [
+      "ASTPvP_Burst",
+      "ASTPvP_Heal",
+      "ASTPvP_Burst_PlayCard",
+      "ASTPvP_Burst_DoubleGravity",
+      "ASTPvP_Burst_DoubleMalefic",
+      "ASTPvP_Burst_Oracle",
+      "ASTPvP_Burst_Gravity"
+    ],
+    "Variants": {
+      "Burst": [
+        "ASTPvP_Burst_Macrocosmos",
+        "ASTPvP_Diabrosis"
+      ],
+      "Protection": [],
+      "Support": [
+        "ASTPvP_Burst_Heal"
+      ],
+      "ClassMechanics": [
+        "ASTPvP_Burst_DrawCard"
+      ]
+    },
+    "Manual": [
+      "ASTPvP_Epicycle"
+    ],
+    "Features": {
+      "PvPAstGravityInitiation": "Burst"
+    },
+    "RequiredBools": [],
+    "RequiredInts": {
+      "ASTPvP_Burst_PlayCardOption": 1
+    },
+    "RecipientFeatures": []
+  },
+  {
+    "JobId": 40,
+    "Job": "SGE",
+    "Descriptions": {
+      "Burst": "Phlegma III",
+      "Protection": "None beyond common controls",
+      "Support": "Pneuma; Kardia assignment/reminder",
+      "ClassMechanics": "Eukrasia initiation"
+    },
+    "Controls": [
+      {
+        "Name": "Dosis III",
+        "Binding": {
+          "Type": 1,
+          "Id": 29256
+        },
+        "Intent": "Maintain damage",
+        "Custom": "SingleTargetDPS"
+      },
+      {
+        "Name": "Phlegma III",
+        "Binding": {
+          "Type": 1,
+          "Id": 29259
+        },
+        "Intent": "Manual entry signals this intent; retain appropriate follow-through on the combat selector.",
+        "Variant": "Burst"
+      },
+      {
+        "Name": "Pneuma",
+        "Binding": {
+          "Type": 1,
+          "Id": 29260
+        },
+        "Intent": "line damage and party barrier"
+      },
+      {
+        "Name": "Eukrasia",
+        "Binding": {
+          "Type": 1,
+          "Id": 29258
+        },
+        "Intent": "Manual entry signals this intent; retain appropriate follow-through on the combat selector.",
+        "Variant": "ClassMechanics"
+      },
+      {
+        "Name": "Icarus",
+        "Binding": {
+          "Type": 1,
+          "Id": 29261
+        },
+        "Intent": "move to ally or enemy"
+      },
+      {
+        "Name": "Kardia",
+        "Binding": {
+          "Type": 1,
+          "Id": 29264
+        },
+        "Intent": "choose healing recipient"
+      },
+      {
+        "Name": "Mesotes",
+        "Binding": {
+          "Type": 1,
+          "Id": 29266
+        },
+        "Intent": "Deliberate limit-break initiation, with its native follow-through available."
+      },
+      {
+        "Name": "Standard-issue Elixir",
+        "Binding": {
+          "Type": 1,
+          "Id": 29055
+        },
+        "Intent": "Deliberate recovery, defence, cleanse or movement; never removed by variants."
+      },
+      {
+        "Name": "Recuperate",
+        "Binding": {
+          "Type": 1,
+          "Id": 29711
+        },
+        "Intent": "Deliberate recovery, defence, cleanse or movement; never removed by variants."
+      },
+      {
+        "Name": "Purify",
+        "Binding": {
+          "Type": 1,
+          "Id": 29056
+        },
+        "Intent": "Deliberate recovery, defence, cleanse or movement; never removed by variants."
+      },
+      {
+        "Name": "Guard",
+        "Binding": {
+          "Type": 1,
+          "Id": 29054
+        },
+        "Intent": "Deliberate recovery, defence, cleanse or movement; never removed by variants."
+      },
+      {
+        "Name": "Sprint",
+        "Binding": {
+          "Type": 1,
+          "Id": 29057
+        },
+        "Intent": "Deliberate recovery, defence, cleanse or movement; never removed by variants."
+      },
+      {
+        "Name": "Selected PvP role action",
+        "Binding": {
+          "Type": 1,
+          "Id": 43259
+        },
+        "Intent": "Use selected role action"
+      }
+    ],
+    "Always": [
+      "SGEPvP_BurstMode",
+      "SGEPvP_BurstMode_Psyche",
+      "SGEPvP_BurstMode_Toxikon",
+      "SGEPvP_BurstMode_Toxikon2"
+    ],
+    "Variants": {
+      "Burst": [
+        "SGEPvP_BurstMode_Phlegma",
+        "SGEPvP_Diabrosis"
+      ],
+      "Protection": [],
+      "Support": [
+        "SGEPvP_BurstMode_Pneuma",
+        "SGEPvP_BurstMode_KardiaReminder"
+      ],
+      "ClassMechanics": [
+        "SGEPvP_BurstMode_Eukrasia"
+      ]
+    },
+    "Manual": [
+      "SGEPvP_RetargetKardia"
+    ],
+    "Features": {},
+    "RequiredBools": [],
+    "RequiredInts": {},
+    "RecipientFeatures": [
+      "PvPSgeKardiaRecipient"
+    ]
+  },
+  {
+    "JobId": 20,
+    "Job": "MNK",
+    "Descriptions": {
+      "Burst": "Rising Phoenix",
+      "Protection": "Riddle of Earth",
+      "Support": "None",
+      "ClassMechanics": "None; forms/procs are baseline"
+    },
+    "Controls": [
+      {
+        "Name": "Dragon Kick combo",
+        "Binding": {
+          "Type": 26,
+          "Id": 55
+        },
+        "Intent": "Maintain damage",
+        "Custom": "SingleTargetDPS"
+      },
+      {
+        "Name": "Wind's Reply",
+        "Binding": {
+          "Type": 1,
+          "Id": 41509
+        },
+        "Intent": "ranged damage and knockback"
+      },
+      {
+        "Name": "Rising Phoenix",
+        "Binding": {
+          "Type": 1,
+          "Id": 29481
+        },
+        "Intent": "Manual entry signals this intent; retain appropriate follow-through on the combat selector.",
+        "Variant": "Burst"
+      },
+      {
+        "Name": "Riddle of Earth",
+        "Binding": {
+          "Type": 1,
+          "Id": 29482
+        },
+        "Intent": "timed survival and early reply"
+      },
+      {
+        "Name": "Thunderclap",
+        "Binding": {
+          "Type": 1,
+          "Id": 29484
+        },
+        "Intent": "move to ally or enemy"
+      },
+      {
+        "Name": "Meteodrive",
+        "Binding": {
+          "Type": 1,
+          "Id": 29485
+        },
+        "Intent": "Deliberate limit-break initiation, with its native follow-through available."
+      },
+      {
+        "Name": "Standard-issue Elixir",
+        "Binding": {
+          "Type": 1,
+          "Id": 29055
+        },
+        "Intent": "Deliberate recovery, defence, cleanse or movement; never removed by variants."
+      },
+      {
+        "Name": "Recuperate",
+        "Binding": {
+          "Type": 1,
+          "Id": 29711
+        },
+        "Intent": "Deliberate recovery, defence, cleanse or movement; never removed by variants."
+      },
+      {
+        "Name": "Purify",
+        "Binding": {
+          "Type": 1,
+          "Id": 29056
+        },
+        "Intent": "Deliberate recovery, defence, cleanse or movement; never removed by variants."
+      },
+      {
+        "Name": "Guard",
+        "Binding": {
+          "Type": 1,
+          "Id": 29054
+        },
+        "Intent": "Deliberate recovery, defence, cleanse or movement; never removed by variants."
+      },
+      {
+        "Name": "Sprint",
+        "Binding": {
+          "Type": 1,
+          "Id": 29057
+        },
+        "Intent": "Deliberate recovery, defence, cleanse or movement; never removed by variants."
+      },
+      {
+        "Name": "Selected PvP role action",
+        "Binding": {
+          "Type": 1,
+          "Id": 43259
+        },
+        "Intent": "Use selected role action"
+      }
+    ],
+    "Always": [
+      "MNKPvP_Burst",
+      "MNKPvP_Burst_FiresReply",
+      "MNKPvP_Burst_WindsReply"
+    ],
+    "Variants": {
+      "Burst": [
+        "MNKPvP_Burst_RisingPhoenix",
+        "MNKPvP_Smite"
+      ],
+      "Protection": [
+        "MNKPvP_Burst_RiddleOfEarth"
+      ],
+      "Support": [],
+      "ClassMechanics": []
+    },
+    "Manual": [
+      "MNKPvP_Burst_Meteodrive",
+      "MNKPvP_Burst_Thunderclap"
+    ],
+    "Features": {},
+    "RequiredBools": [],
+    "RequiredInts": {},
+    "RecipientFeatures": []
+  },
+  {
+    "JobId": 22,
+    "Job": "DRG",
+    "Descriptions": {
+      "Burst": "Geirskogul, High Jump",
+      "Protection": "Horrid Roar; Chaotic Spring sustain",
+      "Support": "None",
+      "ClassMechanics": "None"
+    },
+    "Controls": [
+      {
+        "Name": "Raiden Thrust combo",
+        "Binding": {
+          "Type": 26,
+          "Id": 56
+        },
+        "Intent": "Maintain damage",
+        "Custom": "SingleTargetDPS"
+      },
+      {
+        "Name": "Chaotic Spring",
+        "Binding": {
+          "Type": 1,
+          "Id": 29490
+        },
+        "Intent": "deliberate sustain"
+      },
+      {
+        "Name": "Geirskogul",
+        "Binding": {
+          "Type": 1,
+          "Id": 29491
+        },
+        "Intent": "Manual entry signals this intent; retain appropriate follow-through on the combat selector.",
+        "Variant": "Burst"
+      },
+      {
+        "Name": "High Jump",
+        "Binding": {
+          "Type": 1,
+          "Id": 29493
+        },
+        "Intent": "Manual entry signals this intent; retain appropriate follow-through on the combat selector.",
+        "Variant": "Burst"
+      },
+      {
+        "Name": "Elusive Jump",
+        "Binding": {
+          "Type": 1,
+          "Id": 29494
+        },
+        "Intent": "escape and ranged Wyrmwind access"
+      },
+      {
+        "Name": "Horrid Roar",
+        "Binding": {
+          "Type": 1,
+          "Id": 29496
+        },
+        "Intent": "Manual entry signals this intent; retain appropriate follow-through on the combat selector.",
+        "Variant": "Protection"
+      },
+      {
+        "Name": "Sky High",
+        "Binding": {
+          "Type": 1,
+          "Id": 29497
+        },
+        "Intent": "Deliberate limit-break initiation, with its native follow-through available."
+      },
+      {
+        "Name": "Standard-issue Elixir",
+        "Binding": {
+          "Type": 1,
+          "Id": 29055
+        },
+        "Intent": "Deliberate recovery, defence, cleanse or movement; never removed by variants."
+      },
+      {
+        "Name": "Recuperate",
+        "Binding": {
+          "Type": 1,
+          "Id": 29711
+        },
+        "Intent": "Deliberate recovery, defence, cleanse or movement; never removed by variants."
+      },
+      {
+        "Name": "Purify",
+        "Binding": {
+          "Type": 1,
+          "Id": 29056
+        },
+        "Intent": "Deliberate recovery, defence, cleanse or movement; never removed by variants."
+      },
+      {
+        "Name": "Guard",
+        "Binding": {
+          "Type": 1,
+          "Id": 29054
+        },
+        "Intent": "Deliberate recovery, defence, cleanse or movement; never removed by variants."
+      },
+      {
+        "Name": "Sprint",
+        "Binding": {
+          "Type": 1,
+          "Id": 29057
+        },
+        "Intent": "Deliberate recovery, defence, cleanse or movement; never removed by variants."
+      },
+      {
+        "Name": "Selected PvP role action",
+        "Binding": {
+          "Type": 1,
+          "Id": 43259
+        },
+        "Intent": "Use selected role action"
+      }
+    ],
+    "Always": [
+      "DRGPvP_Burst",
+      "DRGPvP_Geirskogul",
+      "DRGPvP_Nastrond",
+      "DRGPvP_WyrmwindThrust"
+    ],
+    "Variants": {
+      "Burst": [
+        "DRGPvP_HighJump",
+        "DRGPvP_Smite"
+      ],
+      "Protection": [
+        "DRGPvP_HorridRoar",
+        "DRGPvP_ChaoticSpringSustain"
+      ],
+      "Support": [],
+      "ClassMechanics": []
+    },
+    "Manual": [],
+    "Features": {
+      "PvPDrgGeirskogulInitiation": "Burst"
+    },
+    "RequiredBools": [],
+    "RequiredInts": {},
+    "RecipientFeatures": []
+  },
+  {
+    "JobId": 30,
+    "Job": "NIN",
+    "Descriptions": {
+      "Burst": "Bunshin, Dokumori on both selectors",
+      "Protection": "Meisui selection during Three Mudra; Huton preference is separately preserved",
+      "Support": "None",
+      "ClassMechanics": "Three Mudra entry on both selectors"
+    },
+    "Controls": [
+      {
+        "Name": "Spinning Edge combo",
+        "Binding": {
+          "Type": 26,
+          "Id": 57
+        },
+        "Intent": "Maintain damage",
+        "Custom": "SingleTargetDPS"
+      },
+      {
+        "Name": "Fuma Shuriken",
+        "Binding": {
+          "Type": 1,
+          "Id": 29505
+        },
+        "Intent": "ranged and AoE combat intent"
+      },
+      {
+        "Name": "Dokumori",
+        "Binding": {
+          "Type": 1,
+          "Id": 41451
+        },
+        "Intent": "burst entry and deliberate Goka choice"
+      },
+      {
+        "Name": "Three Mudra",
+        "Binding": {
+          "Type": 1,
+          "Id": 29507
+        },
+        "Intent": "ninjutsu entry and deliberate Meisui choice"
+      },
+      {
+        "Name": "Bunshin",
+        "Binding": {
+          "Type": 1,
+          "Id": 29511
+        },
+        "Intent": "burst entry and deliberate Huton choice"
+      },
+      {
+        "Name": "Shukuchi",
+        "Binding": {
+          "Type": 1,
+          "Id": 29513
+        },
+        "Intent": "move or hide"
+      },
+      {
+        "Name": "Seiton Tenchu",
+        "Binding": {
+          "Type": 1,
+          "Id": 29515
+        },
+        "Intent": "Deliberate limit-break initiation, with its native follow-through available."
+      },
+      {
+        "Name": "Standard-issue Elixir",
+        "Binding": {
+          "Type": 1,
+          "Id": 29055
+        },
+        "Intent": "Deliberate recovery, defence, cleanse or movement; never removed by variants."
+      },
+      {
+        "Name": "Recuperate",
+        "Binding": {
+          "Type": 1,
+          "Id": 29711
+        },
+        "Intent": "Deliberate recovery, defence, cleanse or movement; never removed by variants."
+      },
+      {
+        "Name": "Purify",
+        "Binding": {
+          "Type": 1,
+          "Id": 29056
+        },
+        "Intent": "Deliberate recovery, defence, cleanse or movement; never removed by variants."
+      },
+      {
+        "Name": "Guard",
+        "Binding": {
+          "Type": 1,
+          "Id": 29054
+        },
+        "Intent": "Deliberate recovery, defence, cleanse or movement; never removed by variants."
+      },
+      {
+        "Name": "Sprint",
+        "Binding": {
+          "Type": 1,
+          "Id": 29057
+        },
+        "Intent": "Deliberate recovery, defence, cleanse or movement; never removed by variants."
+      },
+      {
+        "Name": "Selected PvP role action",
+        "Binding": {
+          "Type": 1,
+          "Id": 43259
+        },
+        "Intent": "Use selected role action"
+      }
+    ],
+    "Always": [
+      "NINPvP_ST_BurstMode",
+      "NINPvP_AoE_BurstMode",
+      "NINPvP_ST_MudraMode",
+      "NINPvP_AoE_MudraMode",
+      "NINPvP_ST_FumaShuriken",
+      "NINPvP_AoE_FumaShuriken"
+    ],
+    "Variants": {
+      "Burst": [
+        "NINPvP_ST_Bunshin",
+        "NINPvP_AoE_Bunshin",
+        "NINPvP_ST_Dokumori",
+        "NINPvP_AoE_Dokumori",
+        "NINPvP_Smite"
+      ],
+      "Protection": [
+        "NINPvP_ST_Meisui",
+        "NINPvP_AoE_Meisui"
+      ],
+      "Support": [],
+      "ClassMechanics": [
+        "NINPvP_ST_ThreeMudra",
+        "NINPvP_AoE_ThreeMudra"
+      ]
+    },
+    "Manual": [
+      "NINPvP_ST_SeitonTenchu",
+      "NINPvP_AoE_SeitonTenchu"
+    ],
+    "Features": {},
+    "RequiredBools": [],
+    "RequiredInts": {},
+    "RecipientFeatures": []
+  },
+  {
+    "JobId": 34,
+    "Job": "SAM",
+    "Descriptions": {
+      "Burst": "Meikyo Shisui, Ogi Namikiri",
+      "Protection": "Hissatsu: Chiten",
+      "Support": "None",
+      "ClassMechanics": "None"
+    },
+    "Controls": [
+      {
+        "Name": "Yukikaze combo",
+        "Binding": {
+          "Type": 26,
+          "Id": 58
+        },
+        "Intent": "Maintain damage",
+        "Custom": "SingleTargetDPS"
+      },
+      {
+        "Name": "Ogi Namikiri",
+        "Binding": {
+          "Type": 1,
+          "Id": 29530
+        },
+        "Intent": "Manual entry signals this intent; retain appropriate follow-through on the combat selector.",
+        "Variant": "Burst"
+      },
+      {
+        "Name": "Hissatsu: Soten",
+        "Binding": {
+          "Type": 1,
+          "Id": 29532
+        },
+        "Intent": "move to target"
+      },
+      {
+        "Name": "Hissatsu: Chiten",
+        "Binding": {
+          "Type": 1,
+          "Id": 29533
+        },
+        "Intent": "Manual entry signals this intent; retain appropriate follow-through on the combat selector.",
+        "Variant": "Protection",
+        "AnyPositive": [
+          "SAMPvP_Chiten_PlayerHP"
+        ]
+      },
+      {
+        "Name": "Mineuchi",
+        "Binding": {
+          "Type": 1,
+          "Id": 29535
+        },
+        "Intent": "interrupt now"
+      },
+      {
+        "Name": "Meikyo Shisui",
+        "Binding": {
+          "Type": 1,
+          "Id": 29536
+        },
+        "Intent": "Manual entry signals this intent; retain appropriate follow-through on the combat selector.",
+        "Variant": "Burst"
+      },
+      {
+        "Name": "Zantetsuken",
+        "Binding": {
+          "Type": 1,
+          "Id": 29537
+        },
+        "Intent": "Deliberate limit-break initiation, with its native follow-through available."
+      },
+      {
+        "Name": "Standard-issue Elixir",
+        "Binding": {
+          "Type": 1,
+          "Id": 29055
+        },
+        "Intent": "Deliberate recovery, defence, cleanse or movement; never removed by variants."
+      },
+      {
+        "Name": "Recuperate",
+        "Binding": {
+          "Type": 1,
+          "Id": 29711
+        },
+        "Intent": "Deliberate recovery, defence, cleanse or movement; never removed by variants."
+      },
+      {
+        "Name": "Purify",
+        "Binding": {
+          "Type": 1,
+          "Id": 29056
+        },
+        "Intent": "Deliberate recovery, defence, cleanse or movement; never removed by variants."
+      },
+      {
+        "Name": "Guard",
+        "Binding": {
+          "Type": 1,
+          "Id": 29054
+        },
+        "Intent": "Deliberate recovery, defence, cleanse or movement; never removed by variants."
+      },
+      {
+        "Name": "Sprint",
+        "Binding": {
+          "Type": 1,
+          "Id": 29057
+        },
+        "Intent": "Deliberate recovery, defence, cleanse or movement; never removed by variants."
+      },
+      {
+        "Name": "Selected PvP role action",
+        "Binding": {
+          "Type": 1,
+          "Id": 43259
+        },
+        "Intent": "Use selected role action"
+      }
+    ],
+    "Always": [
+      "SAMPvP_Burst"
+    ],
+    "Variants": {
+      "Burst": [
+        "SAMPvP_Meikyo",
+        "SAMPvP_Smite"
+      ],
+      "Protection": [
+        "SAMPvP_Chiten"
+      ],
+      "Support": [],
+      "ClassMechanics": []
+    },
+    "Manual": [
+      "SAMPvP_Zantetsuken",
+      "SAMPvP_Mineuchi",
+      "SAMPvP_Soten"
+    ],
+    "Features": {
+      "PvPSamOgiInitiation": "Burst"
+    },
+    "RequiredBools": [],
+    "RequiredInts": {},
+    "RecipientFeatures": []
+  },
+  {
+    "JobId": 39,
+    "Job": "RPR",
+    "Descriptions": {
+      "Burst": "Death Warrant, Plentiful Harvest",
+      "Protection": "Arcane Crest",
+      "Support": "None",
+      "ClassMechanics": "None; Enshroud is LB-initiated"
+    },
+    "Controls": [
+      {
+        "Name": "Slice combo",
+        "Binding": {
+          "Type": 26,
+          "Id": 59
+        },
+        "Intent": "Maintain damage",
+        "Custom": "SingleTargetDPS"
+      },
+      {
+        "Name": "Harvest Moon",
+        "Binding": {
+          "Type": 1,
+          "Id": 29545
+        },
+        "Intent": "ranged damage"
+      },
+      {
+        "Name": "Plentiful Harvest",
+        "Binding": {
+          "Type": 1,
+          "Id": 29546
+        },
+        "Intent": "Manual entry signals this intent; retain appropriate follow-through on the combat selector.",
+        "Variant": "Burst",
+        "RequiredPreset": "RPRPvP_Burst_ImmortalPooling"
+      },
+      {
+        "Name": "Death Warrant",
+        "Binding": {
+          "Type": 1,
+          "Id": 29549
+        },
+        "Intent": "Burst entry and deliberate Fate Sealed release outside Enshroud"
+      },
+      {
+        "Name": "Hell's Ingress",
+        "Binding": {
+          "Type": 1,
+          "Id": 29550
+        },
+        "Intent": "move and return"
+      },
+      {
+        "Name": "Arcane Crest",
+        "Binding": {
+          "Type": 1,
+          "Id": 29552
+        },
+        "Intent": "Manual entry signals this intent; retain appropriate follow-through on the combat selector.",
+        "Variant": "Protection",
+        "AnyPositive": [
+          "RPRPvPArcaneCircleOption"
+        ]
+      },
+      {
+        "Name": "Tenebrae Lemurum",
+        "Binding": {
+          "Type": 1,
+          "Id": 29553
+        },
+        "Intent": "Deliberate limit-break initiation, with its native follow-through available."
+      },
+      {
+        "Name": "Standard-issue Elixir",
+        "Binding": {
+          "Type": 1,
+          "Id": 29055
+        },
+        "Intent": "Deliberate recovery, defence, cleanse or movement; never removed by variants."
+      },
+      {
+        "Name": "Recuperate",
+        "Binding": {
+          "Type": 1,
+          "Id": 29711
+        },
+        "Intent": "Deliberate recovery, defence, cleanse or movement; never removed by variants."
+      },
+      {
+        "Name": "Purify",
+        "Binding": {
+          "Type": 1,
+          "Id": 29056
+        },
+        "Intent": "Deliberate recovery, defence, cleanse or movement; never removed by variants."
+      },
+      {
+        "Name": "Guard",
+        "Binding": {
+          "Type": 1,
+          "Id": 29054
+        },
+        "Intent": "Deliberate recovery, defence, cleanse or movement; never removed by variants."
+      },
+      {
+        "Name": "Sprint",
+        "Binding": {
+          "Type": 1,
+          "Id": 29057
+        },
+        "Intent": "Deliberate recovery, defence, cleanse or movement; never removed by variants."
+      },
+      {
+        "Name": "Selected PvP role action",
+        "Binding": {
+          "Type": 1,
+          "Id": 43259
+        },
+        "Intent": "Use selected role action"
+      }
+    ],
+    "Always": [
+      "RPRPvP_Burst",
+      "RPRPvP_Burst_DeathWarrant",
+      "RPRPvP_Burst_Enshrouded",
+      "RPRPvP_Burst_Enshrouded_Communio",
+      "RPRPvP_Burst_Enshrouded_DeathWarrant",
+      "RPRPvP_Burst_GrimSwathe",
+      "RPRPvP_Burst_RangedHarvest"
+    ],
+    "Variants": {
+      "Burst": [
+        "RPRPvP_Smite"
+      ],
+      "Protection": [
+        "RPRPvP_Burst_ArcaneCircle"
+      ],
+      "Support": [],
+      "ClassMechanics": []
+    },
+    "Manual": [],
+    "Features": {
+      "PvPRprPlentifulInitiation": "Burst",
+      "PvPRprWarrantInitiation": "Burst"
+    },
+    "RequiredBools": [],
+    "RequiredInts": {},
+    "RecipientFeatures": []
+  },
+  {
+    "JobId": 41,
+    "Job": "VPR",
+    "Descriptions": {
+      "Burst": "Bloodcoil; offensive Uncoiled Fury use",
+      "Protection": "Snake Scales is deliberate channel; no automatic start currently",
+      "Support": "None",
+      "ClassMechanics": "Rattling Coil resource refresh"
+    },
+    "Controls": [
+      {
+        "Name": "Steel Fangs combo",
+        "Binding": {
+          "Type": 26,
+          "Id": 65
+        },
+        "Intent": "Maintain damage",
+        "Custom": "SingleTargetDPS"
+      },
+      {
+        "Name": "Bloodcoil",
+        "Binding": {
+          "Type": 1,
+          "Id": 39166
+        },
+        "Intent": "Manual entry signals this intent; retain appropriate follow-through on the combat selector.",
+        "Variant": "Burst",
+        "AnyPositive": [
+          "VPRPvP_Bloodcoil_TargetHP",
+          "VPRPvP_Bloodcoil_PlayerHP"
+        ]
+      },
+      {
+        "Name": "Uncoiled Fury",
+        "Binding": {
+          "Type": 1,
+          "Id": 39168
+        },
+        "Intent": "ranged damage"
+      },
+      {
+        "Name": "Slither",
+        "Binding": {
+          "Type": 1,
+          "Id": 39184
+        },
+        "Intent": "move"
+      },
+      {
+        "Name": "Snake Scales",
+        "Binding": {
+          "Type": 1,
+          "Id": 39185
+        },
+        "Intent": "channel protection and choose Backlash release"
+      },
+      {
+        "Name": "Rattling Coil",
+        "Binding": {
+          "Type": 1,
+          "Id": 39189
+        },
+        "Intent": "Manual entry signals this intent; retain appropriate follow-through on the combat selector.",
+        "Variant": "ClassMechanics",
+        "AnyOption": "VPRPvP_RattlingCoil_SubOptions"
+      },
+      {
+        "Name": "World-swallower",
+        "Binding": {
+          "Type": 1,
+          "Id": 39190
+        },
+        "Intent": "Deliberate limit-break initiation, with its native follow-through available."
+      },
+      {
+        "Name": "Standard-issue Elixir",
+        "Binding": {
+          "Type": 1,
+          "Id": 29055
+        },
+        "Intent": "Deliberate recovery, defence, cleanse or movement; never removed by variants."
+      },
+      {
+        "Name": "Recuperate",
+        "Binding": {
+          "Type": 1,
+          "Id": 29711
+        },
+        "Intent": "Deliberate recovery, defence, cleanse or movement; never removed by variants."
+      },
+      {
+        "Name": "Purify",
+        "Binding": {
+          "Type": 1,
+          "Id": 29056
+        },
+        "Intent": "Deliberate recovery, defence, cleanse or movement; never removed by variants."
+      },
+      {
+        "Name": "Guard",
+        "Binding": {
+          "Type": 1,
+          "Id": 29054
+        },
+        "Intent": "Deliberate recovery, defence, cleanse or movement; never removed by variants."
+      },
+      {
+        "Name": "Sprint",
+        "Binding": {
+          "Type": 1,
+          "Id": 29057
+        },
+        "Intent": "Deliberate recovery, defence, cleanse or movement; never removed by variants."
+      },
+      {
+        "Name": "Selected PvP role action",
+        "Binding": {
+          "Type": 1,
+          "Id": 43259
+        },
+        "Intent": "Use selected role action"
+      }
+    ],
+    "Always": [
+      "VPRPvP_Burst"
+    ],
+    "Variants": {
+      "Burst": [
+        "VPRPvP_Bloodcoil",
+        "VPRPvP_UncoiledFury",
+        "VPRPvP_Smite"
+      ],
+      "Protection": [],
+      "Support": [],
+      "ClassMechanics": [
+        "VPRPvP_RattlingCoil"
+      ]
+    },
+    "Manual": [
+      "VPRPvP_Slither"
+    ],
+    "Features": {},
+    "RequiredBools": [],
+    "RequiredInts": {},
+    "RecipientFeatures": []
+  },
+  {
+    "JobId": 23,
+    "Job": "BRD",
+    "Descriptions": {
+      "Burst": "Harmonic Arrow spending",
+      "Protection": "The Warden's Paean self-cleanse",
+      "Support": "None; selected-ally Paean remains accessible",
+      "ClassMechanics": "Apex Arrow buff maintenance"
+    },
+    "Controls": [
+      {
+        "Name": "Powerful Shot",
+        "Binding": {
+          "Type": 1,
+          "Id": 29391
+        },
+        "Intent": "Maintain damage",
+        "Custom": "SingleTargetDPS"
+      },
+      {
+        "Name": "Apex Arrow",
+        "Binding": {
+          "Type": 1,
+          "Id": 29393
+        },
+        "Intent": "Manual entry signals this intent; retain appropriate follow-through on the combat selector.",
+        "Variant": "ClassMechanics"
+      },
+      {
+        "Name": "Harmonic Arrow",
+        "Binding": {
+          "Type": 1,
+          "Id": 41464
+        },
+        "Intent": "Manual entry signals this intent; retain appropriate follow-through on the combat selector.",
+        "Variant": "Burst"
+      },
+      {
+        "Name": "Silent Nocturne",
+        "Binding": {
+          "Type": 1,
+          "Id": 29395
+        },
+        "Intent": "interrupt now"
+      },
+      {
+        "Name": "Repelling Shot",
+        "Binding": {
+          "Type": 1,
+          "Id": 29399
+        },
+        "Intent": "displace and escape"
+      },
+      {
+        "Name": "The Warden's Paean",
+        "Binding": {
+          "Type": 1,
+          "Id": 29400
+        },
+        "Intent": "cleanse chosen ally"
+      },
+      {
+        "Name": "Final Fantasia",
+        "Binding": {
+          "Type": 1,
+          "Id": 29401
+        },
+        "Intent": "Deliberate limit-break initiation, with its native follow-through available."
+      },
+      {
+        "Name": "Standard-issue Elixir",
+        "Binding": {
+          "Type": 1,
+          "Id": 29055
+        },
+        "Intent": "Deliberate recovery, defence, cleanse or movement; never removed by variants."
+      },
+      {
+        "Name": "Recuperate",
+        "Binding": {
+          "Type": 1,
+          "Id": 29711
+        },
+        "Intent": "Deliberate recovery, defence, cleanse or movement; never removed by variants."
+      },
+      {
+        "Name": "Purify",
+        "Binding": {
+          "Type": 1,
+          "Id": 29056
+        },
+        "Intent": "Deliberate recovery, defence, cleanse or movement; never removed by variants."
+      },
+      {
+        "Name": "Guard",
+        "Binding": {
+          "Type": 1,
+          "Id": 29054
+        },
+        "Intent": "Deliberate recovery, defence, cleanse or movement; never removed by variants."
+      },
+      {
+        "Name": "Sprint",
+        "Binding": {
+          "Type": 1,
+          "Id": 29057
+        },
+        "Intent": "Deliberate recovery, defence, cleanse or movement; never removed by variants."
+      },
+      {
+        "Name": "Selected PvP role action",
+        "Binding": {
+          "Type": 1,
+          "Id": 43259
+        },
+        "Intent": "Use selected role action"
+      }
+    ],
+    "Always": [
+      "BRDPvP_BurstMode",
+      "BRDPvP_BlastArrow",
+      "BRDPvP_EncoreOfLight"
+    ],
+    "Variants": {
+      "Burst": [
+        "BRDPvP_HarmonicArrow",
+        "BRDPvP_Eagle"
+      ],
+      "Protection": [
+        "BRDPvP_Wardens"
+      ],
+      "Support": [],
+      "ClassMechanics": [
+        "BRDPvP_ApexArrow"
+      ]
+    },
+    "Manual": [
+      "BRDPvP_SilentNocturne"
+    ],
+    "Features": {},
+    "RequiredBools": [],
+    "RequiredInts": {},
+    "RecipientFeatures": []
+  },
+  {
+    "JobId": 31,
+    "Job": "MCH",
+    "Descriptions": {
+      "Burst": "Full Metal Field, Wildfire",
+      "Protection": "None",
+      "Support": "None; turret placement remains deliberate",
+      "ClassMechanics": "Analysis and the Drill/Bioblaster/Air Anchor/Chain Saw cycle"
+    },
+    "Controls": [
+      {
+        "Name": "Blast Charge",
+        "Binding": {
+          "Type": 1,
+          "Id": 29402
+        },
+        "Intent": "Maintain damage",
+        "Custom": "SingleTargetDPS"
+      },
+      {
+        "Name": "Scattergun",
+        "Binding": {
+          "Type": 1,
+          "Id": 29404
+        },
+        "Intent": "knockback"
+      },
+      {
+        "Name": "Drill",
+        "Binding": {
+          "Type": 1,
+          "Id": 29405
+        },
+        "Intent": "Manual entry signals this intent; retain appropriate follow-through on the combat selector.",
+        "Variant": "ClassMechanics"
+      },
+      {
+        "Name": "Full Metal Field",
+        "Binding": {
+          "Type": 1,
+          "Id": 41469
+        },
+        "Intent": "Manual entry signals this intent; retain appropriate follow-through on the combat selector.",
+        "Variant": "Burst",
+        "TimingOption": "MCHPvP_FMFOption"
+      },
+      {
+        "Name": "Wildfire",
+        "Binding": {
+          "Type": 1,
+          "Id": 29409
+        },
+        "Intent": "burst entry or early Detonator"
+      },
+      {
+        "Name": "Bishop Autoturret",
+        "Binding": {
+          "Type": 1,
+          "Id": 29412
+        },
+        "Intent": "place turret and mortar"
+      },
+      {
+        "Name": "Analysis",
+        "Binding": {
+          "Type": 1,
+          "Id": 29414
+        },
+        "Intent": "Manual entry signals this intent; retain appropriate follow-through on the combat selector.",
+        "Variant": "ClassMechanics"
+      },
+      {
+        "Name": "Marksman's Spite",
+        "Binding": {
+          "Type": 1,
+          "Id": 29415
+        },
+        "Intent": "Deliberate limit-break initiation, with its native follow-through available."
+      },
+      {
+        "Name": "Standard-issue Elixir",
+        "Binding": {
+          "Type": 1,
+          "Id": 29055
+        },
+        "Intent": "Deliberate recovery, defence, cleanse or movement; never removed by variants."
+      },
+      {
+        "Name": "Recuperate",
+        "Binding": {
+          "Type": 1,
+          "Id": 29711
+        },
+        "Intent": "Deliberate recovery, defence, cleanse or movement; never removed by variants."
+      },
+      {
+        "Name": "Purify",
+        "Binding": {
+          "Type": 1,
+          "Id": 29056
+        },
+        "Intent": "Deliberate recovery, defence, cleanse or movement; never removed by variants."
+      },
+      {
+        "Name": "Guard",
+        "Binding": {
+          "Type": 1,
+          "Id": 29054
+        },
+        "Intent": "Deliberate recovery, defence, cleanse or movement; never removed by variants."
+      },
+      {
+        "Name": "Sprint",
+        "Binding": {
+          "Type": 1,
+          "Id": 29057
+        },
+        "Intent": "Deliberate recovery, defence, cleanse or movement; never removed by variants."
+      },
+      {
+        "Name": "Selected PvP role action",
+        "Binding": {
+          "Type": 1,
+          "Id": 43259
+        },
+        "Intent": "Use selected role action"
+      }
+    ],
+    "Always": [
+      "MCHPvP_BurstMode"
+    ],
+    "Variants": {
+      "Burst": [
+        "MCHPvP_BurstMode_FullMetalField",
+        "MCHPvP_BurstMode_Wildfire",
+        "MCHPvP_Eagle"
+      ],
+      "Protection": [],
+      "Support": [],
+      "ClassMechanics": [
+        "MCHPvP_BurstMode_Analysis",
+        "MCHPvP_BurstMode_Drill",
+        "MCHPvP_BurstMode_BioBlaster",
+        "MCHPvP_BurstMode_AirAnchor",
+        "MCHPvP_BurstMode_ChainSaw"
+      ]
+    },
+    "Manual": [
+      "MCHPvP_BurstMode_MarksmanSpite"
+    ],
+    "Features": {},
+    "RequiredBools": [],
+    "RequiredInts": {},
+    "RecipientFeatures": []
+  },
+  {
+    "JobId": 38,
+    "Job": "DNC",
+    "Descriptions": {
+      "Burst": "Starfall Dance",
+      "Protection": "Fan Dance damage-reduction use",
+      "Support": "Curing Waltz",
+      "ClassMechanics": "Honing Dance and partner reminder"
+    },
+    "Controls": [
+      {
+        "Name": "Cascade combo",
+        "Binding": {
+          "Type": 26,
+          "Id": 54
+        },
+        "Intent": "Maintain damage",
+        "Custom": "SingleTargetDPS"
+      },
+      {
+        "Name": "Starfall Dance",
+        "Binding": {
+          "Type": 1,
+          "Id": 29421
+        },
+        "Intent": "Manual entry signals this intent; retain appropriate follow-through on the combat selector.",
+        "Variant": "Burst"
+      },
+      {
+        "Name": "Honing Dance",
+        "Binding": {
+          "Type": 1,
+          "Id": 29422
+        },
+        "Intent": "channel and choose Ovation release"
+      },
+      {
+        "Name": "Fan Dance",
+        "Binding": {
+          "Type": 1,
+          "Id": 29428
+        },
+        "Intent": "Manual entry signals this intent; retain appropriate follow-through on the combat selector.",
+        "Variant": "Protection"
+      },
+      {
+        "Name": "Curing Waltz",
+        "Binding": {
+          "Type": 1,
+          "Id": 29429
+        },
+        "Intent": "Manual entry signals this intent; retain appropriate follow-through on the combat selector.",
+        "Variant": "Support",
+        "AnyPositive": [
+          "DNCWaltzThreshold"
+        ]
+      },
+      {
+        "Name": "En Avant",
+        "Binding": {
+          "Type": 1,
+          "Id": 29430
+        },
+        "Intent": "move"
+      },
+      {
+        "Name": "Closed Position",
+        "Binding": {
+          "Type": 1,
+          "Id": 29431
+        },
+        "Intent": "choose partner"
+      },
+      {
+        "Name": "Contradance",
+        "Binding": {
+          "Type": 1,
+          "Id": 29432
+        },
+        "Intent": "Deliberate limit-break initiation, with its native follow-through available."
+      },
+      {
+        "Name": "Standard-issue Elixir",
+        "Binding": {
+          "Type": 1,
+          "Id": 29055
+        },
+        "Intent": "Deliberate recovery, defence, cleanse or movement; never removed by variants."
+      },
+      {
+        "Name": "Recuperate",
+        "Binding": {
+          "Type": 1,
+          "Id": 29711
+        },
+        "Intent": "Deliberate recovery, defence, cleanse or movement; never removed by variants."
+      },
+      {
+        "Name": "Purify",
+        "Binding": {
+          "Type": 1,
+          "Id": 29056
+        },
+        "Intent": "Deliberate recovery, defence, cleanse or movement; never removed by variants."
+      },
+      {
+        "Name": "Guard",
+        "Binding": {
+          "Type": 1,
+          "Id": 29054
+        },
+        "Intent": "Deliberate recovery, defence, cleanse or movement; never removed by variants."
+      },
+      {
+        "Name": "Sprint",
+        "Binding": {
+          "Type": 1,
+          "Id": 29057
+        },
+        "Intent": "Deliberate recovery, defence, cleanse or movement; never removed by variants."
+      },
+      {
+        "Name": "Selected PvP role action",
+        "Binding": {
+          "Type": 1,
+          "Id": 43259
+        },
+        "Intent": "Use selected role action"
+      }
+    ],
+    "Always": [
+      "DNCPvP_BurstMode",
+      "DNCPvP_BurstMode_HoningDance"
+    ],
+    "Variants": {
+      "Burst": [
+        "DNCPvP_Eagle"
+      ],
+      "Protection": [],
+      "Support": [
+        "DNCPvP_BurstMode_CuringWaltz"
+      ],
+      "ClassMechanics": [
+        "DNCPvP_BurstMode_Partner"
+      ]
+    },
+    "Manual": [
+      "DNCPvP_BurstMode_Dash"
+    ],
+    "Features": {
+      "PvPDncStarfallInitiation": "Burst",
+      "PvPDncFanInitiation": "Protection",
+      "PvPDncHoningInitiation": "ClassMechanics"
+    },
+    "RequiredBools": [],
+    "RequiredInts": {},
+    "RecipientFeatures": [
+      "PvPDncPartnerRecipient"
+    ]
+  },
+  {
+    "JobId": 25,
+    "Job": "BLM",
+    "Descriptions": {
+      "Burst": "Offensive Burst, offensive Elemental Weave, offensive Xenoglossy",
+      "Protection": "Defensive Burst, ice Elemental Weave, defensive Xenoglossy",
+      "Support": "None",
+      "ClassMechanics": "None; elemental progression/Paradox are baseline"
+    },
+    "Controls": [
+      {
+        "Name": "Fire",
+        "Binding": {
+          "Type": 1,
+          "Id": 29649
+        },
+        "Intent": "Maintain damage",
+        "Custom": "SingleTargetDPS"
+      },
+      {
+        "Name": "Blizzard",
+        "Binding": {
+          "Type": 1,
+          "Id": 29653
+        },
+        "Intent": "ice elemental choice"
+      },
+      {
+        "Name": "Burst",
+        "Binding": {
+          "Type": 1,
+          "Id": 29657
+        },
+        "Intent": "close-range damage or shield"
+      },
+      {
+        "Name": "Xenoglossy",
+        "Binding": {
+          "Type": 1,
+          "Id": 29658
+        },
+        "Intent": "offensive or defensive spending"
+      },
+      {
+        "Name": "Lethargy",
+        "Binding": {
+          "Type": 1,
+          "Id": 41510
+        },
+        "Intent": "control target"
+      },
+      {
+        "Name": "Aetherial Manipulation",
+        "Binding": {
+          "Type": 1,
+          "Id": 29660
+        },
+        "Intent": "move to ally"
+      },
+      {
+        "Name": "Elemental Weave",
+        "Binding": {
+          "Type": 1,
+          "Id": 41475
+        },
+        "Intent": "choose elemental offensive or defensive effect"
+      },
+      {
+        "Name": "Soul Resonance",
+        "Binding": {
+          "Type": 1,
+          "Id": 29662
+        },
+        "Intent": "Deliberate limit-break initiation, with its native follow-through available."
+      },
+      {
+        "Name": "Standard-issue Elixir",
+        "Binding": {
+          "Type": 1,
+          "Id": 29055
+        },
+        "Intent": "Deliberate recovery, defence, cleanse or movement; never removed by variants."
+      },
+      {
+        "Name": "Recuperate",
+        "Binding": {
+          "Type": 1,
+          "Id": 29711
+        },
+        "Intent": "Deliberate recovery, defence, cleanse or movement; never removed by variants."
+      },
+      {
+        "Name": "Purify",
+        "Binding": {
+          "Type": 1,
+          "Id": 29056
+        },
+        "Intent": "Deliberate recovery, defence, cleanse or movement; never removed by variants."
+      },
+      {
+        "Name": "Guard",
+        "Binding": {
+          "Type": 1,
+          "Id": 29054
+        },
+        "Intent": "Deliberate recovery, defence, cleanse or movement; never removed by variants."
+      },
+      {
+        "Name": "Sprint",
+        "Binding": {
+          "Type": 1,
+          "Id": 29057
+        },
+        "Intent": "Deliberate recovery, defence, cleanse or movement; never removed by variants."
+      },
+      {
+        "Name": "Selected PvP role action",
+        "Binding": {
+          "Type": 1,
+          "Id": 43259
+        },
+        "Intent": "Use selected role action"
+      }
+    ],
+    "Always": [
+      "BLMPvP_BurstMode",
+      "BLMPvP_Burst",
+      "BLMPvP_ElementalWeave",
+      "BLMPvP_Xenoglossy",
+      "BLMPvP_ElementalStar"
+    ],
+    "Variants": {
+      "Burst": [
+        "BLMPvP_PhantomDart"
+      ],
+      "Protection": [],
+      "Support": [],
+      "ClassMechanics": []
+    },
+    "Manual": [
+      "BLMPvP_Lethargy"
+    ],
+    "Features": {
+      "PvPBlmOffensiveBurstInitiation": "Burst",
+      "PvPBlmOffensiveWeaveInitiation": "Burst",
+      "PvPBlmOffensiveXenoInitiation": "Burst",
+      "PvPBlmDefensiveBurstInitiation": "Protection",
+      "PvPBlmDefensiveWeaveInitiation": "Protection",
+      "PvPBlmDefensiveXenoInitiation": "Protection"
+    },
+    "RequiredBools": [
+      "BLMPvP_Burst_SubOption",
+      "BLMPvP_ElementalWeave_SubOption",
+      "BLMPvP_Xenoglossy_SubOption"
+    ],
+    "RequiredInts": {},
+    "RecipientFeatures": []
+  },
+  {
+    "JobId": 27,
+    "Job": "SMN",
+    "Descriptions": {
+      "Burst": "Crimson Cyclone, Mountain Buster, Slipstream, Necrotize",
+      "Protection": "Radiant Aegis",
+      "Support": "None",
+      "ClassMechanics": "None; summons are deliberate LB choices"
+    },
+    "Controls": [
+      {
+        "Name": "Ruin III",
+        "Binding": {
+          "Type": 1,
+          "Id": 29664
+        },
+        "Intent": "Maintain damage",
+        "Custom": "SingleTargetDPS"
+      },
+      {
+        "Name": "Mountain Buster",
+        "Binding": {
+          "Type": 1,
+          "Id": 29671
+        },
+        "Intent": "close-range control"
+      },
+      {
+        "Name": "Slipstream",
+        "Binding": {
+          "Type": 1,
+          "Id": 29669
+        },
+        "Intent": "Manual entry signals this intent; retain appropriate follow-through on the combat selector.",
+        "Variant": "Burst"
+      },
+      {
+        "Name": "Crimson Cyclone",
+        "Binding": {
+          "Type": 1,
+          "Id": 29667
+        },
+        "Intent": "move to enemy"
+      },
+      {
+        "Name": "Necrotize",
+        "Binding": {
+          "Type": 1,
+          "Id": 41483
+        },
+        "Intent": "Manual entry signals this intent; retain appropriate follow-through on the combat selector.",
+        "Variant": "Burst"
+      },
+      {
+        "Name": "Radiant Aegis",
+        "Binding": {
+          "Type": 1,
+          "Id": 29670
+        },
+        "Intent": "shield chosen ally"
+      },
+      {
+        "Name": "Summon Bahamut",
+        "Binding": {
+          "Type": 1,
+          "Id": 29673
+        },
+        "Intent": "Deliberate limit-break initiation, with its native follow-through available."
+      },
+      {
+        "Name": "Summon Phoenix",
+        "Binding": {
+          "Type": 1,
+          "Id": 29678
+        },
+        "Intent": "Deliberate limit-break initiation, with its native follow-through available."
+      },
+      {
+        "Name": "Standard-issue Elixir",
+        "Binding": {
+          "Type": 1,
+          "Id": 29055
+        },
+        "Intent": "Deliberate recovery, defence, cleanse or movement; never removed by variants."
+      },
+      {
+        "Name": "Recuperate",
+        "Binding": {
+          "Type": 1,
+          "Id": 29711
+        },
+        "Intent": "Deliberate recovery, defence, cleanse or movement; never removed by variants."
+      },
+      {
+        "Name": "Purify",
+        "Binding": {
+          "Type": 1,
+          "Id": 29056
+        },
+        "Intent": "Deliberate recovery, defence, cleanse or movement; never removed by variants."
+      },
+      {
+        "Name": "Guard",
+        "Binding": {
+          "Type": 1,
+          "Id": 29054
+        },
+        "Intent": "Deliberate recovery, defence, cleanse or movement; never removed by variants."
+      },
+      {
+        "Name": "Sprint",
+        "Binding": {
+          "Type": 1,
+          "Id": 29057
+        },
+        "Intent": "Deliberate recovery, defence, cleanse or movement; never removed by variants."
+      },
+      {
+        "Name": "Selected PvP role action",
+        "Binding": {
+          "Type": 1,
+          "Id": 43259
+        },
+        "Intent": "Use selected role action"
+      }
+    ],
+    "Always": [
+      "SMNPvP_BurstMode",
+      "SMNPvP_BurstMode_CrimsonStrike",
+      "SMNPvP_BurstMode_DeathFlare",
+      "SMNPvP_BurstMode_BrandofPurgatory"
+    ],
+    "Variants": {
+      "Burst": [
+        "SMNPvP_BurstMode_CrimsonCyclone",
+        "SMNPvP_BurstMode_MountainBuster",
+        "SMNPvP_BurstMode_Slipstream",
+        "SMNPvP_BurstMode_Necrotize",
+        "SMNPvP_PhantomDart"
+      ],
+      "Protection": [
+        "SMNPvP_BurstMode_RadiantAegis"
+      ],
+      "Support": [],
+      "ClassMechanics": []
+    },
+    "Manual": [],
+    "Features": {},
+    "RequiredBools": [],
+    "RequiredInts": {},
+    "RecipientFeatures": []
+  },
+  {
+    "JobId": 35,
+    "Job": "RDM",
+    "Descriptions": {
+      "Burst": "Embolden, Enchanted Riposte",
+      "Protection": "Forte",
+      "Support": "None",
+      "ClassMechanics": "None"
+    },
+    "Controls": [
+      {
+        "Name": "Jolt III",
+        "Binding": {
+          "Type": 1,
+          "Id": 41486
+        },
+        "Intent": "Maintain damage",
+        "Custom": "SingleTargetDPS"
+      },
+      {
+        "Name": "Enchanted Riposte",
+        "Binding": {
+          "Type": 1,
+          "Id": 41488
+        },
+        "Intent": "Manual entry signals this intent; retain appropriate follow-through on the combat selector.",
+        "Variant": "Burst"
+      },
+      {
+        "Name": "Resolution",
+        "Binding": {
+          "Type": 1,
+          "Id": 41492
+        },
+        "Intent": "control target"
+      },
+      {
+        "Name": "Embolden",
+        "Binding": {
+          "Type": 1,
+          "Id": 41494
+        },
+        "Intent": "Manual entry signals this intent; retain appropriate follow-through on the combat selector.",
+        "Variant": "Burst"
+      },
+      {
+        "Name": "Corps-a-corps",
+        "Binding": {
+          "Type": 1,
+          "Id": 29699
+        },
+        "Intent": "move to enemy"
+      },
+      {
+        "Name": "Displacement",
+        "Binding": {
+          "Type": 1,
+          "Id": 29700
+        },
+        "Intent": "escape"
+      },
+      {
+        "Name": "Forte",
+        "Binding": {
+          "Type": 1,
+          "Id": 41496
+        },
+        "Intent": "Manual entry signals this intent; retain appropriate follow-through on the combat selector.",
+        "Variant": "Protection",
+        "AnyPositive": [
+          "RDMPvP_Forte_PlayerHP"
+        ]
+      },
+      {
+        "Name": "Southern Cross",
+        "Binding": {
+          "Type": 1,
+          "Id": 41498
+        },
+        "Intent": "Deliberate limit-break initiation, with its native follow-through available."
+      },
+      {
+        "Name": "Standard-issue Elixir",
+        "Binding": {
+          "Type": 1,
+          "Id": 29055
+        },
+        "Intent": "Deliberate recovery, defence, cleanse or movement; never removed by variants."
+      },
+      {
+        "Name": "Recuperate",
+        "Binding": {
+          "Type": 1,
+          "Id": 29711
+        },
+        "Intent": "Deliberate recovery, defence, cleanse or movement; never removed by variants."
+      },
+      {
+        "Name": "Purify",
+        "Binding": {
+          "Type": 1,
+          "Id": 29056
+        },
+        "Intent": "Deliberate recovery, defence, cleanse or movement; never removed by variants."
+      },
+      {
+        "Name": "Guard",
+        "Binding": {
+          "Type": 1,
+          "Id": 29054
+        },
+        "Intent": "Deliberate recovery, defence, cleanse or movement; never removed by variants."
+      },
+      {
+        "Name": "Sprint",
+        "Binding": {
+          "Type": 1,
+          "Id": 29057
+        },
+        "Intent": "Deliberate recovery, defence, cleanse or movement; never removed by variants."
+      },
+      {
+        "Name": "Selected PvP role action",
+        "Binding": {
+          "Type": 1,
+          "Id": 43259
+        },
+        "Intent": "Use selected role action"
+      }
+    ],
+    "Always": [
+      "RDMPvP_BurstMode",
+      "RDMPvP_Embolden",
+      "RDMPvP_Forte",
+      "RDMPvP_Riposte"
+    ],
+    "Variants": {
+      "Burst": [
+        "RDMPvP_PhantomDart"
+      ],
+      "Protection": [],
+      "Support": [],
+      "ClassMechanics": []
+    },
+    "Manual": [
+      "RDMPvP_Corps",
+      "RDMPvP_Displacement",
+      "RDMPvP_Resolution"
+    ],
+    "Features": {
+      "PvPRdmEmboldenInitiation": "Burst",
+      "PvPRdmRiposteInitiation": "Burst",
+      "PvPRdmForteInitiation": "Protection"
+    },
+    "RequiredBools": [
+      "RDMPvP_Embolden_SubOption",
+      "RDMPvP_Forte_SubOption"
+    ],
+    "RequiredInts": {},
+    "RecipientFeatures": []
+  },
+  {
+    "JobId": 42,
+    "Job": "PCT",
+    "Descriptions": {
+      "Burst": "Holy in White/Comet in Black spending",
+      "Protection": "Tempera Coat",
+      "Support": "None; Star Prism is LB follow-through",
+      "ClassMechanics": "Creature Motif, Living Muse, portraits, Subtractive Palette"
+    },
+    "Controls": [
+      {
+        "Name": "Fire in Red",
+        "Binding": {
+          "Type": 1,
+          "Id": 39191
+        },
+        "Intent": "Maintain damage",
+        "Custom": "SingleTargetDPS"
+      },
+      {
+        "Name": "Holy in White",
+        "Binding": {
+          "Type": 1,
+          "Id": 39198
+        },
+        "Intent": "Manual entry signals this intent; retain appropriate follow-through on the combat selector.",
+        "Variant": "Burst"
+      },
+      {
+        "Name": "Creature Motif",
+        "Binding": {
+          "Type": 1,
+          "Id": 39204
+        },
+        "Intent": "Manual entry signals this intent; retain appropriate follow-through on the combat selector.",
+        "Variant": "ClassMechanics"
+      },
+      {
+        "Name": "Smudge",
+        "Binding": {
+          "Type": 1,
+          "Id": 39210
+        },
+        "Intent": "move"
+      },
+      {
+        "Name": "Tempera Coat",
+        "Binding": {
+          "Type": 1,
+          "Id": 39211
+        },
+        "Intent": "shield and choose Grassa release"
+      },
+      {
+        "Name": "Subtractive Palette",
+        "Binding": {
+          "Type": 1,
+          "Id": 39213
+        },
+        "Intent": "Manual entry signals this intent; retain appropriate follow-through on the combat selector.",
+        "Variant": "ClassMechanics"
+      },
+      {
+        "Name": "Advent of Chocobastion",
+        "Binding": {
+          "Type": 1,
+          "Id": 39215
+        },
+        "Intent": "Deliberate limit-break initiation, with its native follow-through available."
+      },
+      {
+        "Name": "Standard-issue Elixir",
+        "Binding": {
+          "Type": 1,
+          "Id": 29055
+        },
+        "Intent": "Deliberate recovery, defence, cleanse or movement; never removed by variants."
+      },
+      {
+        "Name": "Recuperate",
+        "Binding": {
+          "Type": 1,
+          "Id": 29711
+        },
+        "Intent": "Deliberate recovery, defence, cleanse or movement; never removed by variants."
+      },
+      {
+        "Name": "Purify",
+        "Binding": {
+          "Type": 1,
+          "Id": 29056
+        },
+        "Intent": "Deliberate recovery, defence, cleanse or movement; never removed by variants."
+      },
+      {
+        "Name": "Guard",
+        "Binding": {
+          "Type": 1,
+          "Id": 29054
+        },
+        "Intent": "Deliberate recovery, defence, cleanse or movement; never removed by variants."
+      },
+      {
+        "Name": "Sprint",
+        "Binding": {
+          "Type": 1,
+          "Id": 29057
+        },
+        "Intent": "Deliberate recovery, defence, cleanse or movement; never removed by variants."
+      },
+      {
+        "Name": "Selected PvP role action",
+        "Binding": {
+          "Type": 1,
+          "Id": 43259
+        },
+        "Intent": "Use selected role action"
+      }
+    ],
+    "Always": [
+      "PCTPvP_Burst",
+      "PCTPvP_LivingMuse",
+      "PCTPvP_MogOfTheAges",
+      "PCTPvP_TemperaCoat",
+      "PCTPvP_StarPrism"
+    ],
+    "Variants": {
+      "Burst": [
+        "PCTPvP_HolyInWhite",
+        "PCTPvP_PhantomDart"
+      ],
+      "Protection": [],
+      "Support": [],
+      "ClassMechanics": [
+        "PCTPvP_CreatureMotif",
+        "PCTPvP_SubtractivePalette"
+      ]
+    },
+    "Manual": [],
+    "Features": {
+      "PvPPctCoatInitiation": "Protection"
+    },
+    "RequiredBools": [],
+    "RequiredInts": {},
+    "RecipientFeatures": []
+  }
+]

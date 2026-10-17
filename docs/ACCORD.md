@@ -153,4 +153,24 @@ The user chose **Wrathful Combo** as the fork display name to distinguish it fro
 
 ## Keyboard compaction - 2026-10-17
 
-Compact keyboard layouts by default for both explicit setup and live updates. Reuse the established compaction rules: ST, AoE, actual mobility and tank/healer general reserves stay fixed; remaining actions fill available keyboard positions in order. Controller function positions and shared controls do not move. Persist per-job Bridge routes with the layout transaction and restore them with backups. Hotbar Bridge must be loaded so moved keyboard actions remain paired with their fixed controller controls. Without general cleanup, clear recognised moved/retired design actions from vacated keyboard slots but preserve unrelated assignments. Explicitly allowed extra job slots remain outside the original twelve-slot compaction region.
+Compact keyboard layouts by default for both explicit setup and live updates. Reuse the established compaction rules: ST, AoE, actual mobility and tank/healer general reserves stay fixed; remaining actions fill available keyboard positions in order within their original bar. Never move an action between keyboard bars to fill a gap. Controller function positions and shared controls do not move. Persist per-job Bridge routes with the layout transaction and restore them with backups. Hotbar Bridge must be loaded so moved keyboard actions remain paired with their fixed controller controls. Without general cleanup, clear recognised moved/retired design actions from vacated keyboard slots but preserve unrelated assignments. Explicitly allowed extra job slots remain outside the original twelve-slot compaction region.
+
+## Live hotbar drift checks - 2026-10-17
+
+While live mode is enabled, inspect the current selected class once per second using the same layout and cleanup planner as application. Compare assigned command IDs and Bridge routes, not transient Wrath icons. The check is read-only: no backups, settings writes, Bridge external-edit resets or hotbar writes unless a correction is needed. Corrections use the existing backed-up transaction without reapplying rotation settings. Clear other actions controls removal of new leveling actions outside the design; shared game bars and Bridge slots remain protected. Static mode and unselected classes are not periodically repaired. Loading and unavailable dependencies defer correction until the next check.
+
+## Future feature: editable hotbar locations - 2026-10-17
+
+Requested: a simple way to choose hotbar locations for actions/functions in Accord. Record this for later; do not implement it as part of the current PvP investigation. Specific UI and placement rules are not yet agreed.
+
+## PvP scope - 2026-10-17
+
+Gather the job/action/settings information needed for PvP layouts and all four intent variants. Hotbar Bridge must support PvP, with PvE/PvP state and storage kept separate. Do not change Wrath hands-free auto rotation in PvP. Preserve upstream behaviour except for necessary intent handling. Evidence and implementation boundaries are recorded in [PvP research](job-research/pvp.md).
+
+### PvP detailed mapping and Bridge carry-over clarification (2026-10-17)
+
+The detailed 21-job PvP variant review and 504-entry action ledger are in docs/job-research/pvp-variant-mappings.md and pvp-action-ledger.json. These specify intended controls/settings and exact continuation gaps; they do not yet install Accord PvP layouts. The hands-free PvP restriction is unchanged. Bridge now supports PvP storage locally, with selected regular bars (initially 3-10) and all Bridge-shared endpoints linked across PvE/PvP. Non-shared whole bars retain per-job values; other job controls stay mode-specific. Protect these linked/shared positions when allocating future PvP layouts. Native validation remains pending.
+
+## PvP implementation - 2026-10-17
+
+The 21 PvP layouts and four-variant settings are now implemented locally in the separate Accord plugin. See [the implementation record](job-research/pvp-implementation.md) for exact engine splits, retained controls, protected shared/linked slots, mode-specific backups and validation. PvP selection starts empty; settings/layout choices are separate from PvE. Hands-free AutoActions and runner behaviour are unchanged. Included in the 0.2.8 test release with Hotbar Bridge 0.2.11. Native in-game acceptance remains pending.

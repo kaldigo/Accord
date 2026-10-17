@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>net10.0-windows</TargetFramework>
-    <AssemblyName>Accord</AssemblyName><Version>0.2.7</Version>
+    <AssemblyName>Accord</AssemblyName><Version>0.2.8</Version>
     <Nullable>enable</Nullable><AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <LangVersion>preview</LangVersion><Platforms>x64</Platforms>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
@@ -21,4 +21,5 @@
     <EmbeddedResource Include="presets.json" LogicalName="Accord.presets.json" />
     <None Update="Accord.json" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
+  <ItemGroup><EmbeddedResource Include="pvp-presets.json" LogicalName="Accord.pvp-presets.json" /></ItemGroup>
 </Project>

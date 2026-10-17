@@ -11,7 +11,7 @@ try {
     & dotnet run --project tests/Accord.Tests.csproj -c Release -- WrathCombo/bin/WrathFork/Release/WrathFork.dll
     if ($LASTEXITCODE -ne 0) { throw 'Separation tests failed.' }
     Add-Type -AssemblyName System.IO.Compression.FileSystem
-    $tag = 'v0.2.7-preview'
+    $tag = 'v0.2.8-preview'
     $out = Join-Path $repoRoot "artifacts/$tag"
     New-Item -ItemType Directory -Force -Path $out | Out-Null
     $hashes = @()
@@ -20,7 +20,7 @@ try {
         $relative = if ($name -eq 'WrathFork') { 'WrathCombo/bin/WrathFork/Release/WrathFork' } else { 'Accord.Plugin/bin/Release/Accord' }
         $build = Join-Path $repoRoot $relative
         $manifest = Get-Content -LiteralPath (Join-Path $build "$name.json") -Raw | ConvertFrom-Json
-        if ($manifest.InternalName -ne $name -or $manifest.Name -ne $(if ($name -eq 'WrathFork') { 'Wrathful Combo' } else { 'Accord' }) -or $manifest.DalamudApiLevel -ne 15 -or [version]$manifest.AssemblyVersion -ne [version]'0.2.7.0') {
+        if ($manifest.InternalName -ne $name -or $manifest.Name -ne $(if ($name -eq 'WrathFork') { 'Wrathful Combo' } else { 'Accord' }) -or $manifest.DalamudApiLevel -ne 15 -or [version]$manifest.AssemblyVersion -ne [version]'0.2.8.0') {
             throw "Incorrect package identity/version: $name"
         }
         $package = Join-Path $out "$name.zip"
@@ -45,11 +45,11 @@ try {
             $manifest | Add-Member -NotePropertyName $field -NotePropertyValue $url -Force
         }
         $publicManifest = $manifest | ConvertTo-Json -Depth 8 | ConvertFrom-Json
-        $publicManifest | Add-Member -NotePropertyName Changelog -NotePropertyValue 'First-run upstream Wrath settings migration without overwriting existing fork settings; responsive current-class live hotbars with retries; compact keyboard layouts with preserved controller routes; remove added targetless Dancer initiation. Requires Hotbar Bridge 0.2.10.' -Force
+        $publicManifest | Add-Member -NotePropertyName Changelog -NotePropertyValue 'PvP layouts and four intent variants for all 21 jobs, separate PvP selection and backups, per-bar keyboard compaction and periodic live repair. Preserves shared/linked bars and hands-free auto rotation. Update Accord and Wrathful Combo together; requires Hotbar Bridge 0.2.11.' -Force
         $feed += $publicManifest
         $manifest | Add-Member -NotePropertyName IsTestingExclusive -NotePropertyValue $true -Force
         $manifest | Add-Member -NotePropertyName TestingAssemblyVersion -NotePropertyValue $manifest.AssemblyVersion -Force
-        $manifest | Add-Member -NotePropertyName Changelog -NotePropertyValue 'Upstream settings migration, live hotbar recovery, keyboard compaction and corrected Dancer initiation. Native acceptance pending.' -Force
+        $manifest | Add-Member -NotePropertyName Changelog -NotePropertyValue 'PvP intent layouts and scoped engine settings; shared-slot protection, per-bar compaction and live repair. Requires Hotbar Bridge 0.2.11. In-game testing pending.' -Force
         ConvertTo-Json -InputObject @($manifest) -Depth 8 | Set-Content -LiteralPath (Join-Path $out "$name.pluginmaster.testing.json") -Encoding utf8NoBOM
         $hashes += (Get-FileHash -LiteralPath $package -Algorithm SHA256).Hash.ToLowerInvariant() + "  $name.zip"
     }

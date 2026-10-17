@@ -1,0 +1,4080 @@
+{
+  "Actions": [
+    {
+      "RowId": 9971,
+      "Name": "Optical Sight",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "ADV",
+        "GLA",
+        "PGL",
+        "MRD",
+        "LNC",
+        "ARC",
+        "CNJ",
+        "THM",
+        "CRP",
+        "BSM",
+        "ARM",
+        "GSM",
+        "LTW",
+        "WVR",
+        "ALC",
+        "CUL",
+        "MIN",
+        "BTN",
+        "FSH",
+        "PLD",
+        "MNK",
+        "WAR",
+        "DRG",
+        "BRD",
+        "WHM",
+        "BLM",
+        "ACN",
+        "SMN",
+        "SCH",
+        "ROG",
+        "NIN",
+        "MCH",
+        "DRK",
+        "AST",
+        "SAM",
+        "RDM",
+        "BLU",
+        "GNB",
+        "DNC",
+        "RPR",
+        "SGE",
+        "VPR",
+        "PCT",
+        "Unknown0"
+      ]
+    },
+    {
+      "RowId": 9973,
+      "Name": "Spin Crusher",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "ADV",
+        "GLA",
+        "PGL",
+        "MRD",
+        "LNC",
+        "ARC",
+        "CNJ",
+        "THM",
+        "CRP",
+        "BSM",
+        "ARM",
+        "GSM",
+        "LTW",
+        "WVR",
+        "ALC",
+        "CUL",
+        "MIN",
+        "BTN",
+        "FSH",
+        "PLD",
+        "MNK",
+        "WAR",
+        "DRG",
+        "BRD",
+        "WHM",
+        "BLM",
+        "ACN",
+        "SMN",
+        "SCH",
+        "ROG",
+        "NIN",
+        "MCH",
+        "DRK",
+        "AST",
+        "SAM",
+        "RDM",
+        "BLU",
+        "GNB",
+        "DNC",
+        "RPR",
+        "SGE",
+        "VPR",
+        "PCT",
+        "Unknown0"
+      ]
+    },
+    {
+      "RowId": 9974,
+      "Name": "Laser X Sword",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "ADV",
+        "GLA",
+        "PGL",
+        "MRD",
+        "LNC",
+        "ARC",
+        "CNJ",
+        "THM",
+        "CRP",
+        "BSM",
+        "ARM",
+        "GSM",
+        "LTW",
+        "WVR",
+        "ALC",
+        "CUL",
+        "MIN",
+        "BTN",
+        "FSH",
+        "PLD",
+        "MNK",
+        "WAR",
+        "DRG",
+        "BRD",
+        "WHM",
+        "BLM",
+        "ACN",
+        "SMN",
+        "SCH",
+        "ROG",
+        "NIN",
+        "MCH",
+        "DRK",
+        "AST",
+        "SAM",
+        "RDM",
+        "BLU",
+        "GNB",
+        "DNC",
+        "RPR",
+        "SGE",
+        "VPR",
+        "PCT",
+        "Unknown0"
+      ]
+    },
+    {
+      "RowId": 9975,
+      "Name": "3000-tonze Missile",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "ADV",
+        "GLA",
+        "PGL",
+        "MRD",
+        "LNC",
+        "ARC",
+        "CNJ",
+        "THM",
+        "CRP",
+        "BSM",
+        "ARM",
+        "GSM",
+        "LTW",
+        "WVR",
+        "ALC",
+        "CUL",
+        "MIN",
+        "BTN",
+        "FSH",
+        "PLD",
+        "MNK",
+        "WAR",
+        "DRG",
+        "BRD",
+        "WHM",
+        "BLM",
+        "ACN",
+        "SMN",
+        "SCH",
+        "ROG",
+        "NIN",
+        "MCH",
+        "DRK",
+        "AST",
+        "SAM",
+        "RDM",
+        "BLU",
+        "GNB",
+        "DNC",
+        "RPR",
+        "SGE",
+        "VPR",
+        "PCT",
+        "Unknown0"
+      ]
+    },
+    {
+      "RowId": 9977,
+      "Name": "Steam Release",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "ADV",
+        "GLA",
+        "PGL",
+        "MRD",
+        "LNC",
+        "ARC",
+        "CNJ",
+        "THM",
+        "CRP",
+        "BSM",
+        "ARM",
+        "GSM",
+        "LTW",
+        "WVR",
+        "ALC",
+        "CUL",
+        "MIN",
+        "BTN",
+        "FSH",
+        "PLD",
+        "MNK",
+        "WAR",
+        "DRG",
+        "BRD",
+        "WHM",
+        "BLM",
+        "ACN",
+        "SMN",
+        "SCH",
+        "ROG",
+        "NIN",
+        "MCH",
+        "DRK",
+        "AST",
+        "SAM",
+        "RDM",
+        "BLU",
+        "GNB",
+        "DNC",
+        "RPR",
+        "SGE",
+        "VPR",
+        "PCT",
+        "Unknown0"
+      ]
+    },
+    {
+      "RowId": 9978,
+      "Name": "Flarethrower",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "ADV",
+        "GLA",
+        "PGL",
+        "MRD",
+        "LNC",
+        "ARC",
+        "CNJ",
+        "THM",
+        "CRP",
+        "BSM",
+        "ARM",
+        "GSM",
+        "LTW",
+        "WVR",
+        "ALC",
+        "CUL",
+        "MIN",
+        "BTN",
+        "FSH",
+        "PLD",
+        "MNK",
+        "WAR",
+        "DRG",
+        "BRD",
+        "WHM",
+        "BLM",
+        "ACN",
+        "SMN",
+        "SCH",
+        "ROG",
+        "NIN",
+        "MCH",
+        "DRK",
+        "AST",
+        "SAM",
+        "RDM",
+        "BLU",
+        "GNB",
+        "DNC",
+        "RPR",
+        "SGE",
+        "VPR",
+        "PCT",
+        "Unknown0"
+      ]
+    },
+    {
+      "RowId": 9979,
+      "Name": "Double Rocket Punch",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "ADV",
+        "GLA",
+        "PGL",
+        "MRD",
+        "LNC",
+        "ARC",
+        "CNJ",
+        "THM",
+        "CRP",
+        "BSM",
+        "ARM",
+        "GSM",
+        "LTW",
+        "WVR",
+        "ALC",
+        "CUL",
+        "MIN",
+        "BTN",
+        "FSH",
+        "PLD",
+        "MNK",
+        "WAR",
+        "DRG",
+        "BRD",
+        "WHM",
+        "BLM",
+        "ACN",
+        "SMN",
+        "SCH",
+        "ROG",
+        "NIN",
+        "MCH",
+        "DRK",
+        "AST",
+        "SAM",
+        "RDM",
+        "BLU",
+        "GNB",
+        "DNC",
+        "RPR",
+        "SGE",
+        "VPR",
+        "PCT",
+        "Unknown0"
+      ]
+    },
+    {
+      "RowId": 9980,
+      "Name": "Mega Beam",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "ADV",
+        "GLA",
+        "PGL",
+        "MRD",
+        "LNC",
+        "ARC",
+        "CNJ",
+        "THM",
+        "CRP",
+        "BSM",
+        "ARM",
+        "GSM",
+        "LTW",
+        "WVR",
+        "ALC",
+        "CUL",
+        "MIN",
+        "BTN",
+        "FSH",
+        "PLD",
+        "MNK",
+        "WAR",
+        "DRG",
+        "BRD",
+        "WHM",
+        "BLM",
+        "ACN",
+        "SMN",
+        "SCH",
+        "ROG",
+        "NIN",
+        "MCH",
+        "DRK",
+        "AST",
+        "SAM",
+        "RDM",
+        "BLU",
+        "GNB",
+        "DNC",
+        "RPR",
+        "SGE",
+        "VPR",
+        "PCT",
+        "Unknown0"
+      ]
+    },
+    {
+      "RowId": 9981,
+      "Name": "Ceruleum Refill",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "ADV",
+        "GLA",
+        "PGL",
+        "MRD",
+        "LNC",
+        "ARC",
+        "CNJ",
+        "THM",
+        "CRP",
+        "BSM",
+        "ARM",
+        "GSM",
+        "LTW",
+        "WVR",
+        "ALC",
+        "CUL",
+        "MIN",
+        "BTN",
+        "FSH",
+        "PLD",
+        "MNK",
+        "WAR",
+        "DRG",
+        "BRD",
+        "WHM",
+        "BLM",
+        "ACN",
+        "SMN",
+        "SCH",
+        "ROG",
+        "NIN",
+        "MCH",
+        "DRK",
+        "AST",
+        "SAM",
+        "RDM",
+        "BLU",
+        "GNB",
+        "DNC",
+        "RPR",
+        "SGE",
+        "VPR",
+        "PCT",
+        "Unknown0"
+      ]
+    },
+    {
+      "RowId": 9982,
+      "Name": "Cannonfire",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "ADV",
+        "GLA",
+        "PGL",
+        "MRD",
+        "LNC",
+        "ARC",
+        "CNJ",
+        "THM",
+        "CRP",
+        "BSM",
+        "ARM",
+        "GSM",
+        "LTW",
+        "WVR",
+        "ALC",
+        "CUL",
+        "MIN",
+        "BTN",
+        "FSH",
+        "PLD",
+        "MNK",
+        "WAR",
+        "DRG",
+        "BRD",
+        "WHM",
+        "BLM",
+        "ACN",
+        "SMN",
+        "SCH",
+        "ROG",
+        "NIN",
+        "MCH",
+        "DRK",
+        "AST",
+        "SAM",
+        "RDM",
+        "BLU",
+        "GNB",
+        "DNC",
+        "RPR",
+        "SGE",
+        "VPR",
+        "PCT",
+        "Unknown0"
+      ]
+    },
+    {
+      "RowId": 10057,
+      "Name": "Dismount",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "ADV",
+        "GLA",
+        "PGL",
+        "MRD",
+        "LNC",
+        "ARC",
+        "CNJ",
+        "THM",
+        "CRP",
+        "BSM",
+        "ARM",
+        "GSM",
+        "LTW",
+        "WVR",
+        "ALC",
+        "CUL",
+        "MIN",
+        "BTN",
+        "FSH",
+        "PLD",
+        "MNK",
+        "WAR",
+        "DRG",
+        "BRD",
+        "WHM",
+        "BLM",
+        "ACN",
+        "SMN",
+        "SCH",
+        "ROG",
+        "NIN",
+        "MCH",
+        "DRK",
+        "AST",
+        "SAM",
+        "RDM",
+        "BLU",
+        "GNB",
+        "DNC",
+        "RPR",
+        "SGE",
+        "VPR",
+        "PCT",
+        "Unknown0"
+      ]
+    },
+    {
+      "RowId": 18923,
+      "Name": "Throwing Dagger",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "NIN"
+      ]
+    },
+    {
+      "RowId": 18924,
+      "Name": "Death Blossom",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "NIN"
+      ]
+    },
+    {
+      "RowId": 18925,
+      "Name": "Hakke Mujinsatsu",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "NIN"
+      ]
+    },
+    {
+      "RowId": 29054,
+      "Name": "Guard",
+      "IsPlayerAction": true,
+      "Jobs": [
+        "PLD",
+        "MNK",
+        "WAR",
+        "DRG",
+        "BRD",
+        "WHM",
+        "BLM",
+        "SMN",
+        "SCH",
+        "NIN",
+        "MCH",
+        "DRK",
+        "AST",
+        "SAM",
+        "RDM",
+        "GNB",
+        "DNC",
+        "RPR",
+        "SGE",
+        "VPR",
+        "PCT"
+      ]
+    },
+    {
+      "RowId": 29055,
+      "Name": "Standard-issue Elixir",
+      "IsPlayerAction": true,
+      "Jobs": [
+        "PLD",
+        "MNK",
+        "WAR",
+        "DRG",
+        "BRD",
+        "WHM",
+        "BLM",
+        "SMN",
+        "SCH",
+        "NIN",
+        "MCH",
+        "DRK",
+        "AST",
+        "SAM",
+        "RDM",
+        "GNB",
+        "DNC",
+        "RPR",
+        "SGE",
+        "VPR",
+        "PCT"
+      ]
+    },
+    {
+      "RowId": 29056,
+      "Name": "Purify",
+      "IsPlayerAction": true,
+      "Jobs": [
+        "PLD",
+        "MNK",
+        "WAR",
+        "DRG",
+        "BRD",
+        "WHM",
+        "BLM",
+        "SMN",
+        "SCH",
+        "NIN",
+        "MCH",
+        "DRK",
+        "AST",
+        "SAM",
+        "RDM",
+        "GNB",
+        "DNC",
+        "RPR",
+        "SGE",
+        "VPR",
+        "PCT"
+      ]
+    },
+    {
+      "RowId": 29057,
+      "Name": "Sprint",
+      "IsPlayerAction": true,
+      "Jobs": [
+        "PLD",
+        "MNK",
+        "WAR",
+        "DRG",
+        "BRD",
+        "WHM",
+        "BLM",
+        "SMN",
+        "SCH",
+        "NIN",
+        "MCH",
+        "DRK",
+        "AST",
+        "SAM",
+        "RDM",
+        "GNB",
+        "DNC",
+        "RPR",
+        "SGE",
+        "VPR",
+        "PCT"
+      ]
+    },
+    {
+      "RowId": 29058,
+      "Name": "Fast Blade",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "PLD"
+      ]
+    },
+    {
+      "RowId": 29059,
+      "Name": "Riot Blade",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "PLD"
+      ]
+    },
+    {
+      "RowId": 29060,
+      "Name": "Royal Authority",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "PLD"
+      ]
+    },
+    {
+      "RowId": 29061,
+      "Name": "Atonement",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "PLD"
+      ]
+    },
+    {
+      "RowId": 29062,
+      "Name": "Holy Spirit",
+      "IsPlayerAction": true,
+      "Jobs": [
+        "PLD"
+      ]
+    },
+    {
+      "RowId": 29063,
+      "Name": "",
+      "IsPlayerAction": false,
+      "Jobs": []
+    },
+    {
+      "RowId": 29065,
+      "Name": "Intervene",
+      "IsPlayerAction": true,
+      "Jobs": [
+        "PLD"
+      ]
+    },
+    {
+      "RowId": 29066,
+      "Name": "Guardian",
+      "IsPlayerAction": true,
+      "Jobs": [
+        "PLD"
+      ]
+    },
+    {
+      "RowId": 29067,
+      "Name": "Holy Sheltron",
+      "IsPlayerAction": true,
+      "Jobs": [
+        "PLD"
+      ]
+    },
+    {
+      "RowId": 29068,
+      "Name": "Holy Sheltron",
+      "IsPlayerAction": false,
+      "Jobs": []
+    },
+    {
+      "RowId": 29069,
+      "Name": "Phalanx",
+      "IsPlayerAction": true,
+      "Jobs": [
+        "PLD"
+      ]
+    },
+    {
+      "RowId": 29071,
+      "Name": "Blade of Faith",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "PLD"
+      ]
+    },
+    {
+      "RowId": 29072,
+      "Name": "Blade of Truth",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "PLD"
+      ]
+    },
+    {
+      "RowId": 29073,
+      "Name": "Blade of Valor",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "PLD"
+      ]
+    },
+    {
+      "RowId": 29074,
+      "Name": "Heavy Swing",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "WAR"
+      ]
+    },
+    {
+      "RowId": 29075,
+      "Name": "Maim",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "WAR"
+      ]
+    },
+    {
+      "RowId": 29076,
+      "Name": "Storm\u0027s Path",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "WAR"
+      ]
+    },
+    {
+      "RowId": 29077,
+      "Name": "Inner Chaos",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "WAR"
+      ]
+    },
+    {
+      "RowId": 29078,
+      "Name": "Fell Cleave",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "WAR"
+      ]
+    },
+    {
+      "RowId": 29079,
+      "Name": "Onslaught",
+      "IsPlayerAction": true,
+      "Jobs": [
+        "WAR"
+      ]
+    },
+    {
+      "RowId": 29080,
+      "Name": "Orogeny",
+      "IsPlayerAction": true,
+      "Jobs": [
+        "WAR"
+      ]
+    },
+    {
+      "RowId": 29081,
+      "Name": "Blota",
+      "IsPlayerAction": true,
+      "Jobs": [
+        "WAR"
+      ]
+    },
+    {
+      "RowId": 29082,
+      "Name": "Bloodwhetting",
+      "IsPlayerAction": true,
+      "Jobs": [
+        "WAR"
+      ]
+    },
+    {
+      "RowId": 29083,
+      "Name": "Primal Scream",
+      "IsPlayerAction": true,
+      "Jobs": [
+        "WAR"
+      ]
+    },
+    {
+      "RowId": 29084,
+      "Name": "Primal Rend",
+      "IsPlayerAction": true,
+      "Jobs": [
+        "WAR"
+      ]
+    },
+    {
+      "RowId": 29085,
+      "Name": "Hard Slash",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "DRK"
+      ]
+    },
+    {
+      "RowId": 29086,
+      "Name": "Syphon Strike",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "DRK"
+      ]
+    },
+    {
+      "RowId": 29087,
+      "Name": "Souleater",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "DRK"
+      ]
+    },
+    {
+      "RowId": 29088,
+      "Name": "Bloodspiller",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "DRK"
+      ]
+    },
+    {
+      "RowId": 29089,
+      "Name": "\u25CF\u30A2\u30D3\u30B5\u30EB\u30C9\u30EC\u30A4\u30F3",
+      "IsPlayerAction": true,
+      "Jobs": []
+    },
+    {
+      "RowId": 29090,
+      "Name": "\u25CF\u6F06\u9ED2\u306E\u5263",
+      "IsPlayerAction": true,
+      "Jobs": []
+    },
+    {
+      "RowId": 29091,
+      "Name": "Shadowbringer",
+      "IsPlayerAction": true,
+      "Jobs": [
+        "DRK"
+      ]
+    },
+    {
+      "RowId": 29092,
+      "Name": "Plunge",
+      "IsPlayerAction": true,
+      "Jobs": [
+        "DRK"
+      ]
+    },
+    {
+      "RowId": 29093,
+      "Name": "the Blackest Night",
+      "IsPlayerAction": true,
+      "Jobs": [
+        "DRK"
+      ]
+    },
+    {
+      "RowId": 29094,
+      "Name": "Salted Earth",
+      "IsPlayerAction": true,
+      "Jobs": [
+        "DRK"
+      ]
+    },
+    {
+      "RowId": 29095,
+      "Name": "Salt and Darkness",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "DRK"
+      ]
+    },
+    {
+      "RowId": 29096,
+      "Name": "Salt and Darkness",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "DRK"
+      ]
+    },
+    {
+      "RowId": 29097,
+      "Name": "Eventide",
+      "IsPlayerAction": true,
+      "Jobs": [
+        "DRK"
+      ]
+    },
+    {
+      "RowId": 29098,
+      "Name": "Keen Edge",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "GNB"
+      ]
+    },
+    {
+      "RowId": 29099,
+      "Name": "Brutal Shell",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "GNB"
+      ]
+    },
+    {
+      "RowId": 29100,
+      "Name": "Solid Barrel",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "GNB"
+      ]
+    },
+    {
+      "RowId": 29101,
+      "Name": "Burst Strike",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "GNB"
+      ]
+    },
+    {
+      "RowId": 29102,
+      "Name": "Gnashing Fang",
+      "IsPlayerAction": true,
+      "Jobs": [
+        "GNB"
+      ]
+    },
+    {
+      "RowId": 29103,
+      "Name": "Savage Claw",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "GNB"
+      ]
+    },
+    {
+      "RowId": 29104,
+      "Name": "Wicked Talon",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "GNB"
+      ]
+    },
+    {
+      "RowId": 29106,
+      "Name": "Continuation",
+      "IsPlayerAction": true,
+      "Jobs": [
+        "GNB"
+      ]
+    },
+    {
+      "RowId": 29107,
+      "Name": "Hypervelocity",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "GNB"
+      ]
+    },
+    {
+      "RowId": 29108,
+      "Name": "Jugular Rip",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "GNB"
+      ]
+    },
+    {
+      "RowId": 29109,
+      "Name": "Abdomen Tear",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "GNB"
+      ]
+    },
+    {
+      "RowId": 29110,
+      "Name": "Eye Gouge",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "GNB"
+      ]
+    },
+    {
+      "RowId": 29123,
+      "Name": "Rough Divide",
+      "IsPlayerAction": true,
+      "Jobs": [
+        "GNB"
+      ]
+    },
+    {
+      "RowId": 29124,
+      "Name": "Draw and Junction",
+      "IsPlayerAction": true,
+      "Jobs": []
+    },
+    {
+      "RowId": 29128,
+      "Name": "Blasting Zone",
+      "IsPlayerAction": true,
+      "Jobs": [
+        "GNB"
+      ]
+    },
+    {
+      "RowId": 29130,
+      "Name": "Relentless Rush",
+      "IsPlayerAction": true,
+      "Jobs": [
+        "GNB"
+      ]
+    },
+    {
+      "RowId": 29131,
+      "Name": "Terminal Trigger",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "GNB"
+      ]
+    },
+    {
+      "RowId": 29223,
+      "Name": "Glare III",
+      "IsPlayerAction": true,
+      "Jobs": [
+        "WHM"
+      ]
+    },
+    {
+      "RowId": 29224,
+      "Name": "Cure II",
+      "IsPlayerAction": true,
+      "Jobs": [
+        "WHM"
+      ]
+    },
+    {
+      "RowId": 29225,
+      "Name": "Cure III",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "WHM"
+      ]
+    },
+    {
+      "RowId": 29226,
+      "Name": "Afflatus Misery",
+      "IsPlayerAction": true,
+      "Jobs": [
+        "WHM"
+      ]
+    },
+    {
+      "RowId": 29227,
+      "Name": "Aquaveil",
+      "IsPlayerAction": true,
+      "Jobs": [
+        "WHM"
+      ]
+    },
+    {
+      "RowId": 29228,
+      "Name": "Miracle of Nature",
+      "IsPlayerAction": true,
+      "Jobs": [
+        "WHM"
+      ]
+    },
+    {
+      "RowId": 29229,
+      "Name": "Seraph Strike",
+      "IsPlayerAction": true,
+      "Jobs": [
+        "WHM"
+      ]
+    },
+    {
+      "RowId": 29230,
+      "Name": "Afflatus Purgation",
+      "IsPlayerAction": true,
+      "Jobs": [
+        "WHM"
+      ]
+    },
+    {
+      "RowId": 29231,
+      "Name": "Broil IV",
+      "IsPlayerAction": true,
+      "Jobs": [
+        "SCH"
+      ]
+    },
+    {
+      "RowId": 29232,
+      "Name": "Adloquium",
+      "IsPlayerAction": true,
+      "Jobs": [
+        "SCH"
+      ]
+    },
+    {
+      "RowId": 29233,
+      "Name": "Biolysis",
+      "IsPlayerAction": true,
+      "Jobs": [
+        "SCH"
+      ]
+    },
+    {
+      "RowId": 29234,
+      "Name": "Deployment Tactics",
+      "IsPlayerAction": true,
+      "Jobs": [
+        "SCH"
+      ]
+    },
+    {
+      "RowId": 29236,
+      "Name": "Expedient",
+      "IsPlayerAction": true,
+      "Jobs": [
+        "SCH"
+      ]
+    },
+    {
+      "RowId": 29237,
+      "Name": "Summon Seraph",
+      "IsPlayerAction": true,
+      "Jobs": [
+        "SCH"
+      ]
+    },
+    {
+      "RowId": 29240,
+      "Name": "Seraphic Veil",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "SCH"
+      ]
+    },
+    {
+      "RowId": 29241,
+      "Name": "Consolation",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "SCH"
+      ]
+    },
+    {
+      "RowId": 29242,
+      "Name": "Fall Malefic",
+      "IsPlayerAction": true,
+      "Jobs": [
+        "AST"
+      ]
+    },
+    {
+      "RowId": 29243,
+      "Name": "Aspected Benefic",
+      "IsPlayerAction": true,
+      "Jobs": [
+        "AST"
+      ]
+    },
+    {
+      "RowId": 29244,
+      "Name": "Gravity II",
+      "IsPlayerAction": true,
+      "Jobs": [
+        "AST"
+      ]
+    },
+    {
+      "RowId": 29245,
+      "Name": "Double Cast",
+      "IsPlayerAction": true,
+      "Jobs": [
+        "AST"
+      ]
+    },
+    {
+      "RowId": 29246,
+      "Name": "Fall Malefic",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "AST"
+      ]
+    },
+    {
+      "RowId": 29247,
+      "Name": "Aspected Benefic",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "AST"
+      ]
+    },
+    {
+      "RowId": 29248,
+      "Name": "Gravity II",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "AST"
+      ]
+    },
+    {
+      "RowId": 29253,
+      "Name": "Macrocosmos",
+      "IsPlayerAction": true,
+      "Jobs": [
+        "AST"
+      ]
+    },
+    {
+      "RowId": 29254,
+      "Name": "Microcosmos",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "AST"
+      ]
+    },
+    {
+      "RowId": 29255,
+      "Name": "Celestial River",
+      "IsPlayerAction": true,
+      "Jobs": [
+        "AST"
+      ]
+    },
+    {
+      "RowId": 29256,
+      "Name": "Dosis III",
+      "IsPlayerAction": true,
+      "Jobs": [
+        "SGE"
+      ]
+    },
+    {
+      "RowId": 29257,
+      "Name": "Eukrasian Dosis III",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "SGE"
+      ]
+    },
+    {
+      "RowId": 29258,
+      "Name": "Eukrasia",
+      "IsPlayerAction": true,
+      "Jobs": [
+        "SGE"
+      ]
+    },
+    {
+      "RowId": 29259,
+      "Name": "Phlegma III",
+      "IsPlayerAction": true,
+      "Jobs": [
+        "SGE"
+      ]
+    },
+    {
+      "RowId": 29260,
+      "Name": "Pneuma",
+      "IsPlayerAction": true,
+      "Jobs": [
+        "SGE"
+      ]
+    },
+    {
+      "RowId": 29261,
+      "Name": "Icarus",
+      "IsPlayerAction": true,
+      "Jobs": [
+        "SGE"
+      ]
+    },
+    {
+      "RowId": 29262,
+      "Name": "Toxikon",
+      "IsPlayerAction": true,
+      "Jobs": [
+        "SGE"
+      ]
+    },
+    {
+      "RowId": 29263,
+      "Name": "Toxikon II",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "SGE"
+      ]
+    },
+    {
+      "RowId": 29264,
+      "Name": "Kardia",
+      "IsPlayerAction": true,
+      "Jobs": [
+        "SGE"
+      ]
+    },
+    {
+      "RowId": 29265,
+      "Name": "\u30AB\u30EB\u30C7\u30A3\u30A2",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "SGE"
+      ]
+    },
+    {
+      "RowId": 29266,
+      "Name": "Mesotes",
+      "IsPlayerAction": true,
+      "Jobs": [
+        "SGE"
+      ]
+    },
+    {
+      "RowId": 29267,
+      "Name": "Mesotes",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "SGE"
+      ]
+    },
+    {
+      "RowId": 29391,
+      "Name": "Powerful Shot",
+      "IsPlayerAction": true,
+      "Jobs": [
+        "BRD"
+      ]
+    },
+    {
+      "RowId": 29392,
+      "Name": "Pitch Perfect",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "BRD"
+      ]
+    },
+    {
+      "RowId": 29393,
+      "Name": "Apex Arrow",
+      "IsPlayerAction": true,
+      "Jobs": [
+        "BRD"
+      ]
+    },
+    {
+      "RowId": 29394,
+      "Name": "Blast Arrow",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "BRD"
+      ]
+    },
+    {
+      "RowId": 29395,
+      "Name": "Silent Nocturne",
+      "IsPlayerAction": true,
+      "Jobs": [
+        "BRD"
+      ]
+    },
+    {
+      "RowId": 29399,
+      "Name": "Repelling Shot",
+      "IsPlayerAction": true,
+      "Jobs": [
+        "BRD"
+      ]
+    },
+    {
+      "RowId": 29400,
+      "Name": "the Warden\u0027s Paean",
+      "IsPlayerAction": true,
+      "Jobs": [
+        "BRD"
+      ]
+    },
+    {
+      "RowId": 29401,
+      "Name": "Final Fantasia",
+      "IsPlayerAction": true,
+      "Jobs": [
+        "BRD"
+      ]
+    },
+    {
+      "RowId": 29402,
+      "Name": "Blast Charge",
+      "IsPlayerAction": true,
+      "Jobs": [
+        "MCH"
+      ]
+    },
+    {
+      "RowId": 29403,
+      "Name": "Heat Blast",
+      "IsPlayerAction": true,
+      "Jobs": [
+        "MCH"
+      ]
+    },
+    {
+      "RowId": 29404,
+      "Name": "Scattergun",
+      "IsPlayerAction": true,
+      "Jobs": [
+        "MCH"
+      ]
+    },
+    {
+      "RowId": 29405,
+      "Name": "Drill",
+      "IsPlayerAction": true,
+      "Jobs": [
+        "MCH"
+      ]
+    },
+    {
+      "RowId": 29406,
+      "Name": "Bioblaster",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "MCH"
+      ]
+    },
+    {
+      "RowId": 29407,
+      "Name": "Air Anchor",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "MCH"
+      ]
+    },
+    {
+      "RowId": 29408,
+      "Name": "Chain Saw",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "MCH"
+      ]
+    },
+    {
+      "RowId": 29409,
+      "Name": "Wildfire",
+      "IsPlayerAction": true,
+      "Jobs": [
+        "MCH"
+      ]
+    },
+    {
+      "RowId": 29410,
+      "Name": "Wildfire",
+      "IsPlayerAction": false,
+      "Jobs": []
+    },
+    {
+      "RowId": 29411,
+      "Name": "Wildfire",
+      "IsPlayerAction": false,
+      "Jobs": []
+    },
+    {
+      "RowId": 29412,
+      "Name": "Bishop Autoturret",
+      "IsPlayerAction": true,
+      "Jobs": [
+        "MCH"
+      ]
+    },
+    {
+      "RowId": 29413,
+      "Name": "Aether Mortar",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "MCH"
+      ]
+    },
+    {
+      "RowId": 29414,
+      "Name": "Analysis",
+      "IsPlayerAction": true,
+      "Jobs": [
+        "MCH"
+      ]
+    },
+    {
+      "RowId": 29415,
+      "Name": "Marksman\u0027s Spite",
+      "IsPlayerAction": true,
+      "Jobs": [
+        "MCH"
+      ]
+    },
+    {
+      "RowId": 29416,
+      "Name": "Cascade",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "DNC"
+      ]
+    },
+    {
+      "RowId": 29417,
+      "Name": "Fountain",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "DNC"
+      ]
+    },
+    {
+      "RowId": 29418,
+      "Name": "Reverse Cascade",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "DNC"
+      ]
+    },
+    {
+      "RowId": 29419,
+      "Name": "Fountainfall",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "DNC"
+      ]
+    },
+    {
+      "RowId": 29420,
+      "Name": "Saber Dance",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "DNC"
+      ]
+    },
+    {
+      "RowId": 29421,
+      "Name": "Starfall Dance",
+      "IsPlayerAction": true,
+      "Jobs": [
+        "DNC"
+      ]
+    },
+    {
+      "RowId": 29422,
+      "Name": "Honing Dance",
+      "IsPlayerAction": true,
+      "Jobs": [
+        "DNC"
+      ]
+    },
+    {
+      "RowId": 29423,
+      "Name": "Honing Ovation",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "DNC"
+      ]
+    },
+    {
+      "RowId": 29424,
+      "Name": "Honing Ovation",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "DNC"
+      ]
+    },
+    {
+      "RowId": 29425,
+      "Name": "Honing Ovation",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "DNC"
+      ]
+    },
+    {
+      "RowId": 29426,
+      "Name": "Honing Ovation",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "DNC"
+      ]
+    },
+    {
+      "RowId": 29427,
+      "Name": "Honing Ovation",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "DNC"
+      ]
+    },
+    {
+      "RowId": 29428,
+      "Name": "Fan Dance",
+      "IsPlayerAction": true,
+      "Jobs": [
+        "DNC"
+      ]
+    },
+    {
+      "RowId": 29429,
+      "Name": "Curing Waltz",
+      "IsPlayerAction": true,
+      "Jobs": [
+        "DNC"
+      ]
+    },
+    {
+      "RowId": 29430,
+      "Name": "En Avant",
+      "IsPlayerAction": true,
+      "Jobs": [
+        "DNC"
+      ]
+    },
+    {
+      "RowId": 29431,
+      "Name": "Closed Position",
+      "IsPlayerAction": true,
+      "Jobs": [
+        "DNC"
+      ]
+    },
+    {
+      "RowId": 29432,
+      "Name": "Contradance",
+      "IsPlayerAction": true,
+      "Jobs": [
+        "DNC"
+      ]
+    },
+    {
+      "RowId": 29469,
+      "Name": "Terminal Trigger",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "GNB"
+      ]
+    },
+    {
+      "RowId": 29470,
+      "Name": "Honing Ovation",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "DNC"
+      ]
+    },
+    {
+      "RowId": 29475,
+      "Name": "Dragon Kick",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "MNK"
+      ]
+    },
+    {
+      "RowId": 29476,
+      "Name": "Twin Snakes",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "MNK"
+      ]
+    },
+    {
+      "RowId": 29477,
+      "Name": "Demolish",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "MNK"
+      ]
+    },
+    {
+      "RowId": 29478,
+      "Name": "Phantom Rush",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "MNK"
+      ]
+    },
+    {
+      "RowId": 29481,
+      "Name": "Rising Phoenix",
+      "IsPlayerAction": true,
+      "Jobs": [
+        "MNK"
+      ]
+    },
+    {
+      "RowId": 29482,
+      "Name": "Riddle of Earth",
+      "IsPlayerAction": true,
+      "Jobs": [
+        "MNK"
+      ]
+    },
+    {
+      "RowId": 29483,
+      "Name": "Earth\u0027s Reply",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "MNK"
+      ]
+    },
+    {
+      "RowId": 29484,
+      "Name": "Thunderclap",
+      "IsPlayerAction": true,
+      "Jobs": [
+        "MNK"
+      ]
+    },
+    {
+      "RowId": 29485,
+      "Name": "Meteodrive",
+      "IsPlayerAction": true,
+      "Jobs": [
+        "MNK"
+      ]
+    },
+    {
+      "RowId": 29486,
+      "Name": "Raiden Thrust",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "DRG"
+      ]
+    },
+    {
+      "RowId": 29487,
+      "Name": "Fang and Claw",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "DRG"
+      ]
+    },
+    {
+      "RowId": 29488,
+      "Name": "Wheeling Thrust",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "DRG"
+      ]
+    },
+    {
+      "RowId": 29489,
+      "Name": "Heavens\u0027 Thrust",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "DRG"
+      ]
+    },
+    {
+      "RowId": 29490,
+      "Name": "Chaotic Spring",
+      "IsPlayerAction": true,
+      "Jobs": [
+        "DRG"
+      ]
+    },
+    {
+      "RowId": 29491,
+      "Name": "Geirskogul",
+      "IsPlayerAction": true,
+      "Jobs": [
+        "DRG"
+      ]
+    },
+    {
+      "RowId": 29492,
+      "Name": "Nastrond",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "DRG"
+      ]
+    },
+    {
+      "RowId": 29493,
+      "Name": "High Jump",
+      "IsPlayerAction": true,
+      "Jobs": [
+        "DRG"
+      ]
+    },
+    {
+      "RowId": 29494,
+      "Name": "Elusive Jump",
+      "IsPlayerAction": true,
+      "Jobs": [
+        "DRG"
+      ]
+    },
+    {
+      "RowId": 29495,
+      "Name": "Wyrmwind Thrust",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "DRG"
+      ]
+    },
+    {
+      "RowId": 29496,
+      "Name": "Horrid Roar",
+      "IsPlayerAction": true,
+      "Jobs": [
+        "DRG"
+      ]
+    },
+    {
+      "RowId": 29497,
+      "Name": "Sky High",
+      "IsPlayerAction": true,
+      "Jobs": [
+        "DRG"
+      ]
+    },
+    {
+      "RowId": 29498,
+      "Name": "Sky Shatter",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "DRG"
+      ]
+    },
+    {
+      "RowId": 29499,
+      "Name": "Sky Shatter",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "DRG"
+      ]
+    },
+    {
+      "RowId": 29500,
+      "Name": "Spinning Edge",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "NIN"
+      ]
+    },
+    {
+      "RowId": 29501,
+      "Name": "Gust Slash",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "NIN"
+      ]
+    },
+    {
+      "RowId": 29502,
+      "Name": "Aeolian Edge",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "NIN"
+      ]
+    },
+    {
+      "RowId": 29503,
+      "Name": "Assassinate",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "NIN"
+      ]
+    },
+    {
+      "RowId": 29504,
+      "Name": "Goka Mekkyaku",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "NIN"
+      ]
+    },
+    {
+      "RowId": 29505,
+      "Name": "Fuma Shuriken",
+      "IsPlayerAction": true,
+      "Jobs": [
+        "NIN"
+      ]
+    },
+    {
+      "RowId": 29506,
+      "Name": "Hyosho Ranryu",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "NIN"
+      ]
+    },
+    {
+      "RowId": 29507,
+      "Name": "Three Mudra",
+      "IsPlayerAction": true,
+      "Jobs": [
+        "NIN"
+      ]
+    },
+    {
+      "RowId": 29508,
+      "Name": "Meisui",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "NIN"
+      ]
+    },
+    {
+      "RowId": 29510,
+      "Name": "Forked Raiju",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "NIN"
+      ]
+    },
+    {
+      "RowId": 29511,
+      "Name": "Bunshin",
+      "IsPlayerAction": true,
+      "Jobs": [
+        "NIN"
+      ]
+    },
+    {
+      "RowId": 29512,
+      "Name": "Huton",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "NIN"
+      ]
+    },
+    {
+      "RowId": 29513,
+      "Name": "Shukuchi",
+      "IsPlayerAction": true,
+      "Jobs": [
+        "NIN"
+      ]
+    },
+    {
+      "RowId": 29514,
+      "Name": "Doton",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "NIN"
+      ]
+    },
+    {
+      "RowId": 29515,
+      "Name": "Seiton Tenchu",
+      "IsPlayerAction": true,
+      "Jobs": [
+        "NIN"
+      ]
+    },
+    {
+      "RowId": 29516,
+      "Name": "Seiton Tenchu",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "NIN"
+      ]
+    },
+    {
+      "RowId": 29517,
+      "Name": "Spinning Edge",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "NIN"
+      ]
+    },
+    {
+      "RowId": 29518,
+      "Name": "Gust Slash",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "NIN"
+      ]
+    },
+    {
+      "RowId": 29519,
+      "Name": "Aeolian Edge",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "NIN"
+      ]
+    },
+    {
+      "RowId": 29520,
+      "Name": "Assassinate",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "NIN"
+      ]
+    },
+    {
+      "RowId": 29521,
+      "Name": "Fuma Shuriken",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "NIN"
+      ]
+    },
+    {
+      "RowId": 29522,
+      "Name": "Forked Raiju",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "NIN"
+      ]
+    },
+    {
+      "RowId": 29523,
+      "Name": "Yukikaze",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "SAM"
+      ]
+    },
+    {
+      "RowId": 29524,
+      "Name": "Gekko",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "SAM"
+      ]
+    },
+    {
+      "RowId": 29525,
+      "Name": "Kasha",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "SAM"
+      ]
+    },
+    {
+      "RowId": 29526,
+      "Name": "Hyosetsu",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "SAM"
+      ]
+    },
+    {
+      "RowId": 29527,
+      "Name": "Mangetsu",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "SAM"
+      ]
+    },
+    {
+      "RowId": 29528,
+      "Name": "Oka",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "SAM"
+      ]
+    },
+    {
+      "RowId": 29530,
+      "Name": "Ogi Namikiri",
+      "IsPlayerAction": true,
+      "Jobs": [
+        "SAM"
+      ]
+    },
+    {
+      "RowId": 29531,
+      "Name": "Kaeshi: Namikiri",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "SAM"
+      ]
+    },
+    {
+      "RowId": 29532,
+      "Name": "Hissatsu: Soten",
+      "IsPlayerAction": true,
+      "Jobs": [
+        "SAM"
+      ]
+    },
+    {
+      "RowId": 29533,
+      "Name": "Hissatsu: Chiten",
+      "IsPlayerAction": true,
+      "Jobs": [
+        "SAM"
+      ]
+    },
+    {
+      "RowId": 29534,
+      "Name": "Chiten-gaeshi",
+      "IsPlayerAction": false,
+      "Jobs": []
+    },
+    {
+      "RowId": 29535,
+      "Name": "Mineuchi",
+      "IsPlayerAction": true,
+      "Jobs": [
+        "SAM"
+      ]
+    },
+    {
+      "RowId": 29536,
+      "Name": "Meikyo Shisui",
+      "IsPlayerAction": true,
+      "Jobs": [
+        "SAM"
+      ]
+    },
+    {
+      "RowId": 29537,
+      "Name": "Zantetsuken",
+      "IsPlayerAction": true,
+      "Jobs": [
+        "SAM"
+      ]
+    },
+    {
+      "RowId": 29538,
+      "Name": "Slice",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "RPR"
+      ]
+    },
+    {
+      "RowId": 29539,
+      "Name": "Waxing Slice",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "RPR"
+      ]
+    },
+    {
+      "RowId": 29540,
+      "Name": "Infernal Slice",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "RPR"
+      ]
+    },
+    {
+      "RowId": 29543,
+      "Name": "Void Reaping",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "RPR"
+      ]
+    },
+    {
+      "RowId": 29544,
+      "Name": "Cross Reaping",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "RPR"
+      ]
+    },
+    {
+      "RowId": 29545,
+      "Name": "Harvest Moon",
+      "IsPlayerAction": true,
+      "Jobs": [
+        "RPR"
+      ]
+    },
+    {
+      "RowId": 29546,
+      "Name": "Plentiful Harvest",
+      "IsPlayerAction": true,
+      "Jobs": [
+        "RPR"
+      ]
+    },
+    {
+      "RowId": 29547,
+      "Name": "Grim Swathe",
+      "IsPlayerAction": true,
+      "Jobs": [
+        "RPR"
+      ]
+    },
+    {
+      "RowId": 29548,
+      "Name": "Lemure\u0027s Slice",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "RPR"
+      ]
+    },
+    {
+      "RowId": 29549,
+      "Name": "Death Warrant",
+      "IsPlayerAction": true,
+      "Jobs": [
+        "RPR"
+      ]
+    },
+    {
+      "RowId": 29550,
+      "Name": "Hell\u0027s Ingress",
+      "IsPlayerAction": true,
+      "Jobs": [
+        "RPR"
+      ]
+    },
+    {
+      "RowId": 29551,
+      "Name": "Regress",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "RPR"
+      ]
+    },
+    {
+      "RowId": 29552,
+      "Name": "Arcane Crest",
+      "IsPlayerAction": true,
+      "Jobs": [
+        "RPR"
+      ]
+    },
+    {
+      "RowId": 29553,
+      "Name": "Tenebrae Lemurum",
+      "IsPlayerAction": true,
+      "Jobs": [
+        "RPR"
+      ]
+    },
+    {
+      "RowId": 29554,
+      "Name": "Communio",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "RPR"
+      ]
+    },
+    {
+      "RowId": 29557,
+      "Name": "Relentless Rush",
+      "IsPlayerAction": false,
+      "Jobs": []
+    },
+    {
+      "RowId": 29558,
+      "Name": "Honing Dance",
+      "IsPlayerAction": false,
+      "Jobs": []
+    },
+    {
+      "RowId": 29559,
+      "Name": "Hollow Nozuchi",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "NIN"
+      ]
+    },
+    {
+      "RowId": 29603,
+      "Name": "Death Warrant",
+      "IsPlayerAction": false,
+      "Jobs": []
+    },
+    {
+      "RowId": 29649,
+      "Name": "Fire",
+      "IsPlayerAction": true,
+      "Jobs": [
+        "BLM"
+      ]
+    },
+    {
+      "RowId": 29650,
+      "Name": "Fire IV",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "BLM"
+      ]
+    },
+    {
+      "RowId": 29651,
+      "Name": "Flare",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "BLM"
+      ]
+    },
+    {
+      "RowId": 29653,
+      "Name": "Blizzard",
+      "IsPlayerAction": true,
+      "Jobs": [
+        "BLM"
+      ]
+    },
+    {
+      "RowId": 29654,
+      "Name": "Blizzard IV",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "BLM"
+      ]
+    },
+    {
+      "RowId": 29655,
+      "Name": "Freeze",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "BLM"
+      ]
+    },
+    {
+      "RowId": 29657,
+      "Name": "Burst",
+      "IsPlayerAction": true,
+      "Jobs": [
+        "BLM"
+      ]
+    },
+    {
+      "RowId": 29658,
+      "Name": "Xenoglossy",
+      "IsPlayerAction": true,
+      "Jobs": [
+        "BLM"
+      ]
+    },
+    {
+      "RowId": 29660,
+      "Name": "Aetherial Manipulation",
+      "IsPlayerAction": true,
+      "Jobs": [
+        "BLM"
+      ]
+    },
+    {
+      "RowId": 29662,
+      "Name": "Soul Resonance",
+      "IsPlayerAction": true,
+      "Jobs": [
+        "BLM"
+      ]
+    },
+    {
+      "RowId": 29663,
+      "Name": "Paradox",
+      "IsPlayerAction": true,
+      "Jobs": [
+        "BLM"
+      ]
+    },
+    {
+      "RowId": 29664,
+      "Name": "Ruin III",
+      "IsPlayerAction": true,
+      "Jobs": [
+        "SMN"
+      ]
+    },
+    {
+      "RowId": 29665,
+      "Name": "Astral Impulse",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "SMN"
+      ]
+    },
+    {
+      "RowId": 29666,
+      "Name": "Fountain of Fire",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "SMN"
+      ]
+    },
+    {
+      "RowId": 29667,
+      "Name": "Crimson Cyclone",
+      "IsPlayerAction": true,
+      "Jobs": [
+        "SMN"
+      ]
+    },
+    {
+      "RowId": 29668,
+      "Name": "Crimson Strike",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "SMN"
+      ]
+    },
+    {
+      "RowId": 29669,
+      "Name": "Slipstream",
+      "IsPlayerAction": true,
+      "Jobs": [
+        "SMN"
+      ]
+    },
+    {
+      "RowId": 29670,
+      "Name": "Radiant Aegis",
+      "IsPlayerAction": true,
+      "Jobs": [
+        "SMN"
+      ]
+    },
+    {
+      "RowId": 29671,
+      "Name": "Mountain Buster",
+      "IsPlayerAction": true,
+      "Jobs": [
+        "SMN"
+      ]
+    },
+    {
+      "RowId": 29673,
+      "Name": "Summon Bahamut",
+      "IsPlayerAction": true,
+      "Jobs": [
+        "SMN"
+      ]
+    },
+    {
+      "RowId": 29675,
+      "Name": "Megaflare",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "SMN"
+      ]
+    },
+    {
+      "RowId": 29676,
+      "Name": "Wyrmwave",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "SMN"
+      ]
+    },
+    {
+      "RowId": 29678,
+      "Name": "Summon Phoenix",
+      "IsPlayerAction": true,
+      "Jobs": [
+        "SMN"
+      ]
+    },
+    {
+      "RowId": 29680,
+      "Name": "Everlasting Flight",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "SMN"
+      ]
+    },
+    {
+      "RowId": 29681,
+      "Name": "Scarlet Flame",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "SMN"
+      ]
+    },
+    {
+      "RowId": 29699,
+      "Name": "Corps-a-corps",
+      "IsPlayerAction": true,
+      "Jobs": [
+        "RDM"
+      ]
+    },
+    {
+      "RowId": 29700,
+      "Name": "Displacement",
+      "IsPlayerAction": true,
+      "Jobs": [
+        "RDM"
+      ]
+    },
+    {
+      "RowId": 29706,
+      "Name": "Pneuma",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "SGE"
+      ]
+    },
+    {
+      "RowId": 29707,
+      "Name": "Fleeting Raiju",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "NIN"
+      ]
+    },
+    {
+      "RowId": 29708,
+      "Name": "Fleeting Raiju",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "NIN"
+      ]
+    },
+    {
+      "RowId": 29711,
+      "Name": "Recuperate",
+      "IsPlayerAction": true,
+      "Jobs": [
+        "PLD",
+        "MNK",
+        "WAR",
+        "DRG",
+        "BRD",
+        "WHM",
+        "BLM",
+        "SMN",
+        "SCH",
+        "NIN",
+        "MCH",
+        "DRK",
+        "AST",
+        "SAM",
+        "RDM",
+        "GNB",
+        "DNC",
+        "RPR",
+        "SGE",
+        "VPR",
+        "PCT"
+      ]
+    },
+    {
+      "RowId": 29716,
+      "Name": "Chain Stratagem",
+      "IsPlayerAction": true,
+      "Jobs": [
+        "SCH"
+      ]
+    },
+    {
+      "RowId": 29735,
+      "Name": "Guard",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "PLD",
+        "MNK",
+        "WAR",
+        "DRG",
+        "BRD",
+        "WHM",
+        "BLM",
+        "SMN",
+        "SCH",
+        "NIN",
+        "MCH",
+        "DRK",
+        "AST",
+        "SAM",
+        "RDM",
+        "GNB",
+        "DNC",
+        "RPR",
+        "SGE",
+        "VPR",
+        "PCT"
+      ]
+    },
+    {
+      "RowId": 29736,
+      "Name": "Chaotic Cyclone",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "WAR"
+      ]
+    },
+    {
+      "RowId": 29738,
+      "Name": "Shadowbringer",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "DRK"
+      ]
+    },
+    {
+      "RowId": 30896,
+      "Name": "Fire III",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "BLM"
+      ]
+    },
+    {
+      "RowId": 30897,
+      "Name": "Blizzard III",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "BLM"
+      ]
+    },
+    {
+      "RowId": 39157,
+      "Name": "Steel Fangs",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "VPR"
+      ]
+    },
+    {
+      "RowId": 39158,
+      "Name": "Piercing Fangs",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "VPR"
+      ]
+    },
+    {
+      "RowId": 39159,
+      "Name": "Hunter\u0027s Sting",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "VPR"
+      ]
+    },
+    {
+      "RowId": 39160,
+      "Name": "Swiftskin\u0027s Sting",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "VPR"
+      ]
+    },
+    {
+      "RowId": 39161,
+      "Name": "Barbarous Bite",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "VPR"
+      ]
+    },
+    {
+      "RowId": 39163,
+      "Name": "Ravenous Bite",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "VPR"
+      ]
+    },
+    {
+      "RowId": 39166,
+      "Name": "Bloodcoil",
+      "IsPlayerAction": true,
+      "Jobs": [
+        "VPR"
+      ]
+    },
+    {
+      "RowId": 39167,
+      "Name": "Sanguine Feast",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "VPR"
+      ]
+    },
+    {
+      "RowId": 39168,
+      "Name": "Uncoiled Fury",
+      "IsPlayerAction": true,
+      "Jobs": [
+        "VPR"
+      ]
+    },
+    {
+      "RowId": 39169,
+      "Name": "First Generation",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "VPR"
+      ]
+    },
+    {
+      "RowId": 39170,
+      "Name": "Second Generation",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "VPR"
+      ]
+    },
+    {
+      "RowId": 39171,
+      "Name": "Third Generation",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "VPR"
+      ]
+    },
+    {
+      "RowId": 39172,
+      "Name": "Fourth Generation",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "VPR"
+      ]
+    },
+    {
+      "RowId": 39173,
+      "Name": "Ouroboros",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "VPR"
+      ]
+    },
+    {
+      "RowId": 39174,
+      "Name": "Death Rattle",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "VPR"
+      ]
+    },
+    {
+      "RowId": 39175,
+      "Name": "Twinfang Bite",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "VPR"
+      ]
+    },
+    {
+      "RowId": 39176,
+      "Name": "Twinblood Bite",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "VPR"
+      ]
+    },
+    {
+      "RowId": 39177,
+      "Name": "Uncoiled Twinfang",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "VPR"
+      ]
+    },
+    {
+      "RowId": 39178,
+      "Name": "Uncoiled Twinblood",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "VPR"
+      ]
+    },
+    {
+      "RowId": 39179,
+      "Name": "First Legacy",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "VPR"
+      ]
+    },
+    {
+      "RowId": 39180,
+      "Name": "Second Legacy",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "VPR"
+      ]
+    },
+    {
+      "RowId": 39181,
+      "Name": "Third Legacy",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "VPR"
+      ]
+    },
+    {
+      "RowId": 39182,
+      "Name": "Fourth Legacy",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "VPR"
+      ]
+    },
+    {
+      "RowId": 39183,
+      "Name": "Serpent\u0027s Tail",
+      "IsPlayerAction": true,
+      "Jobs": [
+        "VPR"
+      ]
+    },
+    {
+      "RowId": 39184,
+      "Name": "Slither",
+      "IsPlayerAction": true,
+      "Jobs": [
+        "VPR"
+      ]
+    },
+    {
+      "RowId": 39185,
+      "Name": "Snake Scales",
+      "IsPlayerAction": true,
+      "Jobs": [
+        "VPR"
+      ]
+    },
+    {
+      "RowId": 39186,
+      "Name": "Backlash",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "VPR"
+      ]
+    },
+    {
+      "RowId": 39187,
+      "Name": "Backlash",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "VPR"
+      ]
+    },
+    {
+      "RowId": 39188,
+      "Name": "Furious Backlash",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "VPR"
+      ]
+    },
+    {
+      "RowId": 39189,
+      "Name": "Rattling Coil",
+      "IsPlayerAction": true,
+      "Jobs": [
+        "VPR"
+      ]
+    },
+    {
+      "RowId": 39190,
+      "Name": "World-swallower",
+      "IsPlayerAction": true,
+      "Jobs": [
+        "VPR"
+      ]
+    },
+    {
+      "RowId": 39191,
+      "Name": "Fire in Red",
+      "IsPlayerAction": true,
+      "Jobs": [
+        "PCT"
+      ]
+    },
+    {
+      "RowId": 39192,
+      "Name": "Aero in Green",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "PCT"
+      ]
+    },
+    {
+      "RowId": 39193,
+      "Name": "Water in Blue",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "PCT"
+      ]
+    },
+    {
+      "RowId": 39194,
+      "Name": "Blizzard in Cyan",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "PCT"
+      ]
+    },
+    {
+      "RowId": 39195,
+      "Name": "Stone in Yellow",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "PCT"
+      ]
+    },
+    {
+      "RowId": 39196,
+      "Name": "Thunder in Magenta",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "PCT"
+      ]
+    },
+    {
+      "RowId": 39198,
+      "Name": "Holy in White",
+      "IsPlayerAction": true,
+      "Jobs": [
+        "PCT"
+      ]
+    },
+    {
+      "RowId": 39199,
+      "Name": "Comet in Black",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "PCT"
+      ]
+    },
+    {
+      "RowId": 39200,
+      "Name": "Pom Motif",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "PCT"
+      ]
+    },
+    {
+      "RowId": 39201,
+      "Name": "Wing Motif",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "PCT"
+      ]
+    },
+    {
+      "RowId": 39202,
+      "Name": "Claw Motif",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "PCT"
+      ]
+    },
+    {
+      "RowId": 39203,
+      "Name": "Maw Motif",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "PCT"
+      ]
+    },
+    {
+      "RowId": 39204,
+      "Name": "Creature Motif",
+      "IsPlayerAction": true,
+      "Jobs": [
+        "PCT"
+      ]
+    },
+    {
+      "RowId": 39205,
+      "Name": "Pom Muse",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "PCT"
+      ]
+    },
+    {
+      "RowId": 39206,
+      "Name": "Winged Muse",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "PCT"
+      ]
+    },
+    {
+      "RowId": 39207,
+      "Name": "Clawed Muse",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "PCT"
+      ]
+    },
+    {
+      "RowId": 39208,
+      "Name": "Fanged Muse",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "PCT"
+      ]
+    },
+    {
+      "RowId": 39209,
+      "Name": "Living Muse",
+      "IsPlayerAction": true,
+      "Jobs": [
+        "PCT"
+      ]
+    },
+    {
+      "RowId": 39210,
+      "Name": "Smudge",
+      "IsPlayerAction": true,
+      "Jobs": [
+        "PCT"
+      ]
+    },
+    {
+      "RowId": 39211,
+      "Name": "Tempera Coat",
+      "IsPlayerAction": true,
+      "Jobs": [
+        "PCT"
+      ]
+    },
+    {
+      "RowId": 39212,
+      "Name": "Tempera Grassa",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "PCT"
+      ]
+    },
+    {
+      "RowId": 39213,
+      "Name": "Subtractive Palette",
+      "IsPlayerAction": true,
+      "Jobs": [
+        "PCT"
+      ]
+    },
+    {
+      "RowId": 39214,
+      "Name": "Release Subtractive Palette",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "PCT"
+      ]
+    },
+    {
+      "RowId": 39215,
+      "Name": "Advent of Chocobastion",
+      "IsPlayerAction": true,
+      "Jobs": [
+        "PCT"
+      ]
+    },
+    {
+      "RowId": 39216,
+      "Name": "Star Prism",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "PCT"
+      ]
+    },
+    {
+      "RowId": 39217,
+      "Name": "Star Prism",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "PCT"
+      ]
+    },
+    {
+      "RowId": 39782,
+      "Name": "Mog of the Ages",
+      "IsPlayerAction": true,
+      "Jobs": [
+        "PCT"
+      ]
+    },
+    {
+      "RowId": 39783,
+      "Name": "Retribution of the Madeen",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "PCT"
+      ]
+    },
+    {
+      "RowId": 41428,
+      "Name": "Supplication",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "PLD"
+      ]
+    },
+    {
+      "RowId": 41429,
+      "Name": "Sepulchre",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "PLD"
+      ]
+    },
+    {
+      "RowId": 41430,
+      "Name": "Shield Smite",
+      "IsPlayerAction": true,
+      "Jobs": [
+        "PLD"
+      ]
+    },
+    {
+      "RowId": 41431,
+      "Name": "Imperator",
+      "IsPlayerAction": true,
+      "Jobs": [
+        "PLD"
+      ]
+    },
+    {
+      "RowId": 41432,
+      "Name": "Primal Ruination",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "WAR"
+      ]
+    },
+    {
+      "RowId": 41433,
+      "Name": "Primal Wrath",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "WAR"
+      ]
+    },
+    {
+      "RowId": 41434,
+      "Name": "Scarlet Delirium",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "DRK"
+      ]
+    },
+    {
+      "RowId": 41435,
+      "Name": "Comeuppance",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "DRK"
+      ]
+    },
+    {
+      "RowId": 41436,
+      "Name": "Torcleaver",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "DRK"
+      ]
+    },
+    {
+      "RowId": 41437,
+      "Name": "Disesteem",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "DRK"
+      ]
+    },
+    {
+      "RowId": 41438,
+      "Name": "Impalement",
+      "IsPlayerAction": true,
+      "Jobs": [
+        "DRK"
+      ]
+    },
+    {
+      "RowId": 41442,
+      "Name": "Fated Brand",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "GNB"
+      ]
+    },
+    {
+      "RowId": 41443,
+      "Name": "Heart of Corundum",
+      "IsPlayerAction": true,
+      "Jobs": [
+        "GNB"
+      ]
+    },
+    {
+      "RowId": 41444,
+      "Name": "Leaping Opo",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "MNK"
+      ]
+    },
+    {
+      "RowId": 41445,
+      "Name": "Rising Raptor",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "MNK"
+      ]
+    },
+    {
+      "RowId": 41446,
+      "Name": "Pouncing Coeurl",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "MNK"
+      ]
+    },
+    {
+      "RowId": 41448,
+      "Name": "Fire\u0027s Reply",
+      "IsPlayerAction": true,
+      "Jobs": [
+        "MNK"
+      ]
+    },
+    {
+      "RowId": 41449,
+      "Name": "Drakesbane",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "DRG"
+      ]
+    },
+    {
+      "RowId": 41450,
+      "Name": "Starcross",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "DRG"
+      ]
+    },
+    {
+      "RowId": 41451,
+      "Name": "Dokumori",
+      "IsPlayerAction": true,
+      "Jobs": [
+        "NIN"
+      ]
+    },
+    {
+      "RowId": 41452,
+      "Name": "Zesho Meppo",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "NIN"
+      ]
+    },
+    {
+      "RowId": 41453,
+      "Name": "Zesho Meppo",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "NIN"
+      ]
+    },
+    {
+      "RowId": 41454,
+      "Name": "Tendo Setsugekka",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "SAM"
+      ]
+    },
+    {
+      "RowId": 41455,
+      "Name": "Tendo Kaeshi Setsugekka",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "SAM"
+      ]
+    },
+    {
+      "RowId": 41456,
+      "Name": "Executioner\u0027s Guillotine",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "RPR"
+      ]
+    },
+    {
+      "RowId": 41457,
+      "Name": "Fate Sealed",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "RPR"
+      ]
+    },
+    {
+      "RowId": 41458,
+      "Name": "Perfectio",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "RPR"
+      ]
+    },
+    {
+      "RowId": 41464,
+      "Name": "Harmonic Arrow",
+      "IsPlayerAction": true,
+      "Jobs": [
+        "BRD"
+      ]
+    },
+    {
+      "RowId": 41465,
+      "Name": "Harmonic Arrow",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "BRD"
+      ]
+    },
+    {
+      "RowId": 41466,
+      "Name": "Harmonic Arrow",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "BRD"
+      ]
+    },
+    {
+      "RowId": 41467,
+      "Name": "Encore of Light",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "BRD"
+      ]
+    },
+    {
+      "RowId": 41468,
+      "Name": "Blazing Shot",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "MCH"
+      ]
+    },
+    {
+      "RowId": 41469,
+      "Name": "Full Metal Field",
+      "IsPlayerAction": true,
+      "Jobs": [
+        "MCH"
+      ]
+    },
+    {
+      "RowId": 41470,
+      "Name": "Detonator",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "MCH"
+      ]
+    },
+    {
+      "RowId": 41472,
+      "Name": "Dance of the Dawn",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "DNC"
+      ]
+    },
+    {
+      "RowId": 41473,
+      "Name": "High Fire II",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "BLM"
+      ]
+    },
+    {
+      "RowId": 41474,
+      "Name": "High Blizzard II",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "BLM"
+      ]
+    },
+    {
+      "RowId": 41475,
+      "Name": "Elemental Weave",
+      "IsPlayerAction": true,
+      "Jobs": [
+        "BLM"
+      ]
+    },
+    {
+      "RowId": 41476,
+      "Name": "Wreath of Fire",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "BLM"
+      ]
+    },
+    {
+      "RowId": 41477,
+      "Name": "Wreath of Fire",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "BLM"
+      ]
+    },
+    {
+      "RowId": 41478,
+      "Name": "Wreath of Ice",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "BLM"
+      ]
+    },
+    {
+      "RowId": 41479,
+      "Name": "",
+      "IsPlayerAction": false,
+      "Jobs": []
+    },
+    {
+      "RowId": 41480,
+      "Name": "Flare Star",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "BLM"
+      ]
+    },
+    {
+      "RowId": 41481,
+      "Name": "Frost Star",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "BLM"
+      ]
+    },
+    {
+      "RowId": 41482,
+      "Name": "Ruin IV",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "SMN"
+      ]
+    },
+    {
+      "RowId": 41483,
+      "Name": "Necrotize",
+      "IsPlayerAction": true,
+      "Jobs": [
+        "SMN"
+      ]
+    },
+    {
+      "RowId": 41484,
+      "Name": "Deathflare",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "SMN"
+      ]
+    },
+    {
+      "RowId": 41485,
+      "Name": "Brand of Purgatory",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "SMN"
+      ]
+    },
+    {
+      "RowId": 41486,
+      "Name": "Jolt III",
+      "IsPlayerAction": true,
+      "Jobs": [
+        "RDM"
+      ]
+    },
+    {
+      "RowId": 41487,
+      "Name": "Grand Impact",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "RDM"
+      ]
+    },
+    {
+      "RowId": 41488,
+      "Name": "Enchanted Riposte",
+      "IsPlayerAction": true,
+      "Jobs": [
+        "RDM"
+      ]
+    },
+    {
+      "RowId": 41489,
+      "Name": "Enchanted Zwerchhau",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "RDM"
+      ]
+    },
+    {
+      "RowId": 41490,
+      "Name": "Enchanted Redoublement",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "RDM"
+      ]
+    },
+    {
+      "RowId": 41491,
+      "Name": "Scorch",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "RDM"
+      ]
+    },
+    {
+      "RowId": 41492,
+      "Name": "Resolution",
+      "IsPlayerAction": true,
+      "Jobs": [
+        "RDM"
+      ]
+    },
+    {
+      "RowId": 41493,
+      "Name": "Vice of Thorns",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "RDM"
+      ]
+    },
+    {
+      "RowId": 41494,
+      "Name": "Embolden",
+      "IsPlayerAction": true,
+      "Jobs": [
+        "RDM"
+      ]
+    },
+    {
+      "RowId": 41495,
+      "Name": "Prefulgence",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "RDM"
+      ]
+    },
+    {
+      "RowId": 41496,
+      "Name": "Forte",
+      "IsPlayerAction": true,
+      "Jobs": [
+        "RDM"
+      ]
+    },
+    {
+      "RowId": 41498,
+      "Name": "Southern Cross",
+      "IsPlayerAction": true,
+      "Jobs": [
+        "RDM"
+      ]
+    },
+    {
+      "RowId": 41499,
+      "Name": "Glare IV",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "WHM"
+      ]
+    },
+    {
+      "RowId": 41500,
+      "Name": "Seraphic Halo",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "SCH"
+      ]
+    },
+    {
+      "RowId": 41501,
+      "Name": "Accession",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "SCH"
+      ]
+    },
+    {
+      "RowId": 41502,
+      "Name": "Seraphism",
+      "IsPlayerAction": true,
+      "Jobs": [
+        "SCH"
+      ]
+    },
+    {
+      "RowId": 41503,
+      "Name": "Minor Arcana",
+      "IsPlayerAction": true,
+      "Jobs": [
+        "AST"
+      ]
+    },
+    {
+      "RowId": 41504,
+      "Name": "Lady of Crowns",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "AST"
+      ]
+    },
+    {
+      "RowId": 41505,
+      "Name": "Lord of Crowns",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "AST"
+      ]
+    },
+    {
+      "RowId": 41506,
+      "Name": "Epicycle",
+      "IsPlayerAction": true,
+      "Jobs": [
+        "AST"
+      ]
+    },
+    {
+      "RowId": 41507,
+      "Name": "Retrograde",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "AST"
+      ]
+    },
+    {
+      "RowId": 41508,
+      "Name": "Oracle",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "AST"
+      ]
+    },
+    {
+      "RowId": 41509,
+      "Name": "Wind\u0027s Reply",
+      "IsPlayerAction": true,
+      "Jobs": [
+        "MNK"
+      ]
+    },
+    {
+      "RowId": 41510,
+      "Name": "Lethargy",
+      "IsPlayerAction": true,
+      "Jobs": [
+        "BLM"
+      ]
+    },
+    {
+      "RowId": 41511,
+      "Name": "Fated Circle",
+      "IsPlayerAction": true,
+      "Jobs": [
+        "GNB"
+      ]
+    },
+    {
+      "RowId": 41577,
+      "Name": "Zanshin",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "SAM"
+      ]
+    },
+    {
+      "RowId": 41658,
+      "Name": "Psyche",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "SGE"
+      ]
+    },
+    {
+      "RowId": 41964,
+      "Name": "Harmonic Arrow",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "BRD"
+      ]
+    },
+    {
+      "RowId": 42194,
+      "Name": "Confiteor",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "PLD"
+      ]
+    },
+    {
+      "RowId": 43243,
+      "Name": "Rampage",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "PLD",
+        "WAR",
+        "DRK",
+        "GNB"
+      ]
+    },
+    {
+      "RowId": 43244,
+      "Name": "Rampart",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "PLD",
+        "WAR",
+        "DRK",
+        "GNB"
+      ]
+    },
+    {
+      "RowId": 43245,
+      "Name": "Full Swing",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "PLD",
+        "WAR",
+        "DRK",
+        "GNB"
+      ]
+    },
+    {
+      "RowId": 43246,
+      "Name": "Bloodbath",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "MNK",
+        "DRG",
+        "NIN",
+        "SAM",
+        "RPR",
+        "VPR"
+      ]
+    },
+    {
+      "RowId": 43247,
+      "Name": "Swift",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "MNK",
+        "DRG",
+        "NIN",
+        "SAM",
+        "RPR",
+        "VPR"
+      ]
+    },
+    {
+      "RowId": 43248,
+      "Name": "Smite",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "MNK",
+        "DRG",
+        "NIN",
+        "SAM",
+        "RPR",
+        "VPR"
+      ]
+    },
+    {
+      "RowId": 43249,
+      "Name": "Dervish",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "BRD",
+        "MCH",
+        "DNC"
+      ]
+    },
+    {
+      "RowId": 43250,
+      "Name": "Bravery",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "BRD",
+        "MCH",
+        "DNC"
+      ]
+    },
+    {
+      "RowId": 43251,
+      "Name": "Eagle Eye Shot",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "BRD",
+        "MCH",
+        "DNC"
+      ]
+    },
+    {
+      "RowId": 43252,
+      "Name": "Comet",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "BLM",
+        "SMN",
+        "RDM",
+        "PCT"
+      ]
+    },
+    {
+      "RowId": 43254,
+      "Name": "Rust",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "BLM",
+        "SMN",
+        "RDM",
+        "PCT"
+      ]
+    },
+    {
+      "RowId": 43255,
+      "Name": "Haelan",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "WHM",
+        "SCH",
+        "AST",
+        "SGE"
+      ]
+    },
+    {
+      "RowId": 43256,
+      "Name": "Stoneskin II",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "WHM",
+        "SCH",
+        "AST",
+        "SGE"
+      ]
+    },
+    {
+      "RowId": 43257,
+      "Name": "Diabrosis",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "WHM",
+        "SCH",
+        "AST",
+        "SGE"
+      ]
+    },
+    {
+      "RowId": 43259,
+      "Name": "PvP Role Action",
+      "IsPlayerAction": true,
+      "Jobs": []
+    },
+    {
+      "RowId": 43291,
+      "Name": "Phantom Dart",
+      "IsPlayerAction": false,
+      "Jobs": [
+        "BLM",
+        "SMN",
+        "RDM",
+        "PCT"
+      ]
+    }
+  ],
+  "Combos": [
+    {
+      "RowId": 50,
+      "Name": "Royal Authority Combo",
+      "Actions": [
+        29058,
+        29059,
+        29060
+      ]
+    },
+    {
+      "RowId": 51,
+      "Name": "Storm\u0027s Path Combo",
+      "Actions": [
+        29074,
+        29075,
+        29076
+      ]
+    },
+    {
+      "RowId": 52,
+      "Name": "Souleater Combo",
+      "Actions": [
+        29085,
+        29086,
+        29087
+      ]
+    },
+    {
+      "RowId": 53,
+      "Name": "Solid Barrel Combo",
+      "Actions": [
+        29098,
+        29099,
+        29100,
+        29101
+      ]
+    },
+    {
+      "RowId": 54,
+      "Name": "Fountain Combo",
+      "Actions": [
+        29416,
+        29417
+      ]
+    },
+    {
+      "RowId": 55,
+      "Name": "Phantom Rush Combo",
+      "Actions": [
+        29475,
+        29476,
+        29477,
+        41444,
+        41445,
+        41446,
+        29478
+      ]
+    },
+    {
+      "RowId": 56,
+      "Name": "Drakesbane Combo",
+      "Actions": [
+        29486,
+        29487,
+        29488,
+        41449
+      ]
+    },
+    {
+      "RowId": 57,
+      "Name": "Aeolian Edge Combo",
+      "Actions": [
+        29500,
+        29501,
+        29502
+      ]
+    },
+    {
+      "RowId": 58,
+      "Name": "Kasha Combo",
+      "Actions": [
+        29523,
+        29524,
+        29525
+      ]
+    },
+    {
+      "RowId": 59,
+      "Name": "Infernal Slice Combo",
+      "Actions": [
+        29538,
+        29539,
+        29540
+      ]
+    },
+    {
+      "RowId": 65,
+      "Name": "Dual Fang Combo",
+      "Actions": [
+        39157,
+        39159,
+        39161,
+        39158,
+        39160,
+        39163
+      ]
+    }
+  ]
+}

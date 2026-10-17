@@ -1,4 +1,6 @@
-﻿using Dalamud.Game.ClientState.Objects.Types;
+﻿using WrathCombo.Engine;
+using WrathFork.Contract;
+using Dalamud.Game.ClientState.Objects.Types;
 using WrathCombo.Core;
 using WrathCombo.CustomComboNS;
 using WrathCombo.CustomComboNS.Functions;
@@ -135,7 +137,7 @@ internal static class ASTPvP
                     return DoubleGravity;
 
                 // Gravity on cd
-                if (IsEnabled(Preset.ASTPvP_Burst_Gravity) && IsOffCooldown(Gravity))
+                if (IsEnabled(Preset.ASTPvP_Burst_Gravity) && Options.Enabled(Feature.PvPAstGravityInitiation) && IsOffCooldown(Gravity))
                     return Gravity;
 
                 // Double Malefic logic to not leave gravity without a charge

@@ -1,0 +1,3936 @@
+{
+  "retrieved": "2026-10-17",
+  "upstream_commit": "5365eb1edc13654be945a624b2311a8b8541a599",
+  "scope": "Source/action inventory. Variant ownership and complete manual continuation require a separate branch-level design pass. Names are not automation recommendations.",
+  "jobs": [
+    {
+      "job": "PLD",
+      "official_url": "https://na.finalfantasyxiv.com/jobguide/paladin/#anchor__pvp_onlyaction",
+      "official_sha256": "13ac6971ead8a7379d97faf1f6c3677f9864eb9a7ae3b4e984c9ace085db4f94",
+      "actions": [
+        {
+          "name": "Fast Blade",
+          "anchor": "pvp_action__01",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "Riot Blade",
+          "anchor": "pvp_action__02",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "Royal Authority",
+          "anchor": "pvp_action__03",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "Shield Smite",
+          "anchor": "pvp_action__04",
+          "assignable": true,
+          "category": "job"
+        },
+        {
+          "name": "Holy Spirit",
+          "anchor": "pvp_action__05",
+          "assignable": true,
+          "category": "job"
+        },
+        {
+          "name": "Imperator",
+          "anchor": "pvp_action__06",
+          "assignable": true,
+          "category": "job"
+        },
+        {
+          "name": "Intervene",
+          "anchor": "pvp_action__07",
+          "assignable": true,
+          "category": "job"
+        },
+        {
+          "name": "Holy Sheltron",
+          "anchor": "pvp_action__08",
+          "assignable": true,
+          "category": "job"
+        },
+        {
+          "name": "Guardian",
+          "anchor": "pvp_action__09",
+          "assignable": true,
+          "category": "job"
+        },
+        {
+          "name": "Atonement",
+          "anchor": "pvp_action__10",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "Supplication",
+          "anchor": "pvp_action__11",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "Sepulchre",
+          "anchor": "pvp_action__12",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "Confiteor",
+          "anchor": "pvp_action__13",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "Blade of Faith",
+          "anchor": "pvp_action__14",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "Blade of Truth",
+          "anchor": "pvp_action__15",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "Blade of Valor",
+          "anchor": "pvp_action__16",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "Phalanx",
+          "anchor": "pvplimitbreakaction_01",
+          "assignable": true,
+          "category": "limit_break"
+        },
+        {
+          "name": "Standard-issue Elixir",
+          "anchor": "pvpcommmononlyaction_01",
+          "assignable": true,
+          "category": "common"
+        },
+        {
+          "name": "Recuperate",
+          "anchor": "pvpcommmononlyaction_02",
+          "assignable": true,
+          "category": "common"
+        },
+        {
+          "name": "Purify",
+          "anchor": "pvpcommmononlyaction_03",
+          "assignable": true,
+          "category": "common"
+        },
+        {
+          "name": "Guard",
+          "anchor": "pvpcommmononlyaction_04",
+          "assignable": true,
+          "category": "common"
+        },
+        {
+          "name": "Sprint",
+          "anchor": "pvpcommmononlyaction_05",
+          "assignable": true,
+          "category": "common"
+        },
+        {
+          "name": "Rampage",
+          "anchor": "pvproleaction_01",
+          "assignable": true,
+          "category": "role"
+        },
+        {
+          "name": "Rampart",
+          "anchor": "pvproleaction_02",
+          "assignable": true,
+          "category": "role"
+        },
+        {
+          "name": "Full Swing",
+          "anchor": "pvproleaction_03",
+          "assignable": true,
+          "category": "role"
+        }
+      ],
+      "source": "WrathCombo/Combos/PvP/PLDPVP.cs",
+      "source_sha256": "862ac1cfb3fcc33393099a27b5f1f2a407cebbddd9497fbcde7278adf38c3783",
+      "root_presets": [
+        {
+          "line": 77,
+          "preset": "PLDPvP_Burst"
+        }
+      ],
+      "toggle_references": [
+        "PLDPvP_Confiteor",
+        "PLDPvP_HolySpirit",
+        "PLDPvP_Imperator",
+        "PLDPvP_Intervene",
+        "PLDPvP_Intervene_Melee",
+        "PLDPvP_PhalanxCombo",
+        "PLDPvP_Rampart",
+        "PLDPvP_Sheltron",
+        "PLDPvP_ShieldSmite"
+      ],
+      "setting_keys": [
+        "PLDPvP_HolySpirit_Threshold",
+        "PLDPvP_RampartThreshold"
+      ],
+      "entry_checks": [
+        {
+          "line": 81,
+          "code": "if (!CustomActionHelper.OneButtonRotationChecker(actionID, CustomActionType.SingleTargetDPS, FastBlade, RiotBlade, RoyalAuthority))"
+        }
+      ]
+    },
+    {
+      "job": "WAR",
+      "official_url": "https://na.finalfantasyxiv.com/jobguide/warrior/#anchor__pvp_onlyaction",
+      "official_sha256": "b378c3dca1c2ad34143b7e260b198e2fc44fbc20b0ffe700d64a660eaca63e1d",
+      "actions": [
+        {
+          "name": "Heavy Swing",
+          "anchor": "pvp_action__01",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "Maim",
+          "anchor": "pvp_action__02",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "Storm's Path",
+          "anchor": "pvp_action__03",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "Primal Rend",
+          "anchor": "pvp_action__04",
+          "assignable": true,
+          "category": "job"
+        },
+        {
+          "name": "Onslaught",
+          "anchor": "pvp_action__05",
+          "assignable": true,
+          "category": "job"
+        },
+        {
+          "name": "Orogeny",
+          "anchor": "pvp_action__06",
+          "assignable": true,
+          "category": "job"
+        },
+        {
+          "name": "Blota",
+          "anchor": "pvp_action__07",
+          "assignable": true,
+          "category": "job"
+        },
+        {
+          "name": "Bloodwhetting",
+          "anchor": "pvp_action__08",
+          "assignable": true,
+          "category": "job"
+        },
+        {
+          "name": "Fell Cleave",
+          "anchor": "pvp_action__09",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "Primal Ruination",
+          "anchor": "pvp_action__10",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "Inner Chaos",
+          "anchor": "pvp_action__11",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "Chaotic Cyclone",
+          "anchor": "pvp_action__12",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "Primal Wrath",
+          "anchor": "pvp_action__13",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "Primal Scream",
+          "anchor": "pvplimitbreakaction_01",
+          "assignable": true,
+          "category": "limit_break"
+        },
+        {
+          "name": "Standard-issue Elixir",
+          "anchor": "pvpcommmononlyaction_01",
+          "assignable": true,
+          "category": "common"
+        },
+        {
+          "name": "Recuperate",
+          "anchor": "pvpcommmononlyaction_02",
+          "assignable": true,
+          "category": "common"
+        },
+        {
+          "name": "Purify",
+          "anchor": "pvpcommmononlyaction_03",
+          "assignable": true,
+          "category": "common"
+        },
+        {
+          "name": "Guard",
+          "anchor": "pvpcommmononlyaction_04",
+          "assignable": true,
+          "category": "common"
+        },
+        {
+          "name": "Sprint",
+          "anchor": "pvpcommmononlyaction_05",
+          "assignable": true,
+          "category": "common"
+        },
+        {
+          "name": "Rampage",
+          "anchor": "pvproleaction_01",
+          "assignable": true,
+          "category": "role"
+        },
+        {
+          "name": "Rampart",
+          "anchor": "pvproleaction_02",
+          "assignable": true,
+          "category": "role"
+        },
+        {
+          "name": "Full Swing",
+          "anchor": "pvproleaction_03",
+          "assignable": true,
+          "category": "role"
+        }
+      ],
+      "source": "WrathCombo/Combos/PvP/WARPVP.cs",
+      "source_sha256": "af53023b14134224928aed6b6466ac7e0c1155838c2cb789e7eb8f1935485a42",
+      "root_presets": [
+        {
+          "line": 66,
+          "preset": "WARPvP_BurstMode"
+        }
+      ],
+      "toggle_references": [
+        "WARPvP_BurstMode_Bloodwhetting",
+        "WARPvP_BurstMode_Blota",
+        "WARPvP_BurstMode_InnerChaos",
+        "WARPvP_BurstMode_Onslaught",
+        "WARPvP_BurstMode_Orogeny",
+        "WARPvP_BurstMode_PrimalRend",
+        "WARPvP_BurstMode_PrimalScream",
+        "WARPvP_Rampart"
+      ],
+      "setting_keys": [
+        "WARPVP_BlotaTiming",
+        "WARPvP_RampartThreshold"
+      ],
+      "entry_checks": [
+        {
+          "line": 70,
+          "code": "if (!CustomActionHelper.OneButtonRotationChecker(actionID, CustomActionType.SingleTargetDPS, HeavySwing, Maim, StormsPath))"
+        }
+      ]
+    },
+    {
+      "job": "DRK",
+      "official_url": "https://na.finalfantasyxiv.com/jobguide/darkknight/#anchor__pvp_onlyaction",
+      "official_sha256": "77087b8c90aa43b79224ce968fe53a4f68d45a23bfa29dd8a78eef864b87e6de",
+      "actions": [
+        {
+          "name": "Hard Slash",
+          "anchor": "pvp_action__01",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "Syphon Strike",
+          "anchor": "pvp_action__02",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "Souleater",
+          "anchor": "pvp_action__03",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "Impalement",
+          "anchor": "pvp_action__04",
+          "assignable": true,
+          "category": "job"
+        },
+        {
+          "name": "Shadowbringer",
+          "anchor": "pvp_action__05",
+          "assignable": true,
+          "category": "job"
+        },
+        {
+          "name": "Plunge",
+          "anchor": "pvp_action__06",
+          "assignable": true,
+          "category": "job"
+        },
+        {
+          "name": "The Blackest Night",
+          "anchor": "pvp_action__07",
+          "assignable": true,
+          "category": "job"
+        },
+        {
+          "name": "Salted Earth",
+          "anchor": "pvp_action__08",
+          "assignable": true,
+          "category": "job"
+        },
+        {
+          "name": "Scarlet Delirium",
+          "anchor": "pvp_action__09",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "Comeuppance",
+          "anchor": "pvp_action__10",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "Torcleaver",
+          "anchor": "pvp_action__11",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "Salt and Darkness",
+          "anchor": "pvp_action__12",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "Disesteem",
+          "anchor": "pvp_action__13",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "Eventide",
+          "anchor": "pvplimitbreakaction_01",
+          "assignable": true,
+          "category": "limit_break"
+        },
+        {
+          "name": "Standard-issue Elixir",
+          "anchor": "pvpcommmononlyaction_01",
+          "assignable": true,
+          "category": "common"
+        },
+        {
+          "name": "Recuperate",
+          "anchor": "pvpcommmononlyaction_02",
+          "assignable": true,
+          "category": "common"
+        },
+        {
+          "name": "Purify",
+          "anchor": "pvpcommmononlyaction_03",
+          "assignable": true,
+          "category": "common"
+        },
+        {
+          "name": "Guard",
+          "anchor": "pvpcommmononlyaction_04",
+          "assignable": true,
+          "category": "common"
+        },
+        {
+          "name": "Sprint",
+          "anchor": "pvpcommmononlyaction_05",
+          "assignable": true,
+          "category": "common"
+        },
+        {
+          "name": "Rampage",
+          "anchor": "pvproleaction_01",
+          "assignable": true,
+          "category": "role"
+        },
+        {
+          "name": "Rampart",
+          "anchor": "pvproleaction_02",
+          "assignable": true,
+          "category": "role"
+        },
+        {
+          "name": "Full Swing",
+          "anchor": "pvproleaction_03",
+          "assignable": true,
+          "category": "role"
+        }
+      ],
+      "source": "WrathCombo/Combos/PvP/DRKPVP.cs",
+      "source_sha256": "b53a619eace7cf1fc75110f579d67dd68d0268d65c3e0f41d6b0f464a4393746",
+      "root_presets": [
+        {
+          "line": 67,
+          "preset": "DRKPvP_Burst"
+        }
+      ],
+      "toggle_references": [
+        "DRKPvP_BlackestNight",
+        "DRKPvP_Impalement",
+        "DRKPvP_Plunge",
+        "DRKPvP_PlungeMelee",
+        "DRKPvP_Rampart",
+        "DRKPvP_SaltAndDarkness",
+        "DRKPvP_SaltedEarth",
+        "DRKPvP_Scorn",
+        "DRKPvP_Shadowbringer"
+      ],
+      "setting_keys": [
+        "DRKPvP_RampartThreshold",
+        "ShadowbringerThreshold"
+      ],
+      "entry_checks": [
+        {
+          "line": 70,
+          "code": "if (!CustomActionHelper.OneButtonRotationChecker(actionID, CustomActionType.SingleTargetDPS, HardSlash, SyphonStrike, Souleater))"
+        }
+      ]
+    },
+    {
+      "job": "GNB",
+      "official_url": "https://na.finalfantasyxiv.com/jobguide/gunbreaker/#anchor__pvp_onlyaction",
+      "official_sha256": "750e23f7776aac9df5d817279751fe6f8e2b4a05fc352cdc5f973f086092449a",
+      "actions": [
+        {
+          "name": "Keen Edge",
+          "anchor": "pvp_action__01",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "Brutal Shell",
+          "anchor": "pvp_action__02",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "Solid Barrel",
+          "anchor": "pvp_action__03",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "Burst Strike",
+          "anchor": "pvp_action__04",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "Gnashing Fang",
+          "anchor": "pvp_action__05",
+          "assignable": true,
+          "category": "job"
+        },
+        {
+          "name": "Fated Circle",
+          "anchor": "pvp_action__06",
+          "assignable": true,
+          "category": "job"
+        },
+        {
+          "name": "Continuation",
+          "anchor": "pvp_action__07",
+          "assignable": true,
+          "category": "job"
+        },
+        {
+          "name": "Rough Divide",
+          "anchor": "pvp_action__08",
+          "assignable": true,
+          "category": "job"
+        },
+        {
+          "name": "Blasting Zone",
+          "anchor": "pvp_action__09",
+          "assignable": true,
+          "category": "job"
+        },
+        {
+          "name": "Heart of Corundum",
+          "anchor": "pvp_action__10",
+          "assignable": true,
+          "category": "job"
+        },
+        {
+          "name": "Savage Claw",
+          "anchor": "pvp_action__11",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "Wicked Talon",
+          "anchor": "pvp_action__12",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "Hypervelocity",
+          "anchor": "pvp_action__13",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "Fated Brand",
+          "anchor": "pvp_action__14",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "Jugular Rip",
+          "anchor": "pvp_action__15",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "Abdomen Tear",
+          "anchor": "pvp_action__16",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "Eye Gouge",
+          "anchor": "pvp_action__17",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "Relentless Rush",
+          "anchor": "pvplimitbreakaction_01",
+          "assignable": true,
+          "category": "limit_break"
+        },
+        {
+          "name": "Terminal Trigger",
+          "anchor": "pvplimitbreakaction_02",
+          "assignable": false,
+          "category": "limit_break"
+        },
+        {
+          "name": "Standard-issue Elixir",
+          "anchor": "pvpcommmononlyaction_01",
+          "assignable": true,
+          "category": "common"
+        },
+        {
+          "name": "Recuperate",
+          "anchor": "pvpcommmononlyaction_02",
+          "assignable": true,
+          "category": "common"
+        },
+        {
+          "name": "Purify",
+          "anchor": "pvpcommmononlyaction_03",
+          "assignable": true,
+          "category": "common"
+        },
+        {
+          "name": "Guard",
+          "anchor": "pvpcommmononlyaction_04",
+          "assignable": true,
+          "category": "common"
+        },
+        {
+          "name": "Sprint",
+          "anchor": "pvpcommmononlyaction_05",
+          "assignable": true,
+          "category": "common"
+        },
+        {
+          "name": "Rampage",
+          "anchor": "pvproleaction_01",
+          "assignable": true,
+          "category": "role"
+        },
+        {
+          "name": "Rampart",
+          "anchor": "pvproleaction_02",
+          "assignable": true,
+          "category": "role"
+        },
+        {
+          "name": "Full Swing",
+          "anchor": "pvproleaction_03",
+          "assignable": true,
+          "category": "role"
+        }
+      ],
+      "source": "WrathCombo/Combos/PvP/GNBPVP.cs",
+      "source_sha256": "3b80feb909b05b6d8a7fe9f0992a1cfe2955a453af39d054dbff1a3034c47b85",
+      "root_presets": [
+        {
+          "line": 92,
+          "preset": "GNBPvP_Burst"
+        },
+        {
+          "line": 154,
+          "preset": "GNBPvP_GnashingFang"
+        }
+      ],
+      "toggle_references": [
+        "GNBPvP_BlastingZone",
+        "GNBPvP_Corundum",
+        "GNBPvP_FatedCircle",
+        "GNBPvP_Rampart",
+        "GNBPvP_RoughDivide",
+        "GNBPvP_ST_Continuation",
+        "GNBPvP_ST_GnashingFang"
+      ],
+      "setting_keys": [
+        "GNBPvP_BlastingZoneThreshold",
+        "GNBPvP_CorundumThreshold",
+        "GNBPvP_RampartThreshold"
+      ],
+      "entry_checks": [
+        {
+          "line": 96,
+          "code": "if (!CustomActionHelper.OneButtonRotationChecker(actionID, CustomActionType.SingleTargetDPS, KeenEdge, BrutalShell, SolidBarrel, BurstStrike))"
+        },
+        {
+          "line": 157,
+          "code": "if (actionID is not GnashingFang)"
+        }
+      ]
+    },
+    {
+      "job": "WHM",
+      "official_url": "https://na.finalfantasyxiv.com/jobguide/whitemage/#anchor__pvp_onlyaction",
+      "official_sha256": "f18d57b091092b2a18a803d24965ea3382cff61965fb649b516b31ea15ec3c6e",
+      "actions": [
+        {
+          "name": "Glare III",
+          "anchor": "pvp_action__01",
+          "assignable": true,
+          "category": "job"
+        },
+        {
+          "name": "Cure II",
+          "anchor": "pvp_action__02",
+          "assignable": true,
+          "category": "job"
+        },
+        {
+          "name": "Afflatus Misery",
+          "anchor": "pvp_action__03",
+          "assignable": true,
+          "category": "job"
+        },
+        {
+          "name": "Aquaveil",
+          "anchor": "pvp_action__04",
+          "assignable": true,
+          "category": "job"
+        },
+        {
+          "name": "Miracle of Nature",
+          "anchor": "pvp_action__05",
+          "assignable": true,
+          "category": "job"
+        },
+        {
+          "name": "Seraph Strike",
+          "anchor": "pvp_action__06",
+          "assignable": true,
+          "category": "job"
+        },
+        {
+          "name": "Glare IV",
+          "anchor": "pvp_action__07",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "Cure III",
+          "anchor": "pvp_action__08",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "Afflatus Purgation",
+          "anchor": "pvplimitbreakaction_01",
+          "assignable": true,
+          "category": "limit_break"
+        },
+        {
+          "name": "Standard-issue Elixir",
+          "anchor": "pvpcommmononlyaction_01",
+          "assignable": true,
+          "category": "common"
+        },
+        {
+          "name": "Recuperate",
+          "anchor": "pvpcommmononlyaction_02",
+          "assignable": true,
+          "category": "common"
+        },
+        {
+          "name": "Purify",
+          "anchor": "pvpcommmononlyaction_03",
+          "assignable": true,
+          "category": "common"
+        },
+        {
+          "name": "Guard",
+          "anchor": "pvpcommmononlyaction_04",
+          "assignable": true,
+          "category": "common"
+        },
+        {
+          "name": "Sprint",
+          "anchor": "pvpcommmononlyaction_05",
+          "assignable": true,
+          "category": "common"
+        },
+        {
+          "name": "Haelan",
+          "anchor": "pvproleaction_01",
+          "assignable": true,
+          "category": "role"
+        },
+        {
+          "name": "Stoneskin II",
+          "anchor": "pvproleaction_02",
+          "assignable": true,
+          "category": "role"
+        },
+        {
+          "name": "Diabrosis",
+          "anchor": "pvproleaction_03",
+          "assignable": true,
+          "category": "role"
+        }
+      ],
+      "source": "WrathCombo/Combos/PvP/WHMPVP.cs",
+      "source_sha256": "cea16dfcdd36d71931c10142aa44a9e877ec41a204d96609c1758405d0f05e31",
+      "root_presets": [
+        {
+          "line": 81,
+          "preset": "WHMPvP_Burst"
+        },
+        {
+          "line": 144,
+          "preset": "WHMPvP_Heals"
+        },
+        {
+          "line": 168,
+          "preset": "WHMPvP_Seraphstrike"
+        }
+      ],
+      "toggle_references": [
+        "WHMPvP_AfflatusPurgation",
+        "WHMPvP_Afflatus_Misery",
+        "WHMPvP_Aquaveil",
+        "WHMPvP_Burst_Heals",
+        "WHMPvP_Cure3",
+        "WHMPvP_Diabrosis",
+        "WHMPvP_Mirace_of_Nature",
+        "WHMPvP_Seraph_Strike",
+        "WHMPvP_Seraphstrike"
+      ],
+      "setting_keys": [
+        "WHMPvP_Burst_HealsRetarget",
+        "WHMPvP_Burst_HealsThreshold",
+        "WHMPvP_Burst_Heals_Options",
+        "WHMPvP_DiabrosisThreshold",
+        "WHMPvP_Heals_Options",
+        "WHMPvP_PurgationThreshold"
+      ],
+      "entry_checks": [
+        {
+          "line": 85,
+          "code": "if (!CustomActionHelper.OneButtonRotationChecker(actionID, CustomActionType.SingleTargetDPS, Glare))"
+        },
+        {
+          "line": 148,
+          "code": "if (actionID is not Cure2)"
+        },
+        {
+          "line": 172,
+          "code": "if (actionID is SeraphStrike)"
+        }
+      ]
+    },
+    {
+      "job": "SCH",
+      "official_url": "https://na.finalfantasyxiv.com/jobguide/scholar/#anchor__pvp_onlyaction",
+      "official_sha256": "2380d2ddf35ac2481a9a8c86f92abfad9f6a24ad5f9f6d4f585316374d32c1c4",
+      "actions": [
+        {
+          "name": "Broil IV",
+          "anchor": "pvp_action__01",
+          "assignable": true,
+          "category": "job"
+        },
+        {
+          "name": "Adloquium",
+          "anchor": "pvp_action__02",
+          "assignable": true,
+          "category": "job"
+        },
+        {
+          "name": "Biolysis",
+          "anchor": "pvp_action__03",
+          "assignable": true,
+          "category": "job"
+        },
+        {
+          "name": "Deployment Tactics",
+          "anchor": "pvp_action__04",
+          "assignable": true,
+          "category": "job"
+        },
+        {
+          "name": "Chain Stratagem",
+          "anchor": "pvp_action__05",
+          "assignable": true,
+          "category": "job"
+        },
+        {
+          "name": "Expedient",
+          "anchor": "pvp_action__06",
+          "assignable": true,
+          "category": "job"
+        },
+        {
+          "name": "Summon Seraph",
+          "anchor": "pvp_action__07",
+          "assignable": true,
+          "category": "job"
+        },
+        {
+          "name": "Seraphic Halo",
+          "anchor": "pvp_action__08",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "Accession",
+          "anchor": "pvp_action__09",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "Seraphic Veil",
+          "anchor": "pvp_action__10",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "Seraphism",
+          "anchor": "pvplimitbreakaction_01",
+          "assignable": true,
+          "category": "limit_break"
+        },
+        {
+          "name": "Standard-issue Elixir",
+          "anchor": "pvpcommmononlyaction_01",
+          "assignable": true,
+          "category": "common"
+        },
+        {
+          "name": "Recuperate",
+          "anchor": "pvpcommmononlyaction_02",
+          "assignable": true,
+          "category": "common"
+        },
+        {
+          "name": "Purify",
+          "anchor": "pvpcommmononlyaction_03",
+          "assignable": true,
+          "category": "common"
+        },
+        {
+          "name": "Guard",
+          "anchor": "pvpcommmononlyaction_04",
+          "assignable": true,
+          "category": "common"
+        },
+        {
+          "name": "Sprint",
+          "anchor": "pvpcommmononlyaction_05",
+          "assignable": true,
+          "category": "common"
+        },
+        {
+          "name": "Haelan",
+          "anchor": "pvproleaction_01",
+          "assignable": true,
+          "category": "role"
+        },
+        {
+          "name": "Stoneskin II",
+          "anchor": "pvproleaction_02",
+          "assignable": true,
+          "category": "role"
+        },
+        {
+          "name": "Diabrosis",
+          "anchor": "pvproleaction_03",
+          "assignable": true,
+          "category": "role"
+        }
+      ],
+      "source": "WrathCombo/Combos/PvP/SCHPVP.cs",
+      "source_sha256": "c3c5049f5fca415d44a518d5e5f1c72f74f35a3ccc446ac18678de1a696fbc03",
+      "root_presets": [
+        {
+          "line": 68,
+          "preset": "SCHPvP_Burst"
+        },
+        {
+          "line": 116,
+          "preset": "SCHPvP_RetargetAdlo"
+        }
+      ],
+      "toggle_references": [
+        "SCHPvP_Adlo",
+        "SCHPvP_Biolysis",
+        "SCHPvP_ChainStratagem",
+        "SCHPvP_DeploymentTactics",
+        "SCHPvP_Diabrosis",
+        "SCHPvP_Expedient"
+      ],
+      "setting_keys": [
+        "SCHPvP_AdloThreshold",
+        "SCHPvP_Adlo_Retarget",
+        "SCHPvP_DiabrosisThreshold"
+      ],
+      "entry_checks": [
+        {
+          "line": 73,
+          "code": "if (!CustomActionHelper.OneButtonRotationChecker(actionID, CustomActionType.SingleTargetDPS, Broil))"
+        },
+        {
+          "line": 120,
+          "code": "return actionID is not Adloquium"
+        }
+      ]
+    },
+    {
+      "job": "AST",
+      "official_url": "https://na.finalfantasyxiv.com/jobguide/astrologian/#anchor__pvp_onlyaction",
+      "official_sha256": "323d64cfa86ee74e762db01d331f0e03fcbf27fc7ff07549fe530d596bc62ebb",
+      "actions": [
+        {
+          "name": "Fall Malefic",
+          "anchor": "pvp_action__01",
+          "assignable": true,
+          "category": "job"
+        },
+        {
+          "name": "Aspected Benefic",
+          "anchor": "pvp_action__02",
+          "assignable": true,
+          "category": "job"
+        },
+        {
+          "name": "Gravity II",
+          "anchor": "pvp_action__03",
+          "assignable": true,
+          "category": "job"
+        },
+        {
+          "name": "Double Cast",
+          "anchor": "pvp_action__04",
+          "assignable": true,
+          "category": "job"
+        },
+        {
+          "name": "Minor Arcana",
+          "anchor": "pvp_action__05",
+          "assignable": true,
+          "category": "job"
+        },
+        {
+          "name": "Macrocosmos",
+          "anchor": "pvp_action__06",
+          "assignable": true,
+          "category": "job"
+        },
+        {
+          "name": "Epicycle",
+          "anchor": "pvp_action__07",
+          "assignable": true,
+          "category": "job"
+        },
+        {
+          "name": "Lady of Crowns",
+          "anchor": "pvp_action__08",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "Lord of Crowns",
+          "anchor": "pvp_action__09",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "Retrograde",
+          "anchor": "pvp_action__10",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "Microcosmos",
+          "anchor": "pvp_action__11",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "Oracle",
+          "anchor": "pvp_action__12",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "Celestial River",
+          "anchor": "pvplimitbreakaction_01",
+          "assignable": true,
+          "category": "limit_break"
+        },
+        {
+          "name": "Standard-issue Elixir",
+          "anchor": "pvpcommmononlyaction_01",
+          "assignable": true,
+          "category": "common"
+        },
+        {
+          "name": "Recuperate",
+          "anchor": "pvpcommmononlyaction_02",
+          "assignable": true,
+          "category": "common"
+        },
+        {
+          "name": "Purify",
+          "anchor": "pvpcommmononlyaction_03",
+          "assignable": true,
+          "category": "common"
+        },
+        {
+          "name": "Guard",
+          "anchor": "pvpcommmononlyaction_04",
+          "assignable": true,
+          "category": "common"
+        },
+        {
+          "name": "Sprint",
+          "anchor": "pvpcommmononlyaction_05",
+          "assignable": true,
+          "category": "common"
+        },
+        {
+          "name": "Haelan",
+          "anchor": "pvproleaction_01",
+          "assignable": true,
+          "category": "role"
+        },
+        {
+          "name": "Stoneskin II",
+          "anchor": "pvproleaction_02",
+          "assignable": true,
+          "category": "role"
+        },
+        {
+          "name": "Diabrosis",
+          "anchor": "pvproleaction_03",
+          "assignable": true,
+          "category": "role"
+        }
+      ],
+      "source": "WrathCombo/Combos/PvP/ASTPVP.cs",
+      "source_sha256": "205bcc0db6c493fdca4794d3cf52b51e80b622dec6f71e49c264b4f1a1a45e85",
+      "root_presets": [
+        {
+          "line": 93,
+          "preset": "ASTPvP_Burst"
+        },
+        {
+          "line": 168,
+          "preset": "ASTPvP_Epicycle"
+        },
+        {
+          "line": 191,
+          "preset": "ASTPvP_Heal"
+        }
+      ],
+      "toggle_references": [
+        "ASTPvP_Burst_DoubleGravity",
+        "ASTPvP_Burst_DoubleMalefic",
+        "ASTPvP_Burst_DrawCard",
+        "ASTPvP_Burst_Gravity",
+        "ASTPvP_Burst_Heal",
+        "ASTPvP_Burst_Macrocosmos",
+        "ASTPvP_Burst_Oracle",
+        "ASTPvP_Burst_PlayCard",
+        "ASTPvP_Diabrosis"
+      ],
+      "setting_keys": [
+        "ASTPvP_BurstHealRetarget",
+        "ASTPvP_BurstHeal_DoubleCast",
+        "ASTPvP_Burst_HealThreshold",
+        "ASTPvP_Burst_PlayCardOption",
+        "ASTPvP_DiabrosisThreshold",
+        "ASTPvP_Heal_DoubleCast",
+        "ASTPvP_Heal_Retarget"
+      ],
+      "entry_checks": [
+        {
+          "line": 97,
+          "code": "if (!CustomActionHelper.OneButtonRotationChecker(actionID, CustomActionType.SingleTargetDPS, Malefic))"
+        },
+        {
+          "line": 172,
+          "code": "if (actionID is not Epicycle)"
+        },
+        {
+          "line": 195,
+          "code": "if (actionID is not AspectedBenefic)"
+        }
+      ]
+    },
+    {
+      "job": "SGE",
+      "official_url": "https://na.finalfantasyxiv.com/jobguide/sage/#anchor__pvp_onlyaction",
+      "official_sha256": "fd2adb3743acfb5c1b4ef3a14b497c5a827d20914dac7e65db25dc310f8ee327",
+      "actions": [
+        {
+          "name": "Dosis III",
+          "anchor": "pvp_action__01",
+          "assignable": true,
+          "category": "job"
+        },
+        {
+          "name": "Phlegma III",
+          "anchor": "pvp_action__02",
+          "assignable": true,
+          "category": "job"
+        },
+        {
+          "name": "Pneuma",
+          "anchor": "pvp_action__03",
+          "assignable": true,
+          "category": "job"
+        },
+        {
+          "name": "Eukrasia",
+          "anchor": "pvp_action__04",
+          "assignable": true,
+          "category": "job"
+        },
+        {
+          "name": "Icarus",
+          "anchor": "pvp_action__05",
+          "assignable": true,
+          "category": "job"
+        },
+        {
+          "name": "Toxikon",
+          "anchor": "pvp_action__06",
+          "assignable": true,
+          "category": "job"
+        },
+        {
+          "name": "Kardia",
+          "anchor": "pvp_action__07",
+          "assignable": true,
+          "category": "job"
+        },
+        {
+          "name": "Eukrasian Dosis III",
+          "anchor": "pvp_action__08",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "Psyche",
+          "anchor": "pvp_action__09",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "Toxikon II",
+          "anchor": "pvp_action__10",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "Mesotes",
+          "anchor": "pvplimitbreakaction_01",
+          "assignable": true,
+          "category": "limit_break"
+        },
+        {
+          "name": "Standard-issue Elixir",
+          "anchor": "pvpcommmononlyaction_01",
+          "assignable": true,
+          "category": "common"
+        },
+        {
+          "name": "Recuperate",
+          "anchor": "pvpcommmononlyaction_02",
+          "assignable": true,
+          "category": "common"
+        },
+        {
+          "name": "Purify",
+          "anchor": "pvpcommmononlyaction_03",
+          "assignable": true,
+          "category": "common"
+        },
+        {
+          "name": "Guard",
+          "anchor": "pvpcommmononlyaction_04",
+          "assignable": true,
+          "category": "common"
+        },
+        {
+          "name": "Sprint",
+          "anchor": "pvpcommmononlyaction_05",
+          "assignable": true,
+          "category": "common"
+        },
+        {
+          "name": "Haelan",
+          "anchor": "pvproleaction_01",
+          "assignable": true,
+          "category": "role"
+        },
+        {
+          "name": "Stoneskin II",
+          "anchor": "pvproleaction_02",
+          "assignable": true,
+          "category": "role"
+        },
+        {
+          "name": "Diabrosis",
+          "anchor": "pvproleaction_03",
+          "assignable": true,
+          "category": "role"
+        }
+      ],
+      "source": "WrathCombo/Combos/PvP/SGEPVP.cs",
+      "source_sha256": "e9b194c09c8ebddf3c834c687acffe6402ab697944c5e99d757024b4dba5863d",
+      "root_presets": [
+        {
+          "line": 80,
+          "preset": "SGEPvP_BurstMode"
+        },
+        {
+          "line": 130,
+          "preset": "SGEPvP_RetargetKardia"
+        }
+      ],
+      "toggle_references": [
+        "SGEPvP_BurstMode_Eukrasia",
+        "SGEPvP_BurstMode_KardiaReminder",
+        "SGEPvP_BurstMode_Phlegma",
+        "SGEPvP_BurstMode_Pneuma",
+        "SGEPvP_BurstMode_Psyche",
+        "SGEPvP_BurstMode_Toxikon",
+        "SGEPvP_BurstMode_Toxikon2",
+        "SGEPvP_Diabrosis"
+      ],
+      "setting_keys": [
+        "SGEPvP_BurstMode_KardiaReminder_Retarget",
+        "SGEPvP_DiabrosisThreshold",
+        "SGEPvP_KardiaThreshold"
+      ],
+      "entry_checks": [
+        {
+          "line": 84,
+          "code": "if (!CustomActionHelper.OneButtonRotationChecker(actionID, CustomActionType.SingleTargetDPS, Dosis))"
+        },
+        {
+          "line": 134,
+          "code": "return actionID is not Kardia"
+        }
+      ]
+    },
+    {
+      "job": "MNK",
+      "official_url": "https://na.finalfantasyxiv.com/jobguide/monk/#anchor__pvp_onlyaction",
+      "official_sha256": "dcf793ca40b841b6437e448f695ded199ded3bc1e4bdf6853e90c9a8c0638125",
+      "actions": [
+        {
+          "name": "Dragon Kick",
+          "anchor": "pvp_action__01",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "Twin Snakes",
+          "anchor": "pvp_action__02",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "Demolish",
+          "anchor": "pvp_action__03",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "Leaping Opo",
+          "anchor": "pvp_action__04",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "Rising Raptor",
+          "anchor": "pvp_action__05",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "Pouncing Coeurl",
+          "anchor": "pvp_action__06",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "Phantom Rush",
+          "anchor": "pvp_action__07",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "Wind's Reply",
+          "anchor": "pvp_action__08",
+          "assignable": true,
+          "category": "job"
+        },
+        {
+          "name": "Rising Phoenix",
+          "anchor": "pvp_action__09",
+          "assignable": true,
+          "category": "job"
+        },
+        {
+          "name": "Riddle of Earth",
+          "anchor": "pvp_action__10",
+          "assignable": true,
+          "category": "job"
+        },
+        {
+          "name": "Thunderclap",
+          "anchor": "pvp_action__11",
+          "assignable": true,
+          "category": "job"
+        },
+        {
+          "name": "Fire's Reply",
+          "anchor": "pvp_action__12",
+          "assignable": true,
+          "category": "job"
+        },
+        {
+          "name": "Earth's Reply",
+          "anchor": "pvp_action__13",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "Meteodrive",
+          "anchor": "pvplimitbreakaction_01",
+          "assignable": true,
+          "category": "limit_break"
+        },
+        {
+          "name": "Standard-issue Elixir",
+          "anchor": "pvpcommmononlyaction_01",
+          "assignable": true,
+          "category": "common"
+        },
+        {
+          "name": "Recuperate",
+          "anchor": "pvpcommmononlyaction_02",
+          "assignable": true,
+          "category": "common"
+        },
+        {
+          "name": "Purify",
+          "anchor": "pvpcommmononlyaction_03",
+          "assignable": true,
+          "category": "common"
+        },
+        {
+          "name": "Guard",
+          "anchor": "pvpcommmononlyaction_04",
+          "assignable": true,
+          "category": "common"
+        },
+        {
+          "name": "Sprint",
+          "anchor": "pvpcommmononlyaction_05",
+          "assignable": true,
+          "category": "common"
+        },
+        {
+          "name": "Bloodbath",
+          "anchor": "pvproleaction_01",
+          "assignable": true,
+          "category": "role"
+        },
+        {
+          "name": "Swift",
+          "anchor": "pvproleaction_02",
+          "assignable": true,
+          "category": "role"
+        },
+        {
+          "name": "Smite",
+          "anchor": "pvproleaction_03",
+          "assignable": true,
+          "category": "role"
+        }
+      ],
+      "source": "WrathCombo/Combos/PvP/MNKPVP.cs",
+      "source_sha256": "406d710cc34b1f1f60cedd3293edda319fb1b9d8e1f9147b39993572af96e96c",
+      "root_presets": [
+        {
+          "line": 66,
+          "preset": "MNKPvP_Burst"
+        }
+      ],
+      "toggle_references": [
+        "MNKPvP_Burst_FiresReply",
+        "MNKPvP_Burst_Meteodrive",
+        "MNKPvP_Burst_RiddleOfEarth",
+        "MNKPvP_Burst_RisingPhoenix",
+        "MNKPvP_Burst_Thunderclap",
+        "MNKPvP_Burst_WindsReply",
+        "MNKPvP_Smite"
+      ],
+      "setting_keys": [
+        "MNKPvP_SmiteThreshold"
+      ],
+      "entry_checks": [
+        {
+          "line": 69,
+          "code": "if (!CustomActionHelper.OneButtonRotationChecker(actionID, CustomActionType.SingleTargetDPS, DragonKick, TwinSnakes, Demolish, LeapingOpo, RisingRaptor, PouncingCoeurl, PhantomRush))"
+        }
+      ]
+    },
+    {
+      "job": "DRG",
+      "official_url": "https://na.finalfantasyxiv.com/jobguide/dragoon/#anchor__pvp_onlyaction",
+      "official_sha256": "988c42ad0251e63f508982c0b7e681c67988444d60fc1296016bca5ce146a085",
+      "actions": [
+        {
+          "name": "Raiden Thrust",
+          "anchor": "pvp_action__01",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "Fang and Claw",
+          "anchor": "pvp_action__02",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "Wheeling Thrust",
+          "anchor": "pvp_action__03",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "Drakesbane",
+          "anchor": "pvp_action__04",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "Chaotic Spring",
+          "anchor": "pvp_action__05",
+          "assignable": true,
+          "category": "job"
+        },
+        {
+          "name": "Geirskogul",
+          "anchor": "pvp_action__06",
+          "assignable": true,
+          "category": "job"
+        },
+        {
+          "name": "High Jump",
+          "anchor": "pvp_action__07",
+          "assignable": true,
+          "category": "job"
+        },
+        {
+          "name": "Elusive Jump",
+          "anchor": "pvp_action__08",
+          "assignable": true,
+          "category": "job"
+        },
+        {
+          "name": "Horrid Roar",
+          "anchor": "pvp_action__09",
+          "assignable": true,
+          "category": "job"
+        },
+        {
+          "name": "Heavens' Thrust",
+          "anchor": "pvp_action__10",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "Starcross",
+          "anchor": "pvp_action__11",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "Nastrond",
+          "anchor": "pvp_action__12",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "Wyrmwind Thrust",
+          "anchor": "pvp_action__13",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "Sky High",
+          "anchor": "pvplimitbreakaction_01",
+          "assignable": true,
+          "category": "limit_break"
+        },
+        {
+          "name": "Sky Shatter",
+          "anchor": "pvplimitbreakaction_02",
+          "assignable": false,
+          "category": "limit_break"
+        },
+        {
+          "name": "Standard-issue Elixir",
+          "anchor": "pvpcommmononlyaction_01",
+          "assignable": true,
+          "category": "common"
+        },
+        {
+          "name": "Recuperate",
+          "anchor": "pvpcommmononlyaction_02",
+          "assignable": true,
+          "category": "common"
+        },
+        {
+          "name": "Purify",
+          "anchor": "pvpcommmononlyaction_03",
+          "assignable": true,
+          "category": "common"
+        },
+        {
+          "name": "Guard",
+          "anchor": "pvpcommmononlyaction_04",
+          "assignable": true,
+          "category": "common"
+        },
+        {
+          "name": "Sprint",
+          "anchor": "pvpcommmononlyaction_05",
+          "assignable": true,
+          "category": "common"
+        },
+        {
+          "name": "Bloodbath",
+          "anchor": "pvproleaction_01",
+          "assignable": true,
+          "category": "role"
+        },
+        {
+          "name": "Swift",
+          "anchor": "pvproleaction_02",
+          "assignable": true,
+          "category": "role"
+        },
+        {
+          "name": "Smite",
+          "anchor": "pvproleaction_03",
+          "assignable": true,
+          "category": "role"
+        }
+      ],
+      "source": "WrathCombo/Combos/PvP/DRGPVP.cs",
+      "source_sha256": "f1e242245d45e32d66af5b4458ce5258fa43f321665db02b781b5e8de594b206",
+      "root_presets": [
+        {
+          "line": 81,
+          "preset": "DRGPvP_Burst"
+        },
+        {
+          "line": 145,
+          "preset": "DRGPvP_BurstProtection"
+        }
+      ],
+      "toggle_references": [
+        "DRGPvP_BurstProtection",
+        "DRGPvP_ChaoticSpringExecute",
+        "DRGPvP_ChaoticSpringSustain",
+        "DRGPvP_Geirskogul",
+        "DRGPvP_HighJump",
+        "DRGPvP_HorridRoar",
+        "DRGPvP_Nastrond",
+        "DRGPvP_Smite",
+        "DRGPvP_WyrmwindThrust"
+      ],
+      "setting_keys": [
+        "DRGPvP_CS_HP_Threshold",
+        "DRGPvP_Distance_Threshold",
+        "DRGPvP_LOTD_Duration",
+        "DRGPvP_LOTD_HPValue",
+        "DRGPvP_SmiteThreshold"
+      ],
+      "entry_checks": [
+        {
+          "line": 84,
+          "code": "if (!CustomActionHelper.OneButtonRotationChecker(actionID, CustomActionType.SingleTargetDPS, RaidenThrust, FangAndClaw, WheelingThrust, Drakesbane))"
+        },
+        {
+          "line": 149,
+          "code": "if (actionID is not ElusiveJump)"
+        }
+      ]
+    },
+    {
+      "job": "NIN",
+      "official_url": "https://na.finalfantasyxiv.com/jobguide/ninja/#anchor__pvp_onlyaction",
+      "official_sha256": "ca3c1f44ebd2220aad1cf75c5dcb3adc8ac5a4a58693e94dc8bccd95d8532c5d",
+      "actions": [
+        {
+          "name": "Spinning Edge",
+          "anchor": "pvp_action__01",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "Gust Slash",
+          "anchor": "pvp_action__02",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "Aeolian Edge",
+          "anchor": "pvp_action__03",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "Fuma Shuriken",
+          "anchor": "pvp_action__04",
+          "assignable": true,
+          "category": "job"
+        },
+        {
+          "name": "Dokumori",
+          "anchor": "pvp_action__05",
+          "assignable": true,
+          "category": "job"
+        },
+        {
+          "name": "Three Mudra",
+          "anchor": "pvp_action__06",
+          "assignable": true,
+          "category": "job"
+        },
+        {
+          "name": "Bunshin",
+          "anchor": "pvp_action__07",
+          "assignable": true,
+          "category": "job"
+        },
+        {
+          "name": "Shukuchi",
+          "anchor": "pvp_action__08",
+          "assignable": true,
+          "category": "job"
+        },
+        {
+          "name": "Zesho Meppo",
+          "anchor": "pvp_action__09",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "Assassinate",
+          "anchor": "pvp_action__10",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "Forked Raiju",
+          "anchor": "pvp_action__11",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "Fleeting Raiju",
+          "anchor": "pvp_action__12",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "Hyosho Ranryu",
+          "anchor": "pvp_action__13",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "Goka Mekkyaku",
+          "anchor": "pvp_action__14",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "Meisui",
+          "anchor": "pvp_action__15",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "Huton",
+          "anchor": "pvp_action__16",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "Doton",
+          "anchor": "pvp_action__17",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "Hollow Nozuchi",
+          "anchor": "pvp_action__18",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "Seiton Tenchu",
+          "anchor": "pvplimitbreakaction_01",
+          "assignable": true,
+          "category": "limit_break"
+        },
+        {
+          "name": "Standard-issue Elixir",
+          "anchor": "pvpcommmononlyaction_01",
+          "assignable": true,
+          "category": "common"
+        },
+        {
+          "name": "Recuperate",
+          "anchor": "pvpcommmononlyaction_02",
+          "assignable": true,
+          "category": "common"
+        },
+        {
+          "name": "Purify",
+          "anchor": "pvpcommmononlyaction_03",
+          "assignable": true,
+          "category": "common"
+        },
+        {
+          "name": "Guard",
+          "anchor": "pvpcommmononlyaction_04",
+          "assignable": true,
+          "category": "common"
+        },
+        {
+          "name": "Sprint",
+          "anchor": "pvpcommmononlyaction_05",
+          "assignable": true,
+          "category": "common"
+        },
+        {
+          "name": "Bloodbath",
+          "anchor": "pvproleaction_01",
+          "assignable": true,
+          "category": "role"
+        },
+        {
+          "name": "Swift",
+          "anchor": "pvproleaction_02",
+          "assignable": true,
+          "category": "role"
+        },
+        {
+          "name": "Smite",
+          "anchor": "pvproleaction_03",
+          "assignable": true,
+          "category": "role"
+        }
+      ],
+      "source": "WrathCombo/Combos/PvP/NINPVP.cs",
+      "source_sha256": "e9b77e0ec3276cf67a67156fed68c6fd044e13c9db81162123cc67d1c46f8373",
+      "root_presets": [
+        {
+          "line": 160,
+          "preset": "NINPvP_ST_BurstMode"
+        },
+        {
+          "line": 273,
+          "preset": "NINPvP_AoE_BurstMode"
+        }
+      ],
+      "toggle_references": [
+        "NINPvP_AoE_Bunshin",
+        "NINPvP_AoE_Dokumori",
+        "NINPvP_AoE_FumaShuriken",
+        "NINPvP_AoE_Meisui",
+        "NINPvP_AoE_MudraMode",
+        "NINPvP_AoE_SeitonTenchu",
+        "NINPvP_AoE_ThreeMudra",
+        "NINPvP_AoE_ThreeMudraPool",
+        "NINPvP_ST_Bunshin",
+        "NINPvP_ST_Dokumori",
+        "NINPvP_ST_FumaShuriken",
+        "NINPvP_ST_Meisui",
+        "NINPvP_ST_MudraMode",
+        "NINPvP_ST_SeitonTenchu",
+        "NINPvP_ST_ThreeMudra",
+        "NINPvP_ST_ThreeMudraPool",
+        "NINPvP_Smite"
+      ],
+      "setting_keys": [
+        "NINPVP_SeitonTenchu",
+        "NINPVP_SeitonTenchuAoE",
+        "NINPvP_AoE_FumaShuriken_RangedCharges",
+        "NINPvP_AoE_MudraOption",
+        "NINPvP_AoE_MudraPriority",
+        "NINPvP_Meisui_AoE",
+        "NINPvP_Meisui_ST",
+        "NINPvP_ST_FumaShuriken_RangedCharges",
+        "NINPvP_ST_MudraOption",
+        "NINPvP_ST_MudraPriority",
+        "NINPvP_SmiteThreshold"
+      ],
+      "entry_checks": [
+        {
+          "line": 164,
+          "code": "if (!CustomActionHelper.OneButtonRotationChecker(actionID, CustomActionType.SingleTargetDPS, SpinningEdge, GustSlash, AeolianEdge))"
+        },
+        {
+          "line": 277,
+          "code": "if (actionID is not FumaShuriken)"
+        }
+      ]
+    },
+    {
+      "job": "SAM",
+      "official_url": "https://na.finalfantasyxiv.com/jobguide/samurai/#anchor__pvp_onlyaction",
+      "official_sha256": "8ac303a7f3cc1cdb667f74493f48775ec819ab03dd9442be346397b990daea23",
+      "actions": [
+        {
+          "name": "Yukikaze",
+          "anchor": "pvp_action__01",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "Gekko",
+          "anchor": "pvp_action__02",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "Kasha",
+          "anchor": "pvp_action__03",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "Ogi Namikiri",
+          "anchor": "pvp_action__04",
+          "assignable": true,
+          "category": "job"
+        },
+        {
+          "name": "Hissatsu: Soten",
+          "anchor": "pvp_action__05",
+          "assignable": true,
+          "category": "job"
+        },
+        {
+          "name": "Hissatsu: Chiten",
+          "anchor": "pvp_action__06",
+          "assignable": true,
+          "category": "job"
+        },
+        {
+          "name": "Mineuchi",
+          "anchor": "pvp_action__07",
+          "assignable": true,
+          "category": "job"
+        },
+        {
+          "name": "Meikyo Shisui",
+          "anchor": "pvp_action__08",
+          "assignable": true,
+          "category": "job"
+        },
+        {
+          "name": "Hyosetsu",
+          "anchor": "pvp_action__09",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "Mangetsu",
+          "anchor": "pvp_action__10",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "Oka",
+          "anchor": "pvp_action__11",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "Kaeshi: Namikiri",
+          "anchor": "pvp_action__12",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "Zanshin",
+          "anchor": "pvp_action__13",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "Tendo Setsugekka",
+          "anchor": "pvp_action__14",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "Tendo Kaeshi Setsugekka",
+          "anchor": "pvp_action__15",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "Zantetsuken",
+          "anchor": "pvplimitbreakaction_01",
+          "assignable": true,
+          "category": "limit_break"
+        },
+        {
+          "name": "Standard-issue Elixir",
+          "anchor": "pvpcommmononlyaction_01",
+          "assignable": true,
+          "category": "common"
+        },
+        {
+          "name": "Recuperate",
+          "anchor": "pvpcommmononlyaction_02",
+          "assignable": true,
+          "category": "common"
+        },
+        {
+          "name": "Purify",
+          "anchor": "pvpcommmononlyaction_03",
+          "assignable": true,
+          "category": "common"
+        },
+        {
+          "name": "Guard",
+          "anchor": "pvpcommmononlyaction_04",
+          "assignable": true,
+          "category": "common"
+        },
+        {
+          "name": "Sprint",
+          "anchor": "pvpcommmononlyaction_05",
+          "assignable": true,
+          "category": "common"
+        },
+        {
+          "name": "Bloodbath",
+          "anchor": "pvproleaction_01",
+          "assignable": true,
+          "category": "role"
+        },
+        {
+          "name": "Swift",
+          "anchor": "pvproleaction_02",
+          "assignable": true,
+          "category": "role"
+        },
+        {
+          "name": "Smite",
+          "anchor": "pvproleaction_03",
+          "assignable": true,
+          "category": "role"
+        }
+      ],
+      "source": "WrathCombo/Combos/PvP/SAMPVP.cs",
+      "source_sha256": "6262f1618338dc1d49a9f0a4576ec9f077abdf7ce3fc7dfa059fed166fb69844",
+      "root_presets": [
+        {
+          "line": 99,
+          "preset": "SAMPvP_Burst"
+        }
+      ],
+      "toggle_references": [
+        "SAMPvP_Chiten",
+        "SAMPvP_Meikyo",
+        "SAMPvP_Mineuchi",
+        "SAMPvP_Smite",
+        "SAMPvP_Soten",
+        "SAMPvP_Zantetsuken"
+      ],
+      "setting_keys": [
+        "SAMPvP_Chiten_PlayerHP",
+        "SAMPvP_Mineuchi_SubOption",
+        "SAMPvP_Mineuchi_TargetHP",
+        "SAMPvP_SmiteThreshold",
+        "SAMPvP_Soten_Charges",
+        "SAMPvP_Soten_Range",
+        "SAMPvP_Soten_SubOption"
+      ],
+      "entry_checks": [
+        {
+          "line": 103,
+          "code": "if (!CustomActionHelper.OneButtonRotationChecker(actionID, CustomActionType.SingleTargetDPS, Yukikaze, Gekko, Kasha))"
+        }
+      ]
+    },
+    {
+      "job": "RPR",
+      "official_url": "https://na.finalfantasyxiv.com/jobguide/reaper/#anchor__pvp_onlyaction",
+      "official_sha256": "77d05247f2eb093b9935d37acdf9240fb4e4e5227275a4b241d785c652acd194",
+      "actions": [
+        {
+          "name": "Slice",
+          "anchor": "pvp_action__01",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "Waxing Slice",
+          "anchor": "pvp_action__02",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "Infernal Slice",
+          "anchor": "pvp_action__03",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "Harvest Moon",
+          "anchor": "pvp_action__04",
+          "assignable": true,
+          "category": "job"
+        },
+        {
+          "name": "Plentiful Harvest",
+          "anchor": "pvp_action__05",
+          "assignable": true,
+          "category": "job"
+        },
+        {
+          "name": "Grim Swathe",
+          "anchor": "pvp_action__06",
+          "assignable": true,
+          "category": "job"
+        },
+        {
+          "name": "Death Warrant",
+          "anchor": "pvp_action__07",
+          "assignable": true,
+          "category": "job"
+        },
+        {
+          "name": "Hell's Ingress",
+          "anchor": "pvp_action__08",
+          "assignable": true,
+          "category": "job"
+        },
+        {
+          "name": "Arcane Crest",
+          "anchor": "pvp_action__09",
+          "assignable": true,
+          "category": "job"
+        },
+        {
+          "name": "Executioner's Guillotine",
+          "anchor": "pvp_action__10",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "Void Reaping",
+          "anchor": "pvp_action__11",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "Cross Reaping",
+          "anchor": "pvp_action__12",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "Lemure's Slice",
+          "anchor": "pvp_action__13",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "Fate Sealed",
+          "anchor": "pvp_action__14",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "Regress",
+          "anchor": "pvp_action__15",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "Communio",
+          "anchor": "pvp_action__16",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "Perfectio",
+          "anchor": "pvp_action__17",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "Tenebrae Lemurum",
+          "anchor": "pvplimitbreakaction_01",
+          "assignable": true,
+          "category": "limit_break"
+        },
+        {
+          "name": "Standard-issue Elixir",
+          "anchor": "pvpcommmononlyaction_01",
+          "assignable": true,
+          "category": "common"
+        },
+        {
+          "name": "Recuperate",
+          "anchor": "pvpcommmononlyaction_02",
+          "assignable": true,
+          "category": "common"
+        },
+        {
+          "name": "Purify",
+          "anchor": "pvpcommmononlyaction_03",
+          "assignable": true,
+          "category": "common"
+        },
+        {
+          "name": "Guard",
+          "anchor": "pvpcommmononlyaction_04",
+          "assignable": true,
+          "category": "common"
+        },
+        {
+          "name": "Sprint",
+          "anchor": "pvpcommmononlyaction_05",
+          "assignable": true,
+          "category": "common"
+        },
+        {
+          "name": "Bloodbath",
+          "anchor": "pvproleaction_01",
+          "assignable": true,
+          "category": "role"
+        },
+        {
+          "name": "Swift",
+          "anchor": "pvproleaction_02",
+          "assignable": true,
+          "category": "role"
+        },
+        {
+          "name": "Smite",
+          "anchor": "pvproleaction_03",
+          "assignable": true,
+          "category": "role"
+        }
+      ],
+      "source": "WrathCombo/Combos/PvP/RPRPVP.cs",
+      "source_sha256": "8cd1fabd01109318257aa3288006ba7558b2903cbe010e240fd4074944ff023f",
+      "root_presets": [
+        {
+          "line": 86,
+          "preset": "RPRPvP_Burst"
+        }
+      ],
+      "toggle_references": [
+        "RPRPvP_Burst_ArcaneCircle",
+        "RPRPvP_Burst_DeathWarrant",
+        "RPRPvP_Burst_Enshrouded",
+        "RPRPvP_Burst_Enshrouded_Communio",
+        "RPRPvP_Burst_Enshrouded_DeathWarrant",
+        "RPRPvP_Burst_GrimSwathe",
+        "RPRPvP_Burst_ImmortalPooling",
+        "RPRPvP_Burst_RangedHarvest",
+        "RPRPvP_Smite"
+      ],
+      "setting_keys": [
+        "RPRPvPArcaneCircleOption",
+        "RPRPvPImmortalStackThreshold",
+        "RPRPvP_SmiteThreshold"
+      ],
+      "entry_checks": [
+        {
+          "line": 90,
+          "code": "if (!CustomActionHelper.OneButtonRotationChecker(actionID, CustomActionType.SingleTargetDPS, Slice, WaxingSlice, InfernalSlice))"
+        }
+      ]
+    },
+    {
+      "job": "VPR",
+      "official_url": "https://na.finalfantasyxiv.com/jobguide/viper/#anchor__pvp_onlyaction",
+      "official_sha256": "ac40b196d8dda4c0d0095e994169f0b28780f7660d21e9dcd06c47a4d571a25f",
+      "actions": [
+        {
+          "name": "Steel Fangs",
+          "anchor": "pvp_action__01",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "Hunter's Sting",
+          "anchor": "pvp_action__02",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "Barbarous Bite",
+          "anchor": "pvp_action__03",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "Piercing Fangs",
+          "anchor": "pvp_action__04",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "Swiftskin's Sting",
+          "anchor": "pvp_action__05",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "Ravenous Bite",
+          "anchor": "pvp_action__06",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "Bloodcoil",
+          "anchor": "pvp_action__07",
+          "assignable": true,
+          "category": "job"
+        },
+        {
+          "name": "Uncoiled Fury",
+          "anchor": "pvp_action__08",
+          "assignable": true,
+          "category": "job"
+        },
+        {
+          "name": "Serpent's Tail",
+          "anchor": "pvp_action__09",
+          "assignable": true,
+          "category": "job"
+        },
+        {
+          "name": "Slither",
+          "anchor": "pvp_action__10",
+          "assignable": true,
+          "category": "job"
+        },
+        {
+          "name": "Snake Scales",
+          "anchor": "pvp_action__11",
+          "assignable": true,
+          "category": "job"
+        },
+        {
+          "name": "Rattling Coil",
+          "anchor": "pvp_action__12",
+          "assignable": true,
+          "category": "job"
+        },
+        {
+          "name": "First Generation",
+          "anchor": "pvp_action__13",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "Second Generation",
+          "anchor": "pvp_action__14",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "Third Generation",
+          "anchor": "pvp_action__15",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "Fourth Generation",
+          "anchor": "pvp_action__16",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "Sanguine Feast",
+          "anchor": "pvp_action__17",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "Ouroboros",
+          "anchor": "pvp_action__18",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "Death Rattle",
+          "anchor": "pvp_action__19",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "Twinfang Bite",
+          "anchor": "pvp_action__20",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "Twinblood Bite",
+          "anchor": "pvp_action__21",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "Uncoiled Twinfang",
+          "anchor": "pvp_action__22",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "Uncoiled Twinblood",
+          "anchor": "pvp_action__23",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "First Legacy",
+          "anchor": "pvp_action__24",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "Second Legacy",
+          "anchor": "pvp_action__25",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "Third Legacy",
+          "anchor": "pvp_action__26",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "Fourth Legacy",
+          "anchor": "pvp_action__27",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "Backlash",
+          "anchor": "pvp_action__28",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "World-swallower",
+          "anchor": "pvplimitbreakaction_01",
+          "assignable": true,
+          "category": "limit_break"
+        },
+        {
+          "name": "Standard-issue Elixir",
+          "anchor": "pvpcommmononlyaction_01",
+          "assignable": true,
+          "category": "common"
+        },
+        {
+          "name": "Recuperate",
+          "anchor": "pvpcommmononlyaction_02",
+          "assignable": true,
+          "category": "common"
+        },
+        {
+          "name": "Purify",
+          "anchor": "pvpcommmononlyaction_03",
+          "assignable": true,
+          "category": "common"
+        },
+        {
+          "name": "Guard",
+          "anchor": "pvpcommmononlyaction_04",
+          "assignable": true,
+          "category": "common"
+        },
+        {
+          "name": "Sprint",
+          "anchor": "pvpcommmononlyaction_05",
+          "assignable": true,
+          "category": "common"
+        },
+        {
+          "name": "Bloodbath",
+          "anchor": "pvproleaction_01",
+          "assignable": true,
+          "category": "role"
+        },
+        {
+          "name": "Swift",
+          "anchor": "pvproleaction_02",
+          "assignable": true,
+          "category": "role"
+        },
+        {
+          "name": "Smite",
+          "anchor": "pvproleaction_03",
+          "assignable": true,
+          "category": "role"
+        }
+      ],
+      "source": "WrathCombo/Combos/PvP/VPRPVP.cs",
+      "source_sha256": "1263843e38fbe80931897edb5ac4d1df54f8a71d0125e1eefaa21c6396ab8798",
+      "root_presets": [
+        {
+          "line": 118,
+          "preset": "VPRPvP_Burst"
+        },
+        {
+          "line": 227,
+          "preset": "VPRPvP_SnakeScales_Feature"
+        }
+      ],
+      "toggle_references": [
+        "VPRPvP_Backlash",
+        "VPRPvP_Bloodcoil",
+        "VPRPvP_RattlingCoil",
+        "VPRPvP_Slither",
+        "VPRPvP_Smite",
+        "VPRPvP_UncoiledFury"
+      ],
+      "setting_keys": [
+        "VPRPvP_Backlash_SubOption",
+        "VPRPvP_Bloodcoil_PlayerHP",
+        "VPRPvP_Bloodcoil_TargetHP",
+        "VPRPvP_RattlingCoil_SubOptions",
+        "VPRPvP_Slither_Charges",
+        "VPRPvP_Slither_Range",
+        "VPRPvP_SmiteThreshold",
+        "VPRPvP_UncoiledFury_TargetHP"
+      ],
+      "entry_checks": [
+        {
+          "line": 122,
+          "code": "if (!CustomActionHelper.OneButtonRotationChecker(actionID, CustomActionType.SingleTargetDPS, SteelFangs, HuntersSting, BarbarousBite, PiercingFangs, SwiftskinsSting, RavenousBite, FirstGeneration, SecondGeneration, ThirdGeneration, FourthGeneration))"
+        },
+        {
+          "line": 231,
+          "code": "if (actionID is not SnakeScales)"
+        }
+      ]
+    },
+    {
+      "job": "BRD",
+      "official_url": "https://na.finalfantasyxiv.com/jobguide/bard/#anchor__pvp_onlyaction",
+      "official_sha256": "637ccbcaa0b28b316949cb930dea86775fcd116c05bf45a17699dec7bc728dd5",
+      "actions": [
+        {
+          "name": "Powerful Shot",
+          "anchor": "pvp_action__01",
+          "assignable": true,
+          "category": "job"
+        },
+        {
+          "name": "Apex Arrow",
+          "anchor": "pvp_action__02",
+          "assignable": true,
+          "category": "job"
+        },
+        {
+          "name": "Harmonic Arrow",
+          "anchor": "pvp_action__03",
+          "assignable": true,
+          "category": "job"
+        },
+        {
+          "name": "Silent Nocturne",
+          "anchor": "pvp_action__04",
+          "assignable": true,
+          "category": "job"
+        },
+        {
+          "name": "Repelling Shot",
+          "anchor": "pvp_action__05",
+          "assignable": true,
+          "category": "job"
+        },
+        {
+          "name": "The Warden's Paean",
+          "anchor": "pvp_action__06",
+          "assignable": true,
+          "category": "job"
+        },
+        {
+          "name": "Pitch Perfect",
+          "anchor": "pvp_action__07",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "Blast Arrow",
+          "anchor": "pvp_action__08",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "Encore of Light",
+          "anchor": "pvp_action__09",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "Final Fantasia",
+          "anchor": "pvplimitbreakaction_01",
+          "assignable": true,
+          "category": "limit_break"
+        },
+        {
+          "name": "Standard-issue Elixir",
+          "anchor": "pvpcommmononlyaction_01",
+          "assignable": true,
+          "category": "common"
+        },
+        {
+          "name": "Recuperate",
+          "anchor": "pvpcommmononlyaction_02",
+          "assignable": true,
+          "category": "common"
+        },
+        {
+          "name": "Purify",
+          "anchor": "pvpcommmononlyaction_03",
+          "assignable": true,
+          "category": "common"
+        },
+        {
+          "name": "Guard",
+          "anchor": "pvpcommmononlyaction_04",
+          "assignable": true,
+          "category": "common"
+        },
+        {
+          "name": "Sprint",
+          "anchor": "pvpcommmononlyaction_05",
+          "assignable": true,
+          "category": "common"
+        },
+        {
+          "name": "Dervish",
+          "anchor": "pvproleaction_01",
+          "assignable": true,
+          "category": "role"
+        },
+        {
+          "name": "Bravery",
+          "anchor": "pvproleaction_02",
+          "assignable": true,
+          "category": "role"
+        },
+        {
+          "name": "Eagle Eye Shot",
+          "anchor": "pvproleaction_03",
+          "assignable": true,
+          "category": "role"
+        }
+      ],
+      "source": "WrathCombo/Combos/PvP/BRDPVP.cs",
+      "source_sha256": "959a46b9772f382ef12b45e01ae8259d77e6e5fb937ff2e29b8dee157155b2b3",
+      "root_presets": [
+        {
+          "line": 63,
+          "preset": "BRDPvP_BurstMode"
+        }
+      ],
+      "toggle_references": [
+        "BRDPvP_ApexArrow",
+        "BRDPvP_BlastArrow",
+        "BRDPvP_Eagle",
+        "BRDPvP_EncoreOfLight",
+        "BRDPvP_HarmonicArrow",
+        "BRDPvP_SilentNocturne",
+        "BRDPvP_Wardens"
+      ],
+      "setting_keys": [
+        "BRDPvP_EagleThreshold",
+        "BRDPvP_HarmonicArrowCharges"
+      ],
+      "entry_checks": [
+        {
+          "line": 66,
+          "code": "if (!CustomActionHelper.OneButtonRotationChecker(actionID, CustomActionType.SingleTargetDPS, PowerfulShot))"
+        }
+      ]
+    },
+    {
+      "job": "MCH",
+      "official_url": "https://na.finalfantasyxiv.com/jobguide/machinist/#anchor__pvp_onlyaction",
+      "official_sha256": "cc4a9f23224d8c9d59459930147c3f95800ace9f7c6e96fe232e48eb6526c402",
+      "actions": [
+        {
+          "name": "Blast Charge",
+          "anchor": "pvp_action__01",
+          "assignable": true,
+          "category": "job"
+        },
+        {
+          "name": "Scattergun",
+          "anchor": "pvp_action__02",
+          "assignable": true,
+          "category": "job"
+        },
+        {
+          "name": "Drill",
+          "anchor": "pvp_action__03",
+          "assignable": true,
+          "category": "job"
+        },
+        {
+          "name": "Full Metal Field",
+          "anchor": "pvp_action__04",
+          "assignable": true,
+          "category": "job"
+        },
+        {
+          "name": "Wildfire",
+          "anchor": "pvp_action__05",
+          "assignable": true,
+          "category": "job"
+        },
+        {
+          "name": "Bishop Autoturret",
+          "anchor": "pvp_action__06",
+          "assignable": true,
+          "category": "job"
+        },
+        {
+          "name": "Analysis",
+          "anchor": "pvp_action__07",
+          "assignable": true,
+          "category": "job"
+        },
+        {
+          "name": "Blazing Shot",
+          "anchor": "pvp_action__08",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "Bioblaster",
+          "anchor": "pvp_action__09",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "Air Anchor",
+          "anchor": "pvp_action__10",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "Chain Saw",
+          "anchor": "pvp_action__11",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "Detonator",
+          "anchor": "pvp_action__12",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "Aether Mortar",
+          "anchor": "pvp_action__13",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "Marksman's Spite",
+          "anchor": "pvplimitbreakaction_01",
+          "assignable": true,
+          "category": "limit_break"
+        },
+        {
+          "name": "Standard-issue Elixir",
+          "anchor": "pvpcommmononlyaction_01",
+          "assignable": true,
+          "category": "common"
+        },
+        {
+          "name": "Recuperate",
+          "anchor": "pvpcommmononlyaction_02",
+          "assignable": true,
+          "category": "common"
+        },
+        {
+          "name": "Purify",
+          "anchor": "pvpcommmononlyaction_03",
+          "assignable": true,
+          "category": "common"
+        },
+        {
+          "name": "Guard",
+          "anchor": "pvpcommmononlyaction_04",
+          "assignable": true,
+          "category": "common"
+        },
+        {
+          "name": "Sprint",
+          "anchor": "pvpcommmononlyaction_05",
+          "assignable": true,
+          "category": "common"
+        },
+        {
+          "name": "Dervish",
+          "anchor": "pvproleaction_01",
+          "assignable": true,
+          "category": "role"
+        },
+        {
+          "name": "Bravery",
+          "anchor": "pvproleaction_02",
+          "assignable": true,
+          "category": "role"
+        },
+        {
+          "name": "Eagle Eye Shot",
+          "anchor": "pvproleaction_03",
+          "assignable": true,
+          "category": "role"
+        }
+      ],
+      "source": "WrathCombo/Combos/PvP/MCHPVP.cs",
+      "source_sha256": "b464688f5e87421c4c1a7d8a8a5abb0e940eb84ff3b0030ebc8fcb0b7d18abe8",
+      "root_presets": [
+        {
+          "line": 85,
+          "preset": "MCHPvP_BurstMode"
+        }
+      ],
+      "toggle_references": [
+        "MCHPvP_BurstMode_AirAnchor",
+        "MCHPvP_BurstMode_AltAnalysis",
+        "MCHPvP_BurstMode_AltDrill",
+        "MCHPvP_BurstMode_Analysis",
+        "MCHPvP_BurstMode_BioBlaster",
+        "MCHPvP_BurstMode_ChainSaw",
+        "MCHPvP_BurstMode_Drill",
+        "MCHPvP_BurstMode_FullMetalField",
+        "MCHPvP_BurstMode_MarksmanSpite",
+        "MCHPvP_BurstMode_Wildfire",
+        "MCHPvP_Eagle"
+      ],
+      "setting_keys": [
+        "MCHPvP_EagleThreshold",
+        "MCHPvP_FMFOption",
+        "MCHPvP_MarksmanSpite"
+      ],
+      "entry_checks": [
+        {
+          "line": 88,
+          "code": "if (!CustomActionHelper.OneButtonRotationChecker(actionID, CustomActionType.SingleTargetDPS, BlastCharge))"
+        }
+      ]
+    },
+    {
+      "job": "DNC",
+      "official_url": "https://na.finalfantasyxiv.com/jobguide/dancer/#anchor__pvp_onlyaction",
+      "official_sha256": "5d68b4c76ad3fa9207ce5590cb93634a9401939ebdb315dcfe3ca4fdc96bd5af",
+      "actions": [
+        {
+          "name": "Cascade",
+          "anchor": "pvp_action__01",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "Fountain",
+          "anchor": "pvp_action__02",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "Starfall Dance",
+          "anchor": "pvp_action__03",
+          "assignable": true,
+          "category": "job"
+        },
+        {
+          "name": "Honing Dance",
+          "anchor": "pvp_action__04",
+          "assignable": true,
+          "category": "job"
+        },
+        {
+          "name": "Fan Dance",
+          "anchor": "pvp_action__05",
+          "assignable": true,
+          "category": "job"
+        },
+        {
+          "name": "Curing Waltz",
+          "anchor": "pvp_action__06",
+          "assignable": true,
+          "category": "job"
+        },
+        {
+          "name": "En Avant",
+          "anchor": "pvp_action__07",
+          "assignable": true,
+          "category": "job"
+        },
+        {
+          "name": "Closed Position",
+          "anchor": "pvp_action__08",
+          "assignable": true,
+          "category": "job"
+        },
+        {
+          "name": "Reverse Cascade",
+          "anchor": "pvp_action__09",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "Fountainfall",
+          "anchor": "pvp_action__10",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "Saber Dance",
+          "anchor": "pvp_action__11",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "Dance of the Dawn",
+          "anchor": "pvp_action__12",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "Honing Ovation",
+          "anchor": "pvp_action__13",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "Contradance",
+          "anchor": "pvplimitbreakaction_01",
+          "assignable": true,
+          "category": "limit_break"
+        },
+        {
+          "name": "Standard-issue Elixir",
+          "anchor": "pvpcommmononlyaction_01",
+          "assignable": true,
+          "category": "common"
+        },
+        {
+          "name": "Recuperate",
+          "anchor": "pvpcommmononlyaction_02",
+          "assignable": true,
+          "category": "common"
+        },
+        {
+          "name": "Purify",
+          "anchor": "pvpcommmononlyaction_03",
+          "assignable": true,
+          "category": "common"
+        },
+        {
+          "name": "Guard",
+          "anchor": "pvpcommmononlyaction_04",
+          "assignable": true,
+          "category": "common"
+        },
+        {
+          "name": "Sprint",
+          "anchor": "pvpcommmononlyaction_05",
+          "assignable": true,
+          "category": "common"
+        },
+        {
+          "name": "Dervish",
+          "anchor": "pvproleaction_01",
+          "assignable": true,
+          "category": "role"
+        },
+        {
+          "name": "Bravery",
+          "anchor": "pvproleaction_02",
+          "assignable": true,
+          "category": "role"
+        },
+        {
+          "name": "Eagle Eye Shot",
+          "anchor": "pvproleaction_03",
+          "assignable": true,
+          "category": "role"
+        }
+      ],
+      "source": "WrathCombo/Combos/PvP/DNCPVP.cs",
+      "source_sha256": "13386524976eecd9d510866f81f1fd0de6dbc50cbb832d28287100f264f97529",
+      "root_presets": [
+        {
+          "line": 78,
+          "preset": "DNCPvP_BurstMode"
+        }
+      ],
+      "toggle_references": [
+        "DNCPvP_BurstMode_CuringWaltz",
+        "DNCPvP_BurstMode_Dash",
+        "DNCPvP_BurstMode_HoningDance",
+        "DNCPvP_BurstMode_Partner",
+        "DNCPvP_Eagle"
+      ],
+      "setting_keys": [
+        "DNCPvP_EagleThreshold",
+        "DNCPvP_EnAvantCharges",
+        "DNCWaltzThreshold"
+      ],
+      "entry_checks": [
+        {
+          "line": 82,
+          "code": "if (!CustomActionHelper.OneButtonRotationChecker(actionID, CustomActionType.SingleTargetDPS, Cascade, ReverseCascade, Fountain, Fountainfall))"
+        }
+      ]
+    },
+    {
+      "job": "BLM",
+      "official_url": "https://na.finalfantasyxiv.com/jobguide/blackmage/#anchor__pvp_onlyaction",
+      "official_sha256": "895713cb5a8c2b7d58a152b71ca80ee6579d860e07468017a61617ba8af2e94c",
+      "actions": [
+        {
+          "name": "Fire",
+          "anchor": "pvp_action__01",
+          "assignable": true,
+          "category": "job"
+        },
+        {
+          "name": "Blizzard",
+          "anchor": "pvp_action__02",
+          "assignable": true,
+          "category": "job"
+        },
+        {
+          "name": "Burst",
+          "anchor": "pvp_action__03",
+          "assignable": true,
+          "category": "job"
+        },
+        {
+          "name": "Paradox",
+          "anchor": "pvp_action__04",
+          "assignable": true,
+          "category": "job"
+        },
+        {
+          "name": "Xenoglossy",
+          "anchor": "pvp_action__05",
+          "assignable": true,
+          "category": "job"
+        },
+        {
+          "name": "Lethargy",
+          "anchor": "pvp_action__06",
+          "assignable": true,
+          "category": "job"
+        },
+        {
+          "name": "Aetherial Manipulation",
+          "anchor": "pvp_action__07",
+          "assignable": true,
+          "category": "job"
+        },
+        {
+          "name": "Elemental Weave",
+          "anchor": "pvp_action__08",
+          "assignable": true,
+          "category": "job"
+        },
+        {
+          "name": "Fire III",
+          "anchor": "pvp_action__09",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "Fire IV",
+          "anchor": "pvp_action__10",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "High Fire II",
+          "anchor": "pvp_action__11",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "Flare",
+          "anchor": "pvp_action__12",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "Blizzard III",
+          "anchor": "pvp_action__13",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "Blizzard IV",
+          "anchor": "pvp_action__14",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "High Blizzard II",
+          "anchor": "pvp_action__15",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "Freeze",
+          "anchor": "pvp_action__16",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "Wreath of Fire",
+          "anchor": "pvp_action__17",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "Wreath of Ice",
+          "anchor": "pvp_action__18",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "Flare Star",
+          "anchor": "pvp_action__19",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "Frost Star",
+          "anchor": "pvp_action__20",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "Soul Resonance",
+          "anchor": "pvplimitbreakaction_01",
+          "assignable": true,
+          "category": "limit_break"
+        },
+        {
+          "name": "Standard-issue Elixir",
+          "anchor": "pvpcommmononlyaction_01",
+          "assignable": true,
+          "category": "common"
+        },
+        {
+          "name": "Recuperate",
+          "anchor": "pvpcommmononlyaction_02",
+          "assignable": true,
+          "category": "common"
+        },
+        {
+          "name": "Purify",
+          "anchor": "pvpcommmononlyaction_03",
+          "assignable": true,
+          "category": "common"
+        },
+        {
+          "name": "Guard",
+          "anchor": "pvpcommmononlyaction_04",
+          "assignable": true,
+          "category": "common"
+        },
+        {
+          "name": "Sprint",
+          "anchor": "pvpcommmononlyaction_05",
+          "assignable": true,
+          "category": "common"
+        },
+        {
+          "name": "Comet",
+          "anchor": "pvproleaction_01",
+          "assignable": true,
+          "category": "role"
+        },
+        {
+          "name": "Phantom Dart",
+          "anchor": "pvproleaction_02",
+          "assignable": true,
+          "category": "role"
+        },
+        {
+          "name": "Rust",
+          "anchor": "pvproleaction_03",
+          "assignable": true,
+          "category": "role"
+        }
+      ],
+      "source": "WrathCombo/Combos/PvP/BLMPVP.cs",
+      "source_sha256": "5a11fdb0f3ad5b637396aac57043c800e1206bb2fbd138b7edf794ef5504dcd4",
+      "root_presets": [
+        {
+          "line": 152,
+          "preset": "BLMPvP_BurstMode"
+        },
+        {
+          "line": 264,
+          "preset": "BLMPvP_Manipulation_Feature"
+        }
+      ],
+      "toggle_references": [
+        "BLMPvP_Burst",
+        "BLMPvP_ElementalStar",
+        "BLMPvP_ElementalWeave",
+        "BLMPvP_Lethargy",
+        "BLMPvP_PhantomDart",
+        "BLMPvP_Xenoglossy"
+      ],
+      "setting_keys": [
+        "BLMPVP_BurstButtonOption",
+        "BLMPvP_Burst_SubOption",
+        "BLMPvP_ElementalWeave_PlayerHP",
+        "BLMPvP_ElementalWeave_SubOption",
+        "BLMPvP_Lethargy_SubOption",
+        "BLMPvP_Lethargy_TargetHP",
+        "BLMPvP_Manipulation_Feature_PurifyMPThreshold",
+        "BLMPvP_Movement_Threshold",
+        "BLMPvP_PhantomDartThreshold",
+        "BLMPvP_Xenoglossy_SubOption",
+        "BLMPvP_Xenoglossy_TargetHP"
+      ],
+      "entry_checks": [
+        {
+          "line": 158,
+          "code": "if (!CustomActionHelper.OneButtonRotationChecker(actionID, CustomActionType.SingleTargetDPS, actions))"
+        },
+        {
+          "line": 249,
+          "code": "if (actionID is All.SingleTargetDPS)"
+        },
+        {
+          "line": 268,
+          "code": "if (actionID is not AetherialManipulation)"
+        }
+      ]
+    },
+    {
+      "job": "SMN",
+      "official_url": "https://na.finalfantasyxiv.com/jobguide/summoner/#anchor__pvp_onlyaction",
+      "official_sha256": "1c2869824ea413bc6195215dfc549892e8bfa43d8f9b861fd6b0e8d0d19e1fa9",
+      "actions": [
+        {
+          "name": "Ruin III",
+          "anchor": "pvp_action__01",
+          "assignable": true,
+          "category": "job"
+        },
+        {
+          "name": "Mountain Buster",
+          "anchor": "pvp_action__02",
+          "assignable": true,
+          "category": "job"
+        },
+        {
+          "name": "Slipstream",
+          "anchor": "pvp_action__03",
+          "assignable": true,
+          "category": "job"
+        },
+        {
+          "name": "Crimson Cyclone",
+          "anchor": "pvp_action__04",
+          "assignable": true,
+          "category": "job"
+        },
+        {
+          "name": "Necrotize",
+          "anchor": "pvp_action__05",
+          "assignable": true,
+          "category": "job"
+        },
+        {
+          "name": "Radiant Aegis",
+          "anchor": "pvp_action__06",
+          "assignable": true,
+          "category": "job"
+        },
+        {
+          "name": "Ruin IV",
+          "anchor": "pvp_action__07",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "Astral Impulse",
+          "anchor": "pvp_action__08",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "Fountain of Fire",
+          "anchor": "pvp_action__09",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "Crimson Strike",
+          "anchor": "pvp_action__10",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "Deathflare",
+          "anchor": "pvp_action__11",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "Brand of Purgatory",
+          "anchor": "pvp_action__12",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "Wyrmwave",
+          "anchor": "pvp_action__13",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "Scarlet Flame",
+          "anchor": "pvp_action__14",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "Summon Bahamut",
+          "anchor": "pvplimitbreakaction_01",
+          "assignable": true,
+          "category": "limit_break"
+        },
+        {
+          "name": "Megaflare",
+          "anchor": "pvplimitbreakaction_02",
+          "assignable": false,
+          "category": "limit_break"
+        },
+        {
+          "name": "Summon Phoenix",
+          "anchor": "pvplimitbreakaction_03",
+          "assignable": true,
+          "category": "limit_break"
+        },
+        {
+          "name": "Everlasting Flight",
+          "anchor": "pvplimitbreakaction_04",
+          "assignable": false,
+          "category": "limit_break"
+        },
+        {
+          "name": "Standard-issue Elixir",
+          "anchor": "pvpcommmononlyaction_01",
+          "assignable": true,
+          "category": "common"
+        },
+        {
+          "name": "Recuperate",
+          "anchor": "pvpcommmononlyaction_02",
+          "assignable": true,
+          "category": "common"
+        },
+        {
+          "name": "Purify",
+          "anchor": "pvpcommmononlyaction_03",
+          "assignable": true,
+          "category": "common"
+        },
+        {
+          "name": "Guard",
+          "anchor": "pvpcommmononlyaction_04",
+          "assignable": true,
+          "category": "common"
+        },
+        {
+          "name": "Sprint",
+          "anchor": "pvpcommmononlyaction_05",
+          "assignable": true,
+          "category": "common"
+        },
+        {
+          "name": "Comet",
+          "anchor": "pvproleaction_01",
+          "assignable": true,
+          "category": "role"
+        },
+        {
+          "name": "Phantom Dart",
+          "anchor": "pvproleaction_02",
+          "assignable": true,
+          "category": "role"
+        },
+        {
+          "name": "Rust",
+          "anchor": "pvproleaction_03",
+          "assignable": true,
+          "category": "role"
+        }
+      ],
+      "source": "WrathCombo/Combos/PvP/SMNPvP.cs",
+      "source_sha256": "8ff18663a6040037412209a782ec3fbaf77d4b90c055e1e0b8f55174f5f843b7",
+      "root_presets": [
+        {
+          "line": 72,
+          "preset": "SMNPvP_BurstMode"
+        }
+      ],
+      "toggle_references": [
+        "SMNPvP_BurstMode_BrandofPurgatory",
+        "SMNPvP_BurstMode_CrimsonCyclone",
+        "SMNPvP_BurstMode_CrimsonStrike",
+        "SMNPvP_BurstMode_DeathFlare",
+        "SMNPvP_BurstMode_MountainBuster",
+        "SMNPvP_BurstMode_Necrotize",
+        "SMNPvP_BurstMode_RadiantAegis",
+        "SMNPvP_BurstMode_Slipstream",
+        "SMNPvP_PhantomDart"
+      ],
+      "setting_keys": [
+        "SMNPvP_PhantomDartThreshold",
+        "SMNPvP_RadiantAegisThreshold"
+      ],
+      "entry_checks": [
+        {
+          "line": 76,
+          "code": "if (!CustomActionHelper.OneButtonRotationChecker(actionID, CustomActionType.SingleTargetDPS, Ruin3))"
+        }
+      ]
+    },
+    {
+      "job": "RDM",
+      "official_url": "https://na.finalfantasyxiv.com/jobguide/redmage/#anchor__pvp_onlyaction",
+      "official_sha256": "124dd4f1c3e9fc2be5a81ee81a091076f07a3ec6d46b06316145f3369efec1a2",
+      "actions": [
+        {
+          "name": "Jolt III",
+          "anchor": "pvp_action__01",
+          "assignable": true,
+          "category": "job"
+        },
+        {
+          "name": "Enchanted Riposte",
+          "anchor": "pvp_action__02",
+          "assignable": true,
+          "category": "job"
+        },
+        {
+          "name": "Resolution",
+          "anchor": "pvp_action__03",
+          "assignable": true,
+          "category": "job"
+        },
+        {
+          "name": "Embolden",
+          "anchor": "pvp_action__04",
+          "assignable": true,
+          "category": "job"
+        },
+        {
+          "name": "Corps-a-corps",
+          "anchor": "pvp_action__05",
+          "assignable": true,
+          "category": "job"
+        },
+        {
+          "name": "Displacement",
+          "anchor": "pvp_action__06",
+          "assignable": true,
+          "category": "job"
+        },
+        {
+          "name": "Forte",
+          "anchor": "pvp_action__07",
+          "assignable": true,
+          "category": "job"
+        },
+        {
+          "name": "Grand Impact",
+          "anchor": "pvp_action__08",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "Enchanted Zwerchhau",
+          "anchor": "pvp_action__09",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "Enchanted Redoublement",
+          "anchor": "pvp_action__10",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "Scorch",
+          "anchor": "pvp_action__11",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "Prefulgence",
+          "anchor": "pvp_action__12",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "Vice of Thorns",
+          "anchor": "pvp_action__13",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "Southern Cross",
+          "anchor": "pvplimitbreakaction_01",
+          "assignable": true,
+          "category": "limit_break"
+        },
+        {
+          "name": "Standard-issue Elixir",
+          "anchor": "pvpcommmononlyaction_01",
+          "assignable": true,
+          "category": "common"
+        },
+        {
+          "name": "Recuperate",
+          "anchor": "pvpcommmononlyaction_02",
+          "assignable": true,
+          "category": "common"
+        },
+        {
+          "name": "Purify",
+          "anchor": "pvpcommmononlyaction_03",
+          "assignable": true,
+          "category": "common"
+        },
+        {
+          "name": "Guard",
+          "anchor": "pvpcommmononlyaction_04",
+          "assignable": true,
+          "category": "common"
+        },
+        {
+          "name": "Sprint",
+          "anchor": "pvpcommmononlyaction_05",
+          "assignable": true,
+          "category": "common"
+        },
+        {
+          "name": "Comet",
+          "anchor": "pvproleaction_01",
+          "assignable": true,
+          "category": "role"
+        },
+        {
+          "name": "Phantom Dart",
+          "anchor": "pvproleaction_02",
+          "assignable": true,
+          "category": "role"
+        },
+        {
+          "name": "Rust",
+          "anchor": "pvproleaction_03",
+          "assignable": true,
+          "category": "role"
+        }
+      ],
+      "source": "WrathCombo/Combos/PvP/RDMPVP.cs",
+      "source_sha256": "4955fb4f027056dcd9bc701cb71e3e72ca5e16cdc15ff2ecaf19ae09b29c628b",
+      "root_presets": [
+        {
+          "line": 119,
+          "preset": "RDMPvP_BurstMode"
+        },
+        {
+          "line": 233,
+          "preset": "RDMPvP_Dash_Feature"
+        }
+      ],
+      "toggle_references": [
+        "RDMPvP_Corps",
+        "RDMPvP_Displacement",
+        "RDMPvP_Embolden",
+        "RDMPvP_Forte",
+        "RDMPvP_PhantomDart",
+        "RDMPvP_Resolution",
+        "RDMPvP_Riposte"
+      ],
+      "setting_keys": [
+        "RDMPvP_Corps_Charges",
+        "RDMPvP_Corps_Range",
+        "RDMPvP_Dash_Feature_PurifyMPThreshold",
+        "RDMPvP_Displacement_Charges",
+        "RDMPvP_Displacement_SubOption",
+        "RDMPvP_Embolden_SubOption",
+        "RDMPvP_Forte_PlayerHP",
+        "RDMPvP_Forte_SubOption",
+        "RDMPvP_PhantomDartThreshold",
+        "RDMPvP_Resolution_TargetHP"
+      ],
+      "entry_checks": [
+        {
+          "line": 123,
+          "code": "if (!CustomActionHelper.OneButtonRotationChecker(actionID, CustomActionType.SingleTargetDPS, Jolt3))"
+        },
+        {
+          "line": 237,
+          "code": "if (actionID is not (CorpsACorps or Displacement))"
+        }
+      ]
+    },
+    {
+      "job": "PCT",
+      "official_url": "https://na.finalfantasyxiv.com/jobguide/pictomancer/#anchor__pvp_onlyaction",
+      "official_sha256": "466adf358dfffe33fbc05b510fbcf791c7fc91ea1e07db9aecc82e21a075c8c0",
+      "actions": [
+        {
+          "name": "Fire in Red",
+          "anchor": "pvp_action__01",
+          "assignable": true,
+          "category": "job"
+        },
+        {
+          "name": "Holy in White",
+          "anchor": "pvp_action__02",
+          "assignable": true,
+          "category": "job"
+        },
+        {
+          "name": "Creature Motif",
+          "anchor": "pvp_action__03",
+          "assignable": true,
+          "category": "job"
+        },
+        {
+          "name": "Living Muse",
+          "anchor": "pvp_action__04",
+          "assignable": true,
+          "category": "job"
+        },
+        {
+          "name": "Mog of the Ages",
+          "anchor": "pvp_action__05",
+          "assignable": true,
+          "category": "job"
+        },
+        {
+          "name": "Smudge",
+          "anchor": "pvp_action__06",
+          "assignable": true,
+          "category": "job"
+        },
+        {
+          "name": "Tempera Coat",
+          "anchor": "pvp_action__07",
+          "assignable": true,
+          "category": "job"
+        },
+        {
+          "name": "Subtractive Palette",
+          "anchor": "pvp_action__08",
+          "assignable": true,
+          "category": "job"
+        },
+        {
+          "name": "Aero in Green",
+          "anchor": "pvp_action__09",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "Water in Blue",
+          "anchor": "pvp_action__10",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "Blizzard in Cyan",
+          "anchor": "pvp_action__11",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "Stone in Yellow",
+          "anchor": "pvp_action__12",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "Thunder in Magenta",
+          "anchor": "pvp_action__13",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "Comet in Black",
+          "anchor": "pvp_action__14",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "Pom Motif",
+          "anchor": "pvp_action__15",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "Wing Motif",
+          "anchor": "pvp_action__16",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "Claw Motif",
+          "anchor": "pvp_action__17",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "Maw Motif",
+          "anchor": "pvp_action__18",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "Pom Muse",
+          "anchor": "pvp_action__19",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "Winged Muse",
+          "anchor": "pvp_action__20",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "Clawed Muse",
+          "anchor": "pvp_action__21",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "Fanged Muse",
+          "anchor": "pvp_action__22",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "Retribution of the Madeen",
+          "anchor": "pvp_action__23",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "Tempera Grassa",
+          "anchor": "pvp_action__24",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "Star Prism",
+          "anchor": "pvp_action__25",
+          "assignable": false,
+          "category": "job"
+        },
+        {
+          "name": "Advent of Chocobastion",
+          "anchor": "pvplimitbreakaction_01",
+          "assignable": true,
+          "category": "limit_break"
+        },
+        {
+          "name": "Standard-issue Elixir",
+          "anchor": "pvpcommmononlyaction_01",
+          "assignable": true,
+          "category": "common"
+        },
+        {
+          "name": "Recuperate",
+          "anchor": "pvpcommmononlyaction_02",
+          "assignable": true,
+          "category": "common"
+        },
+        {
+          "name": "Purify",
+          "anchor": "pvpcommmononlyaction_03",
+          "assignable": true,
+          "category": "common"
+        },
+        {
+          "name": "Guard",
+          "anchor": "pvpcommmononlyaction_04",
+          "assignable": true,
+          "category": "common"
+        },
+        {
+          "name": "Sprint",
+          "anchor": "pvpcommmononlyaction_05",
+          "assignable": true,
+          "category": "common"
+        },
+        {
+          "name": "Comet",
+          "anchor": "pvproleaction_01",
+          "assignable": true,
+          "category": "role"
+        },
+        {
+          "name": "Phantom Dart",
+          "anchor": "pvproleaction_02",
+          "assignable": true,
+          "category": "role"
+        },
+        {
+          "name": "Rust",
+          "anchor": "pvproleaction_03",
+          "assignable": true,
+          "category": "role"
+        }
+      ],
+      "source": "WrathCombo/Combos/PvP/PCTPVP.cs",
+      "source_sha256": "ba609d91f8c8a99d831cc055c0b1ab12522bbf4e6a67d1f58c9d4528738ca82c",
+      "root_presets": [
+        {
+          "line": 84,
+          "preset": "PCTPvP_Burst"
+        },
+        {
+          "line": 165,
+          "preset": "PCTPvP_OneButtonMotifs"
+        }
+      ],
+      "toggle_references": [
+        "PCTPvP_BurstControl",
+        "PCTPvP_CreatureMotif",
+        "PCTPvP_HolyInWhite",
+        "PCTPvP_LivingMuse",
+        "PCTPvP_MogOfTheAges",
+        "PCTPvP_PhantomDart",
+        "PCTPvP_StarPrism",
+        "PCTPvP_StarPrismOneButtonMotifs",
+        "PCTPvP_SubtractivePalette",
+        "PCTPvP_TemperaCoat"
+      ],
+      "setting_keys": [
+        "PCTPvP_BurstHP",
+        "PCTPvP_CreatureMotifEnforceNotMoving",
+        "PCTPvP_PhantomDartThreshold",
+        "PCTPvP_TemperaHP"
+      ],
+      "entry_checks": [
+        {
+          "line": 88,
+          "code": "if (!CustomActionHelper.OneButtonRotationChecker(actionID, CustomActionType.SingleTargetDPS, FireInRed, AeroInGreen, WaterInBlue))"
+        },
+        {
+          "line": 179,
+          "code": "if (actionID is LivingMuse)"
+        }
+      ]
+    }
+  ]
+}

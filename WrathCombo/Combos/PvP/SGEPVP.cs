@@ -1,4 +1,6 @@
-﻿using Dalamud.Game.ClientState.Objects.Types;
+using WrathCombo.Engine;
+using WrathFork.Contract;
+using Dalamud.Game.ClientState.Objects.Types;
 using WrathCombo.Core;
 using WrathCombo.CustomComboNS;
 using WrathCombo.CustomComboNS.Functions;
@@ -85,7 +87,12 @@ internal static class SGEPvP
                 return actionID;
 
             if (IsEnabled(Preset.SGEPvP_BurstMode_KardiaReminder) && !LocalPlayer.HasStatus(Buffs.Kardia, true))
-                return Kardia;
+            {
+                if (!Options.Enabled(Feature.PvPSgeKardiaRecipient)) return Kardia;
+                var recipient = SimpleTarget.Stack.AllyToHealPVP;
+                if (recipient != null && !recipient.IsDead && recipient.CanUseOn(Kardia))
+                    return Kardia.Retarget(actionID, recipient);
+            }
 
             if (!PvPCommon.TargetImmuneToDamage())
             {

@@ -1,4 +1,6 @@
-﻿using WrathCombo.CustomComboNS;
+using WrathCombo.Engine;
+using WrathFork.Contract;
+using WrathCombo.CustomComboNS;
 using WrathCombo.CustomComboNS.Functions;
 using WrathCombo.Extensions;
 using WrathCombo.Native;
@@ -133,7 +135,7 @@ internal static class GNBPvP
                 }
 
                 //GnashingFang
-                if (IsEnabled(Preset.GNBPvP_ST_GnashingFang) && (ActionReady(GnashingFang) || OriginalHook(GnashingFang) != GnashingFang))
+                if (IsEnabled(Preset.GNBPvP_ST_GnashingFang) && ((Options.Enabled(Feature.PvPGnbGnashingInitiation) && ActionReady(GnashingFang)) || OriginalHook(GnashingFang) != GnashingFang))
                     return OriginalHook(GnashingFang);
             }
 

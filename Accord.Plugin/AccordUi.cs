@@ -14,6 +14,7 @@ internal static class AccordUi
     {
         var setup = SetupController.Instance;
         if (setup is null) return;
+        if(SetupController.IsPvP){PvPUi.Draw(setup);return;}
         ImGui.TextUnformatted("Accord — buttons express intent");
         DrawClassSelection(setup);
         ImGui.Separator();
@@ -39,9 +40,9 @@ internal static class AccordUi
         if (!setup.Settings.LiveMode && ImGui.Button("Set selected class hotbars")) setup.Run(setup.ApplyHotbars);
         if (ImGui.Button(setup.Settings.LiveMode ? "Disable live mode" : "Enable live mode")) setup.Run(() => setup.SetLive(!setup.Settings.LiveMode));
         ImGui.TextWrapped(setup.Settings.LiveMode
-            ? "Live: refresh the current selected class when variants or classes change; retry when hotbars are ready."
+            ? "Live: refresh the current selected class on changes and check every second. Clear other actions also removes newly added leveling actions."
             : "Static: variants change behaviour. Use a setup button to update hotbars.");
-        ImGui.TextWrapped("Keyboard actions close available gaps; fixed controls and controller positions stay in place. Hotbar Bridge is required.");
+        ImGui.TextWrapped("Keyboard actions close gaps within each bar; fixed controls and controller positions stay in place. Hotbar Bridge is required.");
         ImGui.Separator();
         ImGui.TextWrapped(setup.Status);
         if (setup.HasPendingOperation && ImGui.Button("Keep recovery record and review again")) setup.Run(setup.AbandonPendingOperation);
@@ -118,7 +119,7 @@ internal static class AccordUi
         switch (parts[0])
         {
             case "selected": setup.ApplyHotbars(); return;
-            case "live": setup.SetLive(Value(setup.Settings.LiveMode)); return;
+            case "live": setup.SetLive(Value(setup.Live)); return;
             case "restore": setup.Restore(); return;
         }
         var id = parts[0] switch
@@ -127,7 +128,7 @@ internal static class AccordUi
             "support" => VariantId.Support, "mechanics" => VariantId.ClassMechanics,
             _ => throw new ArgumentException("Use /accord selected, live, burst, protection, support or mechanics."),
         };
-        setup.SetVariant(id, Value(setup.Settings.Enabled(id)));
+        setup.SetVariant(id, Value(setup.VariantEnabled(id)));
         bool Value(bool previous) => parts.ElementAtOrDefault(1) switch
         {
             "on" => true, "off" => false, "toggle" => !previous,

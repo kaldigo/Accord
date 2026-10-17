@@ -1,4 +1,6 @@
-﻿using WrathCombo.CustomComboNS;
+using WrathCombo.Engine;
+using WrathFork.Contract;
+using WrathCombo.CustomComboNS;
 using WrathCombo.CustomComboNS.Functions;
 using WrathCombo.Extensions;
 using WrathCombo.Native;
@@ -188,7 +190,7 @@ internal static class SAMPvP
                     return OriginalHook(MeikyoShisui);
 
                 // Ogi Namikiri
-                if (IsOffCooldown(OgiNamikiri))
+                if (Options.Enabled(Feature.PvPSamOgiInitiation) && IsOffCooldown(OgiNamikiri))
                     return OriginalHook(OgiNamikiri);
             }
 

@@ -1,4 +1,6 @@
-﻿using Dalamud.Game.ClientState.Objects.Types;
+using WrathCombo.Engine;
+using WrathFork.Contract;
+using Dalamud.Game.ClientState.Objects.Types;
 using WrathCombo.Combos.PvE;
 using WrathCombo.CustomComboNS;
 using WrathCombo.CustomComboNS.Functions;
@@ -155,7 +157,7 @@ internal static class RDMPvP
             #endregion
 
             // Forte
-            if (IsEnabled(Preset.RDMPvP_Forte) && hasForte && inCombat &&
+            if (IsEnabled(Preset.RDMPvP_Forte) && Options.Enabled(Feature.PvPRdmForteInitiation) && hasForte && inCombat &&
                 playerCurrentPercentHp < RDMPvP_Forte_PlayerHP)
                 return OriginalHook(Forte);
 
@@ -179,7 +181,7 @@ internal static class RDMPvP
                 if (hasEnchantedRiposte)
                 {
                     // Embolden
-                    if (IsEnabled(Preset.RDMPvP_Embolden) && hasEmbolden)
+                    if (IsEnabled(Preset.RDMPvP_Embolden) && Options.Enabled(Feature.PvPRdmEmboldenInitiation) && hasEmbolden)
                     {
                         // Combo Setting
                         if (IsEnabled(Preset.RDMPvP_Corps) && (isCorpsPrimed || (!isCorpsPrimed && InActionRange(EnchantedRiposte))))
@@ -196,7 +198,7 @@ internal static class RDMPvP
                 }
 
                 // Riposte Combo
-                if (IsEnabled(Preset.RDMPvP_Riposte) && InActionRange(EnchantedRiposte) && (hasEnchantedRiposte || hasMeleeCombo))
+                if (IsEnabled(Preset.RDMPvP_Riposte) && InActionRange(EnchantedRiposte) && ((Options.Enabled(Feature.PvPRdmRiposteInitiation) && hasEnchantedRiposte) || hasMeleeCombo))
                     return OriginalHook(EnchantedRiposte);
 
                 // Prefulgence

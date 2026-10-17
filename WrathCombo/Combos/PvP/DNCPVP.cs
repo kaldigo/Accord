@@ -1,3 +1,7 @@
+using System.Linq;
+using WrathCombo.Core;
+using WrathCombo.Engine;
+using WrathFork.Contract;
 using WrathCombo.Combos.PvE;
 using WrathCombo.CustomComboNS;
 using WrathCombo.CustomComboNS.Functions;
@@ -95,7 +99,14 @@ internal static class DNCPvP
 
             // Honing Dance Option
             if (IsEnabled(Preset.DNCPvP_BurstMode_Partner) && ActionReady(ClosedPosition) && !LocalPlayer.HasStatus(Buffs.ClosedPosition) & GetPartyMembers().Count > 1)
-                return ClosedPosition;
+            {
+                if (!Options.Enabled(Feature.PvPDncPartnerRecipient)) return ClosedPosition;
+                // Validate the PvP action against the same ally used for execution.
+                var partner = GetPartyMembers().Select(member => member.GameObject)
+                    .Where(p => p != null && p.IsNotThePlayer() && !p.IsDead && p.IsTargetable && p.CanUseOn(ClosedPosition))
+                    .OrderByDescending(p => p == CurrentTarget).FirstOrDefault();
+                if (partner != null) return ClosedPosition.Retarget(actionID, partner);
+            }
 
             if (IsEnabled(Preset.DNCPvP_Eagle) && PvPPhysRanged.CanEagleEyeShot() && (PvPCommon.TargetImmuneToDamage() || GetTargetHPPercent() <= DNCPvP_EagleThreshold))
                 return PvPPhysRanged.EagleEyeShot;
@@ -105,7 +116,8 @@ internal static class DNCPvP
                 if (LocalPlayer.HasStatus(Buffs.Acclaim) && acclaimStacks < 4)
                     return All.Cease;
 
-                return HoningDance;
+                if (Options.Enabled(Feature.PvPDncHoningInitiation) || LocalPlayer.HasStatus(Buffs.Acclaim))
+                    return HoningDance;
             }
 
             if (canWeave)
@@ -115,7 +127,7 @@ internal static class DNCPvP
                     return OriginalHook(CuringWaltz);
 
                 // Fan Dance weave
-                if (IsOffCooldown(FanDance) && InActionRange(FanDance) && !enemyGuarded) // 2y below max to avoid waste
+                if (Options.Enabled(Feature.PvPDncFanInitiation) && IsOffCooldown(FanDance) && InActionRange(FanDance) && !enemyGuarded) // 2y below max to avoid waste
                     return OriginalHook(FanDance);
 
                 if (IsEnabled(Preset.DNCPvP_BurstMode_Dash) && !LocalPlayer.HasStatus(Buffs.EnAvant) && GetRemainingCharges(EnAvant) > DNCPvP_EnAvantCharges)
@@ -123,7 +135,7 @@ internal static class DNCPvP
             }
 
             // Starfall Dance
-            if (!starfallDance && starfallDanceReady && InActionRange(StarfallDance) && !enemyGuarded) // 5y below max to avoid waste
+            if (Options.Enabled(Feature.PvPDncStarfallInitiation) && !starfallDance && starfallDanceReady && InActionRange(StarfallDance) && !enemyGuarded) // 5y below max to avoid waste
                 return OriginalHook(StarfallDance);
 
             if (ActionReady(DanceOfTheDawn))

@@ -1,8 +1,8 @@
 # Separate plugin previews
 
-The 0.2.7 preview contains two plugins. **Wrathful Combo** (internal name `WrathFork`) owns rotations, settings and the settings API. **Accord** owns reviewed mappings, variants and hotbars. Both are needed for reviewed combat setup. Disable upstream Wrath and the old combined Accord before using these builds; Hotbar Bridge stays separate.
+The 0.2.8 preview contains two plugins. **Wrathful Combo** (internal name `WrathFork`) owns rotations, settings and the settings API. **Accord** owns reviewed mappings, variants and hotbars. Both are needed for reviewed combat setup. Disable upstream Wrath and the old combined Accord before using these builds; Hotbar Bridge stays separate.
 
-Run `pwsh -File tools/package-release.ps1` with .NET 10 and installed Dalamud API 15 development dependencies. It builds both projects, runs mapping/contract checks and validates every job/variant against the compiled engine schema, then writes `artifacts/v0.2.7-preview/`:
+Run `pwsh -File tools/package-release.ps1` with .NET 10 and installed Dalamud API 15 development dependencies. It builds both projects, runs mapping/contract checks and validates every job/variant against the compiled engine schema, then writes `artifacts/v0.2.8-preview/`:
 
 - `WrathFork.zip` and `Accord.zip`, each with its own identity and dependency notices.
 - `WrathFork.pluginmaster.testing.json` and `Accord.pluginmaster.testing.json`, separate testing feeds.
@@ -51,3 +51,5 @@ The live Dalamud log identified a constructor failure: status-entry initializati
 On first load, Wrathful Combo imports the neighboring `WrathCombo.json` only if its own `WrathFork.json` does not exist. Disable upstream Wrath first. The full configuration is copied, including rotation, targeting, custom job settings and auto-mode preferences; upstream settings are never modified. Existing fork configurations always take precedence, even if empty or damaged. Invalid source settings stop loading with an import error rather than creating defaults. Removing the fork configuration deliberately makes it eligible for import again. Accord selection remains separate and defaults to no jobs selected.
 
 0.2.7 adds first-run upstream settings import, current-class live update recovery and keyboard compaction with Bridge routes. It removes the added targetless Dancer initiation while preserving upstream preparation and continuation. Use Hotbar Bridge 0.2.10. Existing fork settings are retained. Native testing remains pending.
+
+0.2.8 adds all 21 PvP intent layouts and required engine settings, mode-specific setup/backups, per-bar compaction and periodic live repair. Update Accord and Wrathful Combo together and use Hotbar Bridge 0.2.11. PvP class selection starts empty. Hands-free auto rotation is unchanged. Native testing remains pending.
