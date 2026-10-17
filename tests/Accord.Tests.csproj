@@ -9,6 +9,7 @@
     <Compile Include="../Contract/*.cs" Link="Contract/%(Filename)%(Extension)" />
     <Reference Include="Dalamud"><HintPath>$(appdata)/XIVLauncher/addon/Hooks/dev/Dalamud.dll</HintPath></Reference>
     <Compile Include="../Accord.Plugin/HotbarRefreshPolicy.cs" Link="HotbarRefreshPolicy.cs" />
+    <Compile Include="../Accord.Plugin/PveLayoutPlan.cs" Link="PveLayoutPlan.cs" />
     <Compile Include="../Accord.Plugin/LiveUpdateState.cs" Link="LiveUpdateState.cs" />
     <Compile Include="../Accord.Plugin/MigrationPreparation.cs" Link="MigrationPreparation.cs" />
     <Compile Include="../Accord.Plugin/AccordSettings.cs" Link="AccordSettings.cs" />

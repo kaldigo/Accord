@@ -11,7 +11,7 @@ try {
     & dotnet run --project tests/Accord.Tests.csproj -c Release -- WrathCombo/bin/WrathFork/Release/WrathFork.dll
     if ($LASTEXITCODE -ne 0) { throw 'Separation tests failed.' }
     Add-Type -AssemblyName System.IO.Compression.FileSystem
-    $tag = 'v0.2.9-preview'
+    $tag = 'v0.2.10-preview'
     $out = Join-Path $repoRoot "artifacts/$tag"
     New-Item -ItemType Directory -Force -Path $out | Out-Null
     $hashes = @()
@@ -20,7 +20,7 @@ try {
         $relative = if ($name -eq 'WrathFork') { 'WrathCombo/bin/WrathFork/Release/WrathFork' } else { 'Accord.Plugin/bin/Release/Accord' }
         $build = Join-Path $repoRoot $relative
         $manifest = Get-Content -LiteralPath (Join-Path $build "$name.json") -Raw | ConvertFrom-Json
-        $expectedVersion = if ($name -eq 'Accord') { '0.2.9.0' } else { '0.2.8.0' }
+        $expectedVersion = if ($name -eq 'Accord') { '0.2.10.0' } else { '0.2.8.0' }
         if ($manifest.InternalName -ne $name -or $manifest.Name -ne $(if ($name -eq 'WrathFork') { 'Wrathful Combo' } else { 'Accord' }) -or $manifest.DalamudApiLevel -ne 15 -or [version]$manifest.AssemblyVersion -ne [version]$expectedVersion) {
             throw "Incorrect package identity/version: $name"
         }
@@ -46,11 +46,11 @@ try {
             $manifest | Add-Member -NotePropertyName $field -NotePropertyValue $url -Force
         }
         $publicManifest = $manifest | ConvertTo-Json -Depth 8 | ConvertFrom-Json
-        $publicManifest | Add-Member -NotePropertyName Changelog -NotePropertyValue 'Fix PvP keyboard setup aborting when overflow controller bars are shared. Uses available unshared controller pages, otherwise retains overflow on keyboard with an explanatory status. Preserves shared bars. Requires Wrathful Combo 0.2.8 and Hotbar Bridge 0.2.11.' -Force
+        $publicManifest | Add-Member -NotePropertyName Changelog -NotePropertyValue 'Fix PvE keyboard setup with shared controller bars. Preserve every required keyboard control, including Paladin knockback immunity when bar 3 is linked or shared. Retains the PvP fix. Requires Wrathful Combo 0.2.8 and Hotbar Bridge 0.2.11.' -Force
         $feed += $publicManifest
         $manifest | Add-Member -NotePropertyName IsTestingExclusive -NotePropertyValue $true -Force
         $manifest | Add-Member -NotePropertyName TestingAssemblyVersion -NotePropertyValue $manifest.AssemblyVersion -Force
-        $manifest | Add-Member -NotePropertyName Changelog -NotePropertyValue 'PvP intent layouts and scoped engine settings; shared-slot protection, per-bar compaction and live repair. Requires Hotbar Bridge 0.2.11. In-game testing pending.' -Force
+        $manifest | Add-Member -NotePropertyName Changelog -NotePropertyValue 'PvE and PvP keyboard setup no longer depends on writable controller bars. Preserves required actions and shared slots. In-game testing pending.' -Force
         ConvertTo-Json -InputObject @($manifest) -Depth 8 | Set-Content -LiteralPath (Join-Path $out "$name.pluginmaster.testing.json") -Encoding utf8NoBOM
         $hashes += (Get-FileHash -LiteralPath $package -Algorithm SHA256).Hash.ToLowerInvariant() + "  $name.zip"
     }

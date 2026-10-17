@@ -25,6 +25,33 @@ for (int mask = 0; mask < 16; mask++)
     var choices = new AccordSettings();
     foreach (var variant in VariantDefinitions.All) choices.Variants[variant.Id] = (mask & (1 << (int)variant.Id)) != 0;
     var resolved = pack.Resolve(preset, choices);
+    foreach(var targetJob in new[]{preset.JobId}.Concat(preset.BaseClasses))
+    foreach(bool existingExtra in new[]{false,true})
+    foreach(bool sharedControllers in new[]{false,true})
+    {
+        var planningMaps=Defaults.Maps();
+        if(existingExtra && targetJob is 1 or 19)planningMaps.Add(ExtraJobMappings.For(targetJob));
+        bool Protected(Position p)=> (sharedControllers && p.Bar>=10) || p.Bar is >=2 and <10 ||
+            planningMaps.Any(m=>m.SharedAcrossJobs && (m.Regular==p || m.Cross==p));
+        var plan=PveLayoutPlan.Create(targetJob,resolved,planningMaps,Protected);
+        var required=resolved.Slots.Where(s=>s.Action!="Empty").ToArray();
+        foreach(var slot in required)
+            Check(plan.Count(e=>ReferenceEquals(e.Slot,slot))==1,$"{preset.Job}/{mask}: required action missing or duplicated: {slot.Action}");
+        Check(plan.All(e=>!Protected(e.Regular) && (e.Cross is null || !Protected(e.Cross.Value))),"Setup writes a protected destination.");
+        Check(!sharedControllers || plan.All(e=>e.Cross is null),"Shared controller bars still required by keyboard setup.");
+        var plannedRoutes=plan.Where(e=>e.Registered).ToDictionary(e=>e.Map.Id,e=>e.Regular);
+        LayoutRoutes.Effective(planningMaps.Where(m=>m.Applies(targetJob)),plannedRoutes);
+        Check(plan.Select(e=>e.Regular).Distinct().Count()==plan.Length,"Keyboard-only plan overlaps actions.");
+        if(required.Any(s=>s.LogicalSlot==13))
+            Check(plan.Single(e=>e.Slot?.LogicalSlot==13).Regular.Bar<2,"Paladin knockback action still uses a linked utility bar.");
+        foreach(bool cleanupEnabled in new[]{false,true})
+        {
+            var keep=plan.SelectMany(e=>e.Cross is {} cross ? new[]{e.Regular,cross} : new[]{e.Regular}).ToHashSet();
+            var cleared=cleanupEnabled ? HotbarCleanup.Plan(targetJob,keep,planningMaps,
+                bar=>sharedControllers && bar>=10,_=>new SlotValue(1,123)).Where(e=>!Protected(e.Position)).ToArray() : [];
+            Check(cleared.All(e=>!keep.Contains(e.Position)),"Cleanup removes a planned keyboard action.");
+        }
+    }
     var layout = KeyboardLayout.Compile(resolved, true);
     Check(layout.Values.Distinct().Count() == KeyboardLayout.Positions.Length, "Compaction overlaps keyboard controls.");
     Check(layout.All(pair => pair.Key.Bar == pair.Value.Bar), "Compaction moved a function to another keyboard bar.");

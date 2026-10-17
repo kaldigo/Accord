@@ -13,6 +13,7 @@ namespace Accord;
 
 internal sealed class HotbarSetup
 {
+    internal string Notice { get; private set; } = "";
     private ActionCatalog? actions;
     private bool BridgeLoaded => Svc.PluginInterface.InstalledPlugins.Any(p => p.InternalName == "HotbarBridge" && p.IsLoaded);
     private string ReadBridge(string name) => Svc.PluginInterface.GetIpcSubscriber<string>("HotbarBridge." + name).InvokeFunc();
@@ -52,8 +53,11 @@ internal sealed class HotbarSetup
             throw new InvalidOperationException("Hotbar Bridge is busy. Try again.");
         try
         {
+            var protectedSlots = ProtectedSlots();
+            bool Protected(Position p) => protectedSlots.Contains(p) || NativeHotbars.Ready(current)->IsHotbarShared((uint)p.Bar);
+            Notice = "";
             var extras = jobs.Where(j => j.Preset.Slots.Any(s => s.LogicalSlot > 12))
-                .Select(j => ExtraJobMappings.For(j.Job)).ToArray();
+                .Select(j => ExtraJobMappings.For(j.Job)).Where(m => !Protected(m.Cross)).ToArray();
             if (!inspectOnly && bridge && extras.Length > 0 &&
                 !Svc.PluginInterface.GetIpcSubscriber<string, bool>("HotbarBridge.EnsureJobMappings").InvokeFunc(JsonSerializer.Serialize(extras)))
                 throw new InvalidOperationException("Update Hotbar Bridge to support the extra Paladin control.");
@@ -62,7 +66,6 @@ internal sealed class HotbarSetup
             if (maps is not null) Defaults.Validate(maps);
             if (inspectOnly && extras.Any(extra => maps!.All(map => map.Id != extra.Id || map.JobId != extra.JobId)))
                 return (null, true);
-            var protectedSlots = ProtectedSlots();
             var oldRoutes = bridge ? JsonSerializer.Deserialize<Dictionary<uint, Dictionary<string, Position>>>(ReadBridge("GetJobRoutes"))
                 ?? throw new InvalidDataException("Bridge routes are unavailable.") : null;
             var routes = bridge ? new Dictionary<uint, Dictionary<string, Position>>() : null;
@@ -73,7 +76,6 @@ internal sealed class HotbarSetup
             foreach (var (job, preset) in jobs)
             {
                 var keep = new HashSet<Position>();
-                var layout = KeyboardLayout.Compile(preset, true);
                 // Vacated keyboard positions may contain actions moved by this or a prior variant.
                 // Clear only recognised design actions when general cleanup is disabled.
                 var designActions = preset.Slots.SelectMany(s => new[] { s.Action, s.RetiredAction })
@@ -85,19 +87,15 @@ internal sealed class HotbarSetup
                     beforeRoutes![job] = oldRoutes!.GetValueOrDefault(job) ?? new();
                     routes[job] = new();
                 }
-                foreach (var source in KeyboardLayout.Positions.Concat(
-                    effectiveMaps.Where(m => m.JobId == job && m.Id == ExtraJobMappings.For(job).Id).Select(m => m.Regular)).Distinct())
+                foreach (var entry in PveLayoutPlan.Create(job, preset, effectiveMaps, Protected))
                 {
-                    var slot = preset.Slots.SingleOrDefault(s => new Position(s.RegularBar - 1, s.RegularSlot - 1) == source);
+                    var slot = entry.Slot;
                     var value = slot is null ? default : actions.ResolveSlot(preset.Job, slot.Action);
-                    var map = effectiveMaps.SingleOrDefault(m => m.Applies(job) && m.Regular == source);
-                    if (map is null || map.SharedAcrossJobs)
-                        throw new InvalidOperationException($"No job-specific Bridge pair for {preset.Job} {source}.");
-                    var regular = layout.GetValueOrDefault(source, source);
-                    if (routes is not null) routes[job][map.Id] = regular;
+                    if (routes is not null && entry.Registered) routes[job][entry.Map.Id] = entry.Regular;
                     var retired = string.IsNullOrEmpty(slot?.RetiredAction) ? default : actions.ResolveSlot(preset.Job, slot.RetiredAction);
-                    Add(regular, value, retired, true);
-                    Add(map.Cross, value, retired);
+                    Add(entry.Regular, value, retired, true);
+                    if (entry.Cross is { } cross) Add(cross, value, retired);
+                    else if (value != default) Notice = " Some controls are keyboard-only because their controller slots are shared or unavailable. Shared bars were preserved.";
                 }
                 if (routes is not null) LayoutRoutes.Effective(effectiveMaps.Where(m => m.Applies(job)), routes[job]);
                 if (cleanup)

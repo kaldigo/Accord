@@ -122,7 +122,7 @@ internal sealed class SetupController : IDisposable
             {
                 if (hotbars.NeedsRefresh(job, Pack.Resolve(Pack.Find(job)!, Settings), Settings.ClearOtherActions))
                     ApplyCurrentHotbars(prepareSettings: false);
-                else Status = "Live layout up to date; watching for hotbar changes.";
+                else Status = "Live layout up to date; watching for hotbar changes." + hotbars.Notice;
             }
             return;
         }
@@ -317,7 +317,7 @@ internal sealed class SetupController : IDisposable
         var backup = hotbars.Apply(layouts, Settings.ClearOtherActions);
         try { Mutate(() => Settings.LastHotbarBackup = backup); }
         catch { hotbars.Restore(backup); throw; }
-        Status = $"Hotbars for {selected.Length} selected class(es) applied and backed up.";
+        Status = $"Hotbars for {selected.Length} selected class(es) applied and backed up." + hotbars.Notice;
     }
 
     internal void Restore()
