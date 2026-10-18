@@ -97,6 +97,9 @@ internal static class MCHPvP
 
             if (IsEnabled(Preset.MCHPvP_Eagle) && PvPPhysRanged.CanEagleEyeShot() && (PvPCommon.TargetImmuneToDamage() || GetTargetHPPercent() <= MCHPvP_EagleThreshold))
                 return PvPPhysRanged.EagleEyeShot;
+            if(Engine.PvPIntentRouting.Active && canWeave && CurrentTarget.HasStatus(Debuffs.Wildfire) &&
+                CurrentTarget.Status(Debuffs.Wildfire).RemainingTimeOrZero()<=1 && OriginalHook(Wildfire)!=Wildfire)
+                return OriginalHook(Wildfire);
 
             if (!PvPCommon.TargetImmuneToDamage() && HasBattleTarget())
             {

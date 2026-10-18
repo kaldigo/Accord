@@ -49,6 +49,17 @@ public sealed class Plugin : IDalamudPlugin
             IsOpen = true;
         }
         else Settings = pluginInterface.GetPluginConfig() as AccordSettings ?? new AccordSettings();
+        if (Settings.Version < 2 && !MigrationPending)
+        {
+            Directory.CreateDirectory(pluginInterface.GetPluginConfigDirectory());
+            if (file.Exists)
+                File.Copy(file.FullName, Path.Combine(pluginInterface.GetPluginConfigDirectory(),
+                    "before-shared-preferences-" + Guid.NewGuid().ToString("N") + ".json"), false);
+            Settings.SharedPvP();
+            Settings.PvP.PendingLayouts.IntersectWith(Settings.PvP.ActiveJobs);
+            Settings.Version = 2;
+            pluginInterface.SavePluginConfig(Settings);
+        }
         setup = new SetupController();
         Svc.Commands.AddHandler("/accord", new Dalamud.Game.Command.CommandInfo((_, args) => setup.Run(() => AccordUi.Command(args))) { HelpMessage = "Open Accord setup and hotbar controls." });
         pluginInterface.UiBuilder.Draw += Draw;

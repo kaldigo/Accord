@@ -110,6 +110,8 @@ internal static class PLDPvP
                 return OriginalHook(Imperator);
 
             var missinghealth = LocalPlayer.MaxHp - LocalPlayer.CurrentHp;
+            if(Engine.PvPIntentRouting.Active && !InMeleeRange() && HasBattleTarget() && ActionReady(HolySpirit))
+                return HolySpirit;
 
             if (IsEnabled(Preset.PLDPvP_HolySpirit) && ActionReady(HolySpirit) && missinghealth >= PLDPvP_HolySpirit_Threshold)
             {

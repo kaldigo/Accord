@@ -1,4 +1,8 @@
 using WrathCombo.CustomComboNS;
+using System.Linq;
+using WrathCombo.Engine;
+using WrathCombo.Core;
+using WrathFork.Contract;
 using WrathCombo.CustomComboNS.Functions;
 using WrathCombo.Extensions;
 using WrathCombo.Native;
@@ -68,6 +72,19 @@ internal static class BRDPvP
 
             var canWeave = CanWeave(0.5f);
             uint harmonicCharges = GetRemainingCharges(HarmonicArrow);
+            if(PvPIntentRouting.Active && ActionReady(WardensPaean))
+            {
+                bool Afflicted(Dalamud.Game.ClientState.Objects.Types.IGameObject? ally) => ally is not null &&
+                    (ally.HasStatus(PvPCommon.Debuffs.Bind,true) || ally.HasStatus(PvPCommon.Debuffs.Heavy,true) || ally.HasStatus(PvPCommon.Debuffs.HalfAsleep,true));
+                if(IsEnabled(Preset.BRDPvP_Wardens) && Afflicted(LocalPlayer))return WardensPaean.Retarget(actionID,LocalPlayer);
+                if(Options.Enabled(Feature.PvPBrdAllyCleanse))
+                {
+                    var preferred=SimpleTarget.Stack.AllyToHealPVP;
+                    var ally=GetPartyMembers().Select(p=>p.GameObject).Where(p=>Afflicted(p) && p!.CanUseOn(WardensPaean))
+                        .OrderByDescending(p=>p==preferred).FirstOrDefault();
+                    if(ally is not null)return WardensPaean.Retarget(actionID,ally);
+                }
+            }
 
             if (IsEnabled(Preset.BRDPvP_Eagle) && PvPPhysRanged.CanEagleEyeShot() && (PvPCommon.TargetImmuneToDamage() || GetTargetHPPercent() <= BRDPvP_EagleThreshold))
                 return PvPPhysRanged.EagleEyeShot;

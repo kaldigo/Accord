@@ -19,6 +19,17 @@ public sealed class AccordSettings : Dalamud.Configuration.IPluginConfiguration
     public bool ClearOtherActions { get; set; }
     public string LastHotbarBackup { get; set; } = "";
     public bool Enabled(VariantId id) => Variants.GetValueOrDefault(id);
+
+    // PvP keeps its native preparation/backup history, but never owns user choices.
+    public PvPSettings SharedPvP()
+    {
+        PvP.ActiveJobs = new HashSet<uint>(ActiveJobs ?? []);
+        PvP.Variants = new Dictionary<VariantId, bool>(Variants);
+        PvP.LiveMode = LiveMode;
+        PvP.ClearOtherActions = ClearOtherActions;
+        PvP.PendingLayouts.IntersectWith(PvP.ActiveJobs);
+        return PvP;
+    }
 }
 
 internal sealed record VariantDefinition(VariantId Id, string Label, string Icon, string Description);

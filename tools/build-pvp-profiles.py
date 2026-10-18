@@ -74,5 +74,7 @@ for j in ledger['jobs']:
       'RequiredBools':(['RDMPvP_Embolden_SubOption','RDMPvP_Forte_SubOption'] if job=='RDM' else ['BLMPvP_Burst_SubOption','BLMPvP_ElementalWeave_SubOption','BLMPvP_Xenoglossy_SubOption'] if job=='BLM' else []),
       'RequiredInts':{'ASTPvP_Burst_PlayCardOption':1} if job=='AST' else {},
       'RecipientFeatures':['PvPDncPartnerRecipient'] if job=='DNC' else ['PvPSgeKardiaRecipient'] if job=='SGE' else []})
-(ROOT/'Accord.Plugin/pvp-presets.json').write_text(json.dumps(profiles,indent=2)+'\n',encoding='utf-8')
+# Historical research generator: never overwrite the reviewed executable profiles.
+(ROOT/'artifacts').mkdir(exist_ok=True)
+(ROOT/'artifacts/pvp-legacy-profiles.json').write_text(json.dumps(profiles,indent=2)+'\n',encoding='utf-8')
 print('Generated',len(profiles),'profiles:',[(p['Job'],len(p['Controls'])) for p in profiles])

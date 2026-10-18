@@ -11,13 +11,15 @@ namespace Accord;
 
 public sealed class PvPSettings
 {
+    [JsonIgnore]
     public HashSet<uint> ActiveJobs { get; set; } = new();
+    [JsonIgnore]
     public Dictionary<VariantId, bool> Variants { get; set; } = new();
     public Dictionary<uint, int> PreparedJobs { get; set; } = new();
     public HashSet<uint> PendingLayouts { get; set; } = new();
     public string ConfigurationId { get; set; } = "";
-    public bool LiveMode { get; set; }
-    public bool ClearOtherActions { get; set; }
+    [JsonIgnore] public bool LiveMode { get; set; }
+    [JsonIgnore] public bool ClearOtherActions { get; set; }
     public string LastHotbarBackup { get; set; } = "";
     public bool Enabled(VariantId id) => Variants.GetValueOrDefault(id);
 }
@@ -33,6 +35,9 @@ internal sealed class PvPControl
     public string[] AnyPositive { get; set; } = [];
     public string? AnyOption { get; set; }
     public string? TimingOption { get; set; }
+    public int KeyboardBar { get; set; } = -1;
+    public int Order { get; set; }
+    public PvPControl[] Fallbacks { get; set; } = [];
 }
 
 internal sealed class PvPProfile
@@ -48,11 +53,12 @@ internal sealed class PvPProfile
     public string[] RequiredBools { get; set; } = [];
     public Dictionary<string, int> RequiredInts { get; set; } = new();
     public string[] RecipientFeatures { get; set; } = [];
+    public SlotValue[] RetiredBindings { get; set; } = [];
 }
 
 internal sealed class PvPPack
 {
-    internal const int Revision = 1;
+    internal const int Revision = 2;
     internal PvPProfile[] Jobs { get; }
     internal PvPPack()
     {
@@ -78,6 +84,7 @@ internal sealed class PvPPack
             foreach (var (variant, names) in job.Variants)
                 foreach (var name in names) (settings.Enabled(variant) ? enable : disable).Add(Id(name));
             var flags = new JObject();
+            flags["PvPIntentRoutes"] = true;
             foreach (var (feature, variant) in job.Features) flags[feature] = settings.Enabled(variant);
             foreach (var feature in job.RecipientFeatures) flags[feature] = true;
             features[job.JobId.ToString()] = flags;
@@ -93,6 +100,8 @@ internal sealed class PvPPack
     internal static SlotValue Resolve(PvPControl control, PvPSettings settings, JObject snapshot)
     {
         bool delegated = control.Variant is { } variant && settings.Enabled(variant);
+        if(delegated && control.Fallbacks.Length>0)
+            delegated=control.Fallbacks.All(c=>Resolve(c,settings,snapshot)==default);
         if (delegated && control.RequiredPreset is { } preset)
             delegated = snapshot["Settings"]!["EnabledActionsV6"]!.Values<int>().Contains(snapshot["PresetIds"]!.Value<int>(preset));
         if (delegated && control.AnyPositive.Length>0)
@@ -102,6 +111,7 @@ internal sealed class PvPPack
         if (delegated && control.TimingOption is { } timing)
             delegated=snapshot["Settings"]!["CustomIntValuesV6"]!.Value<int?>(timing) is 1 or 2;
         if (delegated) return default;
+        if(control.Custom is "PvPIntent") return control.Binding;
         return control.Custom == "SingleTargetDPS" && snapshot["Settings"]!["CustomActionSettings"]?.Value<bool>("SingleTargetDPS") == true
             ? new SlotValue(1, 1_000_000) : control.Binding;
     }
@@ -125,6 +135,7 @@ internal static class PvPLayout
         {
             var existing=maps.SingleOrDefault(m=>m.Id==extra.Id);
             if(existing!=null){result.Add(existing);continue;}
+            if(protectedSlot(extra.Regular))continue;
             var free=Enumerable.Range(11,7).SelectMany(bar=>Enumerable.Range(0,16).Select(slot=>new Position(bar,slot)))
                 .Where(p=>!protectedSlot(p) && !occupied.Contains(p)).Select(p=>(Position?)p).FirstOrDefault();
             if(free is not { } cross)continue;
@@ -138,25 +149,19 @@ internal static class PvPLayout
         var overflow=Extras(job);
         return job.Controls.Select((_,i)=>maps.SingleOrDefault(m=>m.Applies(job.JobId) && m.Regular==Positions[i] && !m.SharedAcrossJobs)
             ?? (i>=12 ? overflow.Single(m=>m.Regular==Positions[i]) :
-                throw new InvalidOperationException($"No job-specific PvP Bridge pair for {job.Job}, {Positions[i]}."))).ToArray();
+                new SlotMap{Id=$"pvp-keyboard-{job.JobId}-{i}",JobId=job.JobId,Profile="All",RegularBar=Positions[i].Bar+1,RegularSlot=Positions[i].Slot+1})).ToArray();
     }
-    internal static HashSet<int> Fixed(PvPProfile job) => job.Controls.Select((c,i)=>(c,i)).Where(x=>x.i==0 ||
-        x.c.Name is "Fuma Shuriken" or "Blizzard" or "Cure II" or "Aspected Benefic" or "Adloquium" ||
-        x.c.Binding.Id is 29055 or 29711 or 29056 or 29054 or 29057 or 43259 ||
-        x.c.Intent.Contains("move", StringComparison.OrdinalIgnoreCase) || x.c.Intent.Contains("escape", StringComparison.OrdinalIgnoreCase))
-        .Select(x=>x.i).ToHashSet();
-    internal static Dictionary<string, Position> Routes(SlotMap[] maps, SlotValue[] values, ISet<int>? fixedSlots=null)
+    internal static Dictionary<string,Position> IntentRoutes(PvPProfile job,SlotMap[] maps,SlotValue[] values,Func<Position,bool> protectedSlot)
     {
-        if (maps.Length != values.Length) throw new InvalidDataException("Incomplete PvP layout.");
-        var result = new Dictionary<string, Position>();
-        fixedSlots ??= new HashSet<int>{0};
-        foreach(var i in fixedSlots) result[maps[i].Id]=maps[i].Regular;
-        foreach (var group in Enumerable.Range(0,maps.Length).Where(i=>!fixedSlots.Contains(i)).GroupBy(i=>maps[i].Regular.Bar))
+        if(protectedSlot(new(0,0)) || protectedSlot(new(0,1)))throw new InvalidOperationException("ST/AoE need unshared job slots at bar 1 slots 1 and 2.");
+        var result=new Dictionary<string,Position>();
+        foreach(int bar in new[]{0,1})
         {
-            var destinations = group.Select(i=>maps[i].Regular).OrderBy(p=>p.Slot).ToArray();
-            // Damage stays in its original slot. Other active actions precede empty positions.
-            var order = group.OrderBy(i=>i==0 ? 0 : values[i]==default ? 2 : 1).ThenBy(i=>maps[i].Regular.Slot).ToArray();
-            for (int k=0;k<order.Length;k++) result[maps[order[k]].Id]=destinations[k];
+            var indices=Enumerable.Range(0,maps.Length).Where(i=>job.Controls[i].KeyboardBar==bar)
+                .OrderBy(i=>values[i]==default?1:0).ThenBy(i=>job.Controls[i].Order).ToArray();
+            var destinations=Enumerable.Range(0,bar==0?8:12).Select(s=>new Position(bar,s)).Where(p=>!protectedSlot(p)).ToArray();
+            if(indices.Count(i=>values[i]!=default)>destinations.Length)throw new InvalidOperationException($"Not enough unshared slots on bar {bar+1} for {job.Job}.");
+            for(int i=0;i<Math.Min(indices.Length,destinations.Length);i++)result[maps[indices[i]].Id]=destinations[i];
         }
         return result;
     }

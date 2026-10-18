@@ -83,6 +83,9 @@ internal static class SMNPvP
             double playerHP = PlayerHealthPercentageHp();
             int radiantThreshold = SMNPvP_RadiantAegisThreshold;
             #endregion
+            if(Engine.PvPIntentRouting.Active && canWeave && IsEnabled(Preset.SMNPvP_BurstMode_RadiantAegis) &&
+                IsOffCooldown(RadiantAegis) && playerHP<=radiantThreshold)
+                return RadiantAegis.Retarget(actionID,LocalPlayer);
 
             if (PvPCommon.TargetImmuneToDamage() && LocalPlayer.HasStatus(Buffs.FurtherRuin)) // Block for ruin 4 because it is on action ID
                 return All.Cease;
@@ -92,7 +95,7 @@ internal static class SMNPvP
                 if (canWeave)
                 {
                     // Radiant Aegis
-                    if (IsEnabled(Preset.SMNPvP_BurstMode_RadiantAegis) &&
+                    if (!Engine.PvPIntentRouting.Active && IsEnabled(Preset.SMNPvP_BurstMode_RadiantAegis) &&
                         IsOffCooldown(RadiantAegis) && playerHP <= radiantThreshold)
                         return RadiantAegis;
 

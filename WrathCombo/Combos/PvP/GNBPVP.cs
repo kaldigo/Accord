@@ -3,6 +3,7 @@ using WrathFork.Contract;
 using WrathCombo.CustomComboNS;
 using WrathCombo.CustomComboNS.Functions;
 using WrathCombo.Extensions;
+using WrathCombo.Core;
 using WrathCombo.Native;
 using WrathCombo.Window.Functions;
 using static WrathCombo.Combos.PvP.GNBPvP.Config;
@@ -102,7 +103,7 @@ internal static class GNBPvP
             int blastingZoneThreshold = GNBPvP_BlastingZoneThreshold; 
 
             if (CanWeave() && IsEnabled(Preset.GNBPvP_Corundum) && PlayerHealthPercentageHp() <= corundumThreshold && IsOffCooldown(HeartOfCorundum))
-                return HeartOfCorundum;
+                return PvPIntentRouting.Active ? HeartOfCorundum.Retarget(actionID,LocalPlayer):HeartOfCorundum;
 
             if (IsEnabled(Preset.GNBPvP_Rampart) && PvPTank.CanRampart(GNBPvP_RampartThreshold))
                 return PvPTank.Rampart;

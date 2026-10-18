@@ -103,6 +103,10 @@ internal static class RPRPvP
             int immortalThreshold = RPRPvP_ImmortalStackThreshold;
             #endregion
 
+            if(PvPIntentRouting.Active && canWeave && LocalPlayer.HasStatus(Buffs.DeathWarrant) &&
+                LocalPlayer.Status(Buffs.DeathWarrant).RemainingTimeOrZero()<=3)
+                return OriginalHook(DeathWarrant);
+
             // Arcane Cirle Option
             if (IsEnabled(Preset.RPRPvP_Burst_ArcaneCircle)
                 && ActionReady(ArcaneCrest) && PlayerHealthPercentageHp() <= RPRPvP_ArcaneCircleThreshold)
@@ -152,6 +156,9 @@ internal static class RPRPvP
                 // Outside of Enshroud
                 if (!enshrouded)
                 {
+                    if(PvPIntentRouting.Active && !IsEnabled(Preset.RPRPvP_Burst_ImmortalPooling) &&
+                        Options.Enabled(Feature.PvPRprPlentifulInitiation) && plentifulReady && immortalStacks>=immortalThreshold && InActionRange(PlentifulHarvest))
+                        return PlentifulHarvest;
                     if (LocalPlayer.HasStatus(Buffs.PerfectioParata))
                         return OriginalHook(TenebraeLemurum);
 

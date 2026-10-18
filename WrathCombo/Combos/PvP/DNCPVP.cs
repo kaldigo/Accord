@@ -97,6 +97,9 @@ internal static class DNCPvP
             bool enemyGuarded = CurrentTarget.HasStatus(PvPCommon.Buffs.Guard, true);
             #endregion
 
+            if(PvPIntentRouting.Active && LocalPlayer.HasStatus(Buffs.Acclaim))
+                return acclaimStacks<4 ? All.Cease : OriginalHook(HoningDance);
+
             // Honing Dance Option
             if (IsEnabled(Preset.DNCPvP_BurstMode_Partner) && ActionReady(ClosedPosition) && !LocalPlayer.HasStatus(Buffs.ClosedPosition) & GetPartyMembers().Count > 1)
             {
@@ -123,7 +126,9 @@ internal static class DNCPvP
             if (canWeave)
             {
                 // Curing Waltz Option
-                if (IsEnabled(Preset.DNCPvP_BurstMode_CuringWaltz) && curingWaltzReady && HP <= DNCPvP_WaltzThreshold)
+                if (IsEnabled(Preset.DNCPvP_BurstMode_CuringWaltz) && curingWaltzReady && (HP <= DNCPvP_WaltzThreshold ||
+                    PvPIntentRouting.Active && GetPartyMembers().Any(p=>p.GameObject is {} ally && !ally.IsDead &&
+                        GetTargetHPPercent(ally)<=DNCPvP_WaltzThreshold && GetTargetDistance(ally)<=3)))
                     return OriginalHook(CuringWaltz);
 
                 // Fan Dance weave

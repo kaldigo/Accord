@@ -366,6 +366,7 @@ public sealed partial class WrathCombo : IDalamudPlugin
 
             Configuration.ProcessSaveQueue();
             SettingsApi.Tick();
+            Engine.PvPIntentRouting.Tick();
 
             //Hacky workaround to ensure it's always running
             CustomComboFunctions.IsMoving();

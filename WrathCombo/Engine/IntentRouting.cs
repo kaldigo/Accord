@@ -14,13 +14,14 @@ namespace WrathCombo.Engine;
 internal static class IntentRouting
 {
     private static readonly IntentHandoff Burst = new();
-    internal static void Reset() => Burst.Reset();
+    internal static void Reset() { Burst.Reset(); PvPIntentRouting.Reset(); }
 
     private static uint IntentJob => Options.Job;
     internal static bool BurstFollowThrough => Options.Enabled(Feature.BurstContinuation) && Burst.Active(IntentJob, Environment.TickCount64);
 
     internal static void ObserveInput(uint original, uint replacement)
     {
+        PvPIntentRouting.Observe(original,replacement);
         // Hypercharge can be routine heat spending. Only the manual burst button
         // makes that particular action a burst initiator when Barrel is unavailable.
         if (Options.Enabled(Feature.BurstContinuation) && IntentJob == 31 && original is MCH.Heatblast or MCH.BlazingShot && replacement == MCH.Hypercharge)
@@ -92,6 +93,7 @@ internal static class IntentRouting
 
     internal static void ConfirmAction(uint action)
     {
+        PvPIntentRouting.Confirm(action);
         if (!Options.Enabled(Feature.BurstContinuation)) return;
         if (Burst.ConfirmInput(IntentJob, action, Environment.TickCount64)) return;
         bool initiator = IntentJob switch
@@ -119,6 +121,7 @@ internal static class IntentRouting
 
     internal static bool? PresetOverride(Preset preset)
     {
+        if(PvPIntentRouting.PresetOverride(preset) is {} pvp)return pvp;
         // Meisui consumes the result of an accepted TCJ, not a new mechanic.
         if (preset is Preset.NIN_ST_AdvancedMode_Meisui or Preset.NIN_AoE_AdvancedMode_Meisui &&
             Options.Enabled(Feature.TcjContinuation) &&

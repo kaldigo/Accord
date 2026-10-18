@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 using System.Linq;
 using System.IO;
 using System.Numerics;
@@ -14,8 +15,8 @@ internal static class AccordUi
     {
         var setup = SetupController.Instance;
         if (setup is null) return;
-        if(SetupController.IsPvP){PvPUi.Draw(setup);return;}
         ImGui.TextUnformatted("Accord — buttons express intent");
+        ImGui.TextWrapped($"Current hotbars: {(SetupController.IsPvP ? "PvP" : "PvE")}. Active classes, variants and live mode are shared.");
         DrawClassSelection(setup);
         ImGui.Separator();
         ImGui.TextWrapped("Choose which decisions to delegate to your rotation presses. A = automatic; M = manual.");
@@ -29,7 +30,8 @@ internal static class AccordUi
             if (job is not null)
             {
                 ImGui.Indent();
-                ImGui.TextWrapped($"{job.Job}: {JobIntents.Describe(job.JobId, definition.Id)}");
+                var pvp = SetupController.IsPvP ? setup.PvP.Pack.Find(job.JobId) : null;
+                ImGui.TextWrapped($"{job.Job}: {(pvp is null ? JobIntents.Describe(job.JobId, definition.Id) : pvp.Descriptions.GetValueOrDefault(definition.Id, "No additional automation for this variant."))}");
                 ImGui.Unindent();
             }
         }
@@ -50,7 +52,7 @@ internal static class AccordUi
         {
             ImGui.TextWrapped("Reapply Accord's default Wrath settings for selected classes. Backs up the previous settings and keeps your variants and hotbars.");
             if (ImGui.Button("Reset selected classes to Accord defaults")) setup.Run(setup.ResetSelectedSettings);
-            if (!string.IsNullOrWhiteSpace(setup.Settings.LastHotbarBackup))
+            if (!string.IsNullOrWhiteSpace(SetupController.IsPvP ? setup.PvP.Settings.LastHotbarBackup : setup.Settings.LastHotbarBackup))
             {
                 ImGui.Separator();
                 ImGui.TextWrapped("Restore the saved hotbar layout from before the last Accord hotbar operation, including live updates. Turns live mode off; Wrath settings and variants stay as they are. This is not necessarily your layout from before first using Accord.");

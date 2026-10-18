@@ -15,7 +15,7 @@ internal sealed class PvPSetup
     private readonly EngineClient engine;
     private readonly PvPHotbars hotbars = new();
     private readonly LiveUpdateState updates = new();
-    internal PvPSettings Settings => Plugin.Instance.Settings.PvP;
+    internal PvPSettings Settings => Plugin.Instance.Settings.SharedPvP();
     internal string Status { get; private set; } = "Select the classes Accord should manage in PvP.";
     internal PvPSetup(EngineClient engine) => this.engine=engine;
     internal void Wake() => updates.Wake();
@@ -30,6 +30,7 @@ internal sealed class PvPSetup
     }
     private void Prepare(AccordSettings desired, PvPProfile[] jobs)
     {
+        desired.SharedPvP();
         if(Plugin.Instance.MigrationPending)throw new InvalidOperationException("Complete settings migration first.");
         if(jobs.Length==0){Save(desired);return;}
         var snapshot=engine.Read();
@@ -42,28 +43,6 @@ internal sealed class PvPSetup
         engine.Apply(snapshot,Pack.Patch(jobs,desired.PvP,snapshot),desired);
     }
     private PvPProfile[] Selected(PvPSettings settings) => Pack.Jobs.Where(j=>settings.ActiveJobs.Contains(j.JobId)).ToArray();
-    internal void SetJobs(IEnumerable<uint> jobs)
-    {
-        var desired=Clone();desired.PvP.ActiveJobs=jobs.Where(j=>Pack.Find(j)!=null).ToHashSet();
-        desired.PvP.PendingLayouts.IntersectWith(desired.PvP.ActiveJobs);
-        Prepare(desired,Selected(desired.PvP));Invalidate();
-        Status="PvP class selection saved. Deselecting retains its settings and hotbars.";
-    }
-    internal void SetVariant(VariantId id,bool enabled)
-    {
-        var desired=Clone();desired.PvP.Variants[id]=enabled;Prepare(desired,Selected(desired.PvP));Invalidate();
-        Status=Settings.LiveMode?"PvP live update pending.":"PvP behaviour updated. Static hotbars retained; use setup to update manual controls.";
-    }
-    internal void SetLive(bool enabled)
-    {
-        if(enabled && Settings.ActiveJobs.Count==0)throw new InvalidOperationException("Select at least one PvP class first.");
-        var desired=Clone();desired.PvP.LiveMode=enabled;Save(desired);Invalidate();
-        Status=enabled?"PvP live mode enabled; applies when ready.":"PvP live mode disabled. Current hotbars retained.";
-    }
-    internal void SetCleanup(bool enabled)
-    {
-        var desired=Clone();desired.PvP.ClearOtherActions=enabled;Save(desired);Invalidate();
-    }
     internal void Reset() {Prepare(Clone(),Selected(Settings));Invalidate();Status="PvP intent settings reapplied. Personal thresholds and hands-free settings retained.";}
     internal unsafe void ApplySelected()
     {
@@ -119,7 +98,7 @@ internal sealed class PvPSetup
     {
         if(string.IsNullOrEmpty(Settings.LastHotbarBackup))throw new InvalidOperationException("No PvP hotbar backup yet.");
         var undo=hotbars.Restore(Settings.LastHotbarBackup);
-        var desired=Clone();desired.PvP.LastHotbarBackup=undo;desired.PvP.LiveMode=false;desired.PvP.PendingLayouts.Clear();
+        var desired=Clone();desired.PvP.LastHotbarBackup=undo;desired.LiveMode=false;desired.SharedPvP();desired.PvP.PendingLayouts.Clear();
         try{Save(desired);}catch{hotbars.Restore(undo);throw;}
         Status="Previous PvP layout restored. PvP live mode disabled to retain it.";
     }

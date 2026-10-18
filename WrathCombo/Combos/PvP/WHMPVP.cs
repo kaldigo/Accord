@@ -118,17 +118,17 @@ internal static class WHMPvP
                 
                 if (WHMPvP_Burst_Heals_Options[1] && LocalPlayer.HasStatus(Buffs.Cure3Ready) && GetTargetHPPercent(healTarget) <= WHMPvP_Burst_HealsThreshold)
                     return WHMPvP_Burst_HealsRetarget
-                        ? Cure3.Retarget(Glare, healTarget)
+                        ? Cure3.Retarget(actionID, healTarget)
                         : Cure3;
                 
                 if (WHMPvP_Burst_Heals_Options[2] && ActionReady(Aquaveil) && CanWeave() && GetTargetHPPercent(healTarget) <= WHMPvP_Burst_HealsThreshold)
                     return WHMPvP_Burst_HealsRetarget
-                        ? Aquaveil.Retarget(Glare, healTarget)
+                        ? Aquaveil.Retarget(actionID, healTarget)
                         : Aquaveil;
                 
                 if (WHMPvP_Burst_Heals_Options[0] && ActionReady(Cure2) && GetTargetHPPercent(healTarget) <= WHMPvP_Burst_HealsThreshold)
                     return WHMPvP_Burst_HealsRetarget
-                        ? Cure2.Retarget(Glare, healTarget)
+                        ? Cure2.Retarget(actionID, healTarget)
                         : Cure2;
             }
 

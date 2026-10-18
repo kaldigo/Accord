@@ -56,7 +56,7 @@ public static class Defaults
     public static void Validate(IEnumerable<SlotMap> maps)
     {
         var list=maps.ToList();
-        if(list.Count>128 || list.Select(m=>m.Id).Distinct().Count()!=list.Count) throw new InvalidDataException("Too many pairs or duplicate pair IDs.");
+        if(list.Count>512 || list.Select(m=>m.Id).Distinct().Count()!=list.Count) throw new InvalidDataException("Too many pairs or duplicate pair IDs.");
         foreach(var m in list)
             if(m.JobId > 42 || !m.Regular.Valid || m.Regular.Bar>=10 || !m.Cross.Valid || m.Cross.Bar<10 || m.Profile is not ("All" or "Combat" or "Healer" or "Noncombat")) throw new InvalidDataException($"Invalid mapping: {m.Label}");
         foreach(uint job in Enumerable.Range(1,42).Select(x=>(uint)x))
@@ -257,9 +257,10 @@ public static class KeyboardLayout
         // Compact each bar independently; an empty slot is not permission to move a function between bars.
         foreach(var bar in Positions.GroupBy(p=>p.Bar))
         {
-            var available=bar.Where(p=>!locked.Contains(p)).ToArray();
-            var ordered=available.Where(actions.Contains).Concat(available.Where(p=>!actions.Contains(p))).ToArray();
-            for(var i=0;i<available.Length;i++)result[ordered[i]]=available[i];
+            var sources=bar.Where(p=>!locked.Contains(p)).ToArray();
+            var available=Enumerable.Range(0,bar.Key==0?8:12).Select(s=>new Position(bar.Key,s)).Where(p=>!locked.Contains(p)).ToArray();
+            var ordered=sources.Where(actions.Contains).Concat(sources.Where(p=>!actions.Contains(p))).ToArray();
+            for(var i=0;i<ordered.Length;i++)result[ordered[i]]=available[i];
         }
         return result;
     }
@@ -290,10 +291,10 @@ public sealed class LayoutBackup
 // Additional job controls are opt-in, scoped to one class, and never replace custom pairs.
 public static class ExtraJobMappings
 {
-    public static SlotMap For(uint job) => new()
+    public static SlotMap For(uint job, int logical = 13) => new()
     {
-        Id = $"extra-job-{job}-13", Label = $"Job {job}: knockback immunity", Profile = "Combat",
-        JobId = job, RegularBar = 3, RegularSlot = 1, CrossSet = 2, CrossSlot = 1,
+        Id = $"extra-job-{job}-{logical}", Label = logical == 13 ? $"Job {job}: knockback immunity" : $"Job {job}: intent {logical}", Profile = Defaults.IsHealer(job) ? "Healer" : "Combat",
+        JobId = job, RegularBar = 3, RegularSlot = logical-12, CrossSet = 2, CrossSlot = logical-12,
     };
     public static List<SlotMap> Merge(IEnumerable<SlotMap> existing, IEnumerable<SlotMap> requested,
         Dictionary<uint, Dictionary<string, Position>> routes)
@@ -301,8 +302,8 @@ public static class ExtraJobMappings
         var result = existing.ToList();
         foreach (var map in requested)
         {
-            var expected = For(map.JobId);
-            if (map.JobId is not (1 or 19) || JsonSerializer.Serialize(map) != JsonSerializer.Serialize(expected))
+            var expected = For(map.JobId, map.RegularSlot+12);
+            if (!Defaults.IsCombat(map.JobId) || map.JobId==36 || map.RegularSlot is <1 or >8 || JsonSerializer.Serialize(map) != JsonSerializer.Serialize(expected))
                 throw new InvalidDataException("Unsupported extra job mapping.");
             var old = result.SingleOrDefault(m => m.Id == map.Id);
             if (old != null)

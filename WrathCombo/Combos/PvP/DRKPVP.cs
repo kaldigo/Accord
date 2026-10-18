@@ -1,6 +1,7 @@
 ﻿using WrathCombo.CustomComboNS;
 using WrathCombo.CustomComboNS.Functions;
 using WrathCombo.Extensions;
+using WrathCombo.Core;
 using WrathCombo.Native;
 using WrathCombo.Window.Functions;
 using static WrathCombo.Combos.PvP.DRKPvP.Config;
@@ -90,7 +91,7 @@ internal class DRKPvP
                 if (canWeave)
                 {
                     if (IsEnabled(Preset.DRKPvP_BlackestNight) && ActionReady(BlackestNight) && !LocalPlayer.HasStatus(Buffs.BlackestNight) && !WasLastAbility(BlackestNight))
-                        return OriginalHook(BlackestNight);
+                        return Engine.PvPIntentRouting.Active ? BlackestNight.Retarget(actionID,LocalPlayer):OriginalHook(BlackestNight);
 
                     if (IsEnabled(Preset.DRKPvP_SaltedEarth) && ActionReady(SaltedEarth) && IsEnabled(Preset.DRKPvP_SaltedEarth))
                         return OriginalHook(SaltedEarth);

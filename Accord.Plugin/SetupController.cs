@@ -27,8 +27,8 @@ internal sealed class SetupController : IDisposable
     internal PvPSetup PvP { get; }
     internal static unsafe bool IsPvP => FFXIVClientStructs.FFXIV.Client.UI.Misc.RaptureHotbarModule.Instance()!=null && FFXIVClientStructs.FFXIV.Client.UI.Misc.RaptureHotbarModule.Instance()->PvPHotbarsActive;
     private bool previousPvP;
-    internal bool Live => IsPvP ? PvP.Settings.LiveMode : Settings.LiveMode;
-    internal bool VariantEnabled(VariantId id) => IsPvP ? PvP.Settings.Enabled(id) : Settings.Enabled(id);
+    internal bool Live => Settings.LiveMode;
+    internal bool VariantEnabled(VariantId id) => Settings.Enabled(id);
     internal AccordSettings Settings => Plugin.Instance.Settings;
     private readonly EngineClient engine;
     private bool disposed;
@@ -206,6 +206,11 @@ internal sealed class SetupController : IDisposable
             desired.SharedSettingsPrepared = true;
         }
         WrathFork.Contract.SettingsPatch.NormalizePresetMaps(changes, (JObject)snapshot["PresetIds"]!);
+        var pvpJobs = PvP.Pack.Jobs.Where(j => desired.ActiveJobs!.Contains(j.JobId)).ToArray();
+        var pvpPatch = PvP.Pack.Patch(pvpJobs, desired.SharedPvP(), snapshot);
+        changes.Merge(pvpPatch["Settings"], new JsonMergeSettings { MergeArrayHandling = MergeArrayHandling.Replace });
+        enable.UnionWith(pvpPatch["Enable"]!.Values<int>());
+        disable.UnionWith(pvpPatch["Disable"]!.Values<int>());
         var patch = new JObject { ["Settings"] = changes, ["Enable"] = new JArray(enable.Order()), ["Disable"] = new JArray(disable.Order()) };
         // Validate locally using the engine's published setting shape, then let the engine validate again.
         WrathFork.Contract.SettingsPatch.Apply((JObject)snapshot["Settings"]!, patch, snapshot["KnownPresets"]!.Values<int>().ToHashSet());
@@ -255,28 +260,28 @@ internal sealed class SetupController : IDisposable
 
     internal void SetVariant(VariantId id, bool enabled)
     {
-        if(IsPvP){PvP.SetVariant(id,enabled);Status=PvP.Status;UpdateEntries();return;}
         var desired = CloneSettings();
         desired.Variants[id] = enabled;
         ApplySettings(Pack.SelectedJobs(desired), desired);
+        PvP.Invalidate();
         if (Settings.LiveMode) RequestCurrentHotbars();
         else Status = "Variant saved. Static hotbars unchanged; use setup to restore any needed manual buttons.";
     }
 
     internal void SetLive(bool live)
     {
-        if(IsPvP){PvP.SetLive(live);Status=PvP.Status;UpdateEntries();return;}
         if (live && Pack.SelectedJobs(Settings).Length == 0)
             throw new InvalidOperationException("Select at least one active class first.");
         Mutate(() => Settings.LiveMode = live);
+        PvP.Invalidate();
         if (live) RequestCurrentHotbars();
         else Status = "Static mode enabled. Current hotbars retained.";
     }
 
     internal void SetCleanup(bool value)
     {
-        if(IsPvP){PvP.SetCleanup(value);Status=PvP.Status;UpdateEntries();return;}
         Mutate(() => Settings.ClearOtherActions = value);
+        PvP.Invalidate();
         if (Settings.LiveMode) RequestCurrentHotbars();
     }
 
@@ -288,11 +293,11 @@ internal sealed class SetupController : IDisposable
 
     internal void SetActiveJobs(IEnumerable<uint> jobs)
     {
-        if(IsPvP){PvP.SetJobs(jobs);Status=PvP.Status;UpdateEntries();return;}
         var desired = CloneSettings();
         desired.ActiveJobs = jobs.Select(id => Pack.Find(id)?.JobId).Where(id => id.HasValue)
             .Select(id => id!.Value).ToHashSet();
         ApplySettings(Pack.SelectedJobs(desired), desired);
+        PvP.Invalidate();
         updates.Invalidate();
         if (Settings.LiveMode) RequestCurrentHotbars();
         else Status = "Active classes saved. Existing hotbars retained; deselected classes will receive no further Accord updates.";

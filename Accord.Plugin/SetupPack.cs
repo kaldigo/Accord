@@ -213,7 +213,10 @@ internal sealed class SetupPack
             if (protection) enabled.Remove(id);
             else if (job.Settings["EnabledActionsV6"]!.AsArray().Any(n => n!.GetValue<int>() == id)) enabled.Add(id);
         }
-        if (protection)
+        var manualProtection = !protection && job.JobId is 19 or 21 or 32 or 37 or 40
+            ? result.Slots.Where(s => s.LogicalSlot == 5 || (job.JobId == 19 && s.LogicalSlot == 6))
+                .Select(s => (s.Action, s.Function)).ToArray() : [];
+        if (protection || job.JobId is 19 or 21 or 32 or 37 or 28 or 40)
         {
             switch (job.JobId)
             {
@@ -244,6 +247,13 @@ internal sealed class SetupPack
                     break;
             }
         }
+        foreach (var (action, function) in manualProtection)
+        {
+            if (result.Slots.Any(s => s.Action == action)) continue;
+            var spare = result.Slots.FirstOrDefault(s => s.RegularBar == 2 && s.Action == "Empty");
+            if (spare is not null) { spare.Action = action; spare.Function = function; }
+            else AddSlot(Math.Max(13, result.Slots.Max(s => s.LogicalSlot) + 1), action, function);
+        }
         // Imported variant blanks also retire their known baseline action, without
         // granting permission to clear unrelated player assignments.
         foreach (var slot in result.Slots.Where(s => s.Action == "Empty" && s.RetiredAction.Length == 0))
@@ -254,6 +264,7 @@ internal sealed class SetupPack
         void ReplaceSlot(int logical, string action, string function)
         {
             var slot = result.Slots.Single(s => s.LogicalSlot == logical);
+            if(action!=slot.Action && slot.Action!="Empty")slot.RetiredAction=slot.Action;
             if (action == "Empty") slot.RetiredAction = slot.Action != "Empty" ? slot.Action : job.Slots.SingleOrDefault(s => s.LogicalSlot == logical)?.Action ?? "";
             slot.Action = action; slot.Function = function;
         }
@@ -261,7 +272,7 @@ internal sealed class SetupPack
         void AddSlot(int logical, string action, string function)
         {
             if (result.Slots.Any(s => s.LogicalSlot == logical)) throw new InvalidDataException("Manual intent slot already occupied.");
-            var map = logical == 13 ? ExtraJobMappings.For(job.JobId) : Defaults.Maps().Single(m => m.Applies(job.JobId) && !m.SharedAcrossJobs && m.Id.EndsWith("-" + (logical - 1)));
+            var map = logical >= 13 ? ExtraJobMappings.For(job.JobId, logical) : Defaults.Maps().Single(m => m.Applies(job.JobId) && !m.SharedAcrossJobs && m.Id.EndsWith("-" + (logical - 1)));
             result.Slots = [..result.Slots, new PresetSlot { LogicalSlot = logical, RegularBar = map.RegularBar,
                 RegularSlot = map.RegularSlot, CrossSlot = map.CrossSlot, Action = action, Function = function }];
         }

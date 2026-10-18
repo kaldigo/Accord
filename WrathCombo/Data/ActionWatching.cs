@@ -351,7 +351,10 @@ public static class ActionWatching
             }
 
             if (casterEntityId == Player.Object.EntityId && actionType == ActionType.Action)
+            {
                 Engine.IntentRouting.ConfirmAction(actionId);
+                if(numTargets>0)Engine.PvPIntentRouting.ConfirmRecipient(actionId,targetEntityIds[0].Id);
+            }
 
             if (casterEntityId == Player.Object.EntityId && ((actionType == ActionType.Action && ActionSheet.TryGetValue(actionId, out var actionSheet) && actionSheet.TargetArea) || actionType == ActionType.Item))
             {

@@ -429,6 +429,12 @@ public sealed unsafe class CustomActionSetup : IDisposable
         _autoToggle = new(All.AutoToggle, "Auto-Rotation Toggle", "Switches between enabled and disabled for auto-rotation", 1527, customIconPath: Path.Combine(Svc.PluginInterface.AssemblyLocation.DirectoryName!, "Resources/WrathAutoToggle.png"));
 
         Manager.Register(_singleTargetDPS, _aoeDPS, _singleTargeHeals, _aoeHeals, _items, _newSavageBlade, _autoOn, _autoOff, _autoToggle);
+        Manager.Register(
+            new CustomAction(Engine.PvPIntentRouting.Offense,"Offensive commitment","Begin an eligible offensive sequence; damage presses carry it through.",1504),
+            new CustomAction(Engine.PvPIntentRouting.Defense,"Protection","Select eligible personal protection.",1508),
+            new CustomAction(Engine.PvPIntentRouting.Support,"Allied support","Select eligible allied support.",1510),
+            new CustomAction(Engine.PvPIntentRouting.Mechanic,"Job mechanic","Begin an eligible job mechanic; damage presses carry it through.",1505),
+            new CustomAction(Engine.PvPIntentRouting.Release,"Release early","Release an already active effect; never starts a new one.",1505));
     }
     public void Dispose()
     {
@@ -502,6 +508,7 @@ public class CustomActionHelper()
     /// <returns></returns>
     public static bool OneButtonRotationChecker(uint actionId, CustomActionType type, params uint[] originals)
     {
+        if(Engine.PvPIntentRouting.Matches(actionId,type) is {} routed)return routed;
         bool enabled = CustomActionEnabled(type);
 
         if (enabled)

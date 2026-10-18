@@ -18,7 +18,7 @@ internal static class PvPTests
         {
             Check(PvPLayout.AvailableExtras(job,baseMaps,p=>p.Bar>=11).Length==0,
                 job.Job+" allocated overflow on a shared controller page");
-            var available=PvPLayout.AvailableExtras(job,baseMaps,p=>p.Bar!=12);
+            var available=PvPLayout.AvailableExtras(job,baseMaps,p=>p.Bar>=10 && p.Bar!=12);
             Check(available.Length==Math.Max(0,job.Controls.Length-12),job.Job+" lost overflow with a free page");
             Check(available.All(m=>m.Cross.Bar==12),job.Job+" failed to skip shared cross page 2");
             Defaults.Validate(baseMaps.Concat(available));
@@ -57,26 +57,46 @@ internal static class PvPTests
             var values=job.Controls.Select(c=>PvPPack.Resolve(c,choices,after)).ToArray();
             // Reproduce a keyboard user whose overflow controller pages are all shared.
             var keyboardPairs=PvPLayout.Pairs(job,baseMaps);
-            var keyboardRoutes=PvPLayout.Routes(keyboardPairs,values,PvPLayout.Fixed(job));
+            var keyboardRoutes=PvPLayout.IntentRoutes(job,keyboardPairs,values,p=>p.Bar==0 && p.Slot>=8);
             var registered=keyboardRoutes.Where(r=>baseMaps.Any(m=>m.Id==r.Key)).ToDictionary(r=>r.Key,r=>r.Value);
             LayoutRoutes.Effective(baseMaps.Where(m=>m.Applies(job.JobId)),registered);
             Check(keyboardPairs.Length==values.Length && keyboardRoutes.Values.Distinct().Count()==values.Length,
                 job.Job+" lost keyboard controls when controller overflow was unavailable");
             foreach(var (pair,index) in keyboardPairs.Select((p,i)=>(p,i)))
-                Check(keyboardRoutes[pair.Id].Bar==PvPLayout.Positions[index].Bar,job.Job+" keyboard-only overflow crossed bars");
+                Check(keyboardRoutes[pair.Id].Bar==job.Controls[index].KeyboardBar,job.Job+" keyboard-only overflow crossed bars");
+            foreach(bool sharedSprint in new[]{false,true})
+            {
+                var layoutValues=values.ToArray();
+                if(sharedSprint)
+                    for(int i=0;i<layoutValues.Length;i++)if(job.Controls[i].Binding.Id==29057)layoutValues[i]=default;
+                foreach(bool protectedGap in new[]{false,true})
+                {
+                    bool Protected(Position p)=>p.Bar==0 && p.Slot>=8 || protectedGap && p==new Position(1,11);
+                    int countOnSecond=layoutValues.Where((v,i)=>v!=default && job.Controls[i].KeyboardBar==1).Count();
+                    if(protectedGap && countOnSecond>11)continue; // Explicit capacity failure is checked separately.
+                    var compact=PvPLayout.IntentRoutes(job,keyboardPairs,layoutValues,Protected);
+                    foreach(int bar in new[]{0,1})
+                    {
+                        var active=keyboardPairs.Select((m,i)=>(m,i)).Where(x=>layoutValues[x.i]!=default && job.Controls[x.i].KeyboardBar==bar).ToArray();
+                        var actual=active.Select(x=>compact[x.m.Id]).OrderBy(p=>p.Slot).ToArray();
+                        var expected=Enumerable.Range(0,bar==0?8:12).Select(slot=>new Position(bar,slot)).Where(p=>!Protected(p)).Take(active.Length).ToArray();
+                        Check(actual.SequenceEqual(expected),job.Job+" has an internal keyboard gap or crossed bars");
+                        Check(active.All(x=>compact.ContainsKey(x.m.Id)),job.Job+" lost access when Sprint was shared");
+                    }
+                }
+            }
             Check(values[0]!=default,job.Job+" lost primary selector");
             foreach(var (control,index) in job.Controls.Select((c,i)=>(c,i)))
-                if(control.Variant==null || !choices.Enabled(control.Variant.Value))Check(values[index]!=default,job.Job+" lost "+control.Name);
+                if(control.Binding!=default && (control.Variant==null || !choices.Enabled(control.Variant.Value)))Check(values[index]!=default,job.Job+" lost "+control.Name);
             var maps=job.Controls.Select((_,i)=>allMaps.Single(m=>m.Applies(job.JobId) && m.Regular==PvPLayout.Positions[i])).ToArray();
-            var fixedSlots=PvPLayout.Fixed(job);
-            var routes=PvPLayout.Routes(maps,values,fixedSlots);
+            var routes=PvPLayout.IntentRoutes(job,maps,values,p=>p.Bar==0 && p.Slot>=8);
             var effective=LayoutRoutes.Effective(allMaps.Where(m=>m.Applies(job.JobId)),routes);
             Check(routes.Values.Distinct().Count()==maps.Length,job.Job+" overlapping destinations");
             foreach(var (map,i) in maps.Select((m,i)=>(m,i)))
             {
-                Check(routes[map.Id].Bar==map.Regular.Bar,"compaction crossed bars");
+                Check(routes[map.Id].Bar==job.Controls[i].KeyboardBar,"compaction crossed bars");
                 Check(effective.Single(m=>m.Id==map.Id).Cross==map.Cross,"controller moved");
-                if(fixedSlots.Contains(i))Check(routes[map.Id]==map.Regular,job.Job+" moved recovery, movement or primary control");
+                if(job.Controls[i].Binding.Id is 1_000_000 or 1_000_001)Check(routes[map.Id]==new Position(0,(int)(job.Controls[i].Binding.Id-1_000_000)),job.Job+" moved primary control");
             }
             foreach(var common in new uint[]{29055,29711,29056,29054,29057,43259})Check(values.Contains(new(1,common)),job.Job+" lost common/role "+common);
             var custom=(JObject)updated.DeepClone();custom["CustomActionSettings"]!["SingleTargetDPS"]=true;
@@ -87,7 +107,14 @@ internal static class PvPTests
         var zero=(JObject)personal.DeepClone();zero["CustomIntValuesV6"]!["DNCWaltzThreshold"]=0;
         var safe=new JObject{["Settings"]=zero,["PresetIds"]=names};
         Check(PvPPack.Resolve(dnc.Controls.Single(c=>c.Name=="Curing Waltz"),new PvPSettings{Variants=all},safe)!=default,"zero threshold lost manual Waltz");
-        Check(pack.Find(39)!.Controls.Single(c=>c.Name=="Death Warrant").Variant==null,"lost deliberate Fate Sealed release");
+        var blm=pack.Find(25)!;
+        foreach(var (binding,key) in new[]{(1_000_010u,"BLMPvP_Xenoglossy_TargetHP"),(1_000_011u,"BLMPvP_ElementalWeave_PlayerHP")})
+        {
+            var blocked=(JObject)personal.DeepClone();blocked["CustomIntValuesV6"]![key]=0;
+            Check(PvPPack.Resolve(blm.Controls.Single(c=>c.Binding.Id==binding),new PvPSettings{Variants=all},
+                new JObject{["Settings"]=blocked,["PresetIds"]=names})!=default,"BLM lost manual access with disabled "+key);
+        }
+        Check(pack.Find(39)!.Controls.Single(c=>c.Binding.Id==1_000_014).Variant==null,"lost deliberate Fate Sealed release");
         return count;
     }
 }

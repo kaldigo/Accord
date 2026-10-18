@@ -1,5 +1,7 @@
 # Accord: premise and direction
 
+Current implementation (2026-10-18): PvE choices are shared across PvE/PvP, with intent selectors, per-bar keyboard compaction and mode-aware shared Sprint. See [implementation and verification](job-research/pvp-implementation.md). Historical separate-PvP preference and layout descriptions below are superseded. Native acceptance remains pending.
+
 Accord is to become a separate setup and hotbar plugin, working with a maintained fork of [Wrath Combo](https://github.com/PunishXIV/WrathCombo). The fork provides rotation functionality, granular settings and a configuration API. Accord owns the intent model, reviewed job mappings and variant choices, and applies the required settings through that API. Hotbar Bridge remains a separate synchronization plugin.
 
 ## Separation decision — 2026-10-16

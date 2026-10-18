@@ -1,5 +1,7 @@
 ﻿using WrathCombo.CustomComboNS;
 using WrathCombo.CustomComboNS.Functions;
+using WrathCombo.Engine;
+using WrathFork.Contract;
 using WrathCombo.Extensions;
 using WrathCombo.Native;
 using static WrathCombo.Combos.PvP.VPRPvP.Config;
@@ -61,6 +63,7 @@ internal static class VPRPvP
             VPRPvP_Slither_Charges = new("VPRPvP_Slither_Charges", 1),
             VPRPvP_Slither_Range = new("VPRPvP_Slither_Range", 6),
             VPRPvP_SmiteThreshold = new("VPRPvP_SmiteThreshold", 25);
+        public static UserInt VPRPvP_ScalesHealth = new("VPRPvP_ScalesHealth",50);
 
         internal static UserBoolArray
             VPRPvP_RattlingCoil_SubOptions = new("VPRPvP_RattlingCoil_SubOptions");
@@ -85,6 +88,8 @@ internal static class VPRPvP
 
                 // Backlash
                 case Preset.VPRPvP_Backlash:
+                    if(Options.Enabled(Feature.PvPVprScalesProtection))
+                        DrawSliderInt(0,100,VPRPvP_ScalesHealth,"Automatic Snake Scales: HP% while targeted; 0 disables initiation.");
                     DrawAdditionalBoolChoice(VPRPvP_Backlash_SubOption, "Empowered Only", 
                         "Also requires Snake's Bane to be present.");
                     break;
@@ -150,6 +155,15 @@ internal static class VPRPvP
             bool isUncoiledFuryDependant = !isUncoiledFuryEnabled || !(isUncoiledFuryEnabled && isUncoiledFuryPrimed);
             bool isSlitherPrimed = hasTarget && !inMeleeRange && isUncoiledFuryDependant && !hasSlither && !hasBind;
             #endregion
+            if(PvPIntentRouting.Active && hasBacklash)
+                return hasSnakesBane || LocalPlayer.Status(Buffs.HardenedScales).RemainingTimeOrZero()<=1
+                    ? OriginalHook(SnakeScales):PvE.All.Cease;
+            if(PvPIntentRouting.Active && Options.Enabled(Feature.PvPVprScalesProtection) &&
+                InCombat() && !inGenerationsCombo && CurrentTarget?.TargetObjectId==LocalPlayer.GameObjectId &&
+                VPRPvP_ScalesHealth>0 && playerCurrentPercentHp<=VPRPvP_ScalesHealth && ActionReady(SnakeScales))
+                return SnakeScales;
+            if(Engine.PvPIntentRouting.Active && !inMeleeRange && chargesUncoiledFury>0 && hasTarget && !targetHasImmunity && InActionRange(UncoiledFury))
+                return OriginalHook(UncoiledFury);
             
             // Smite
             if (IsEnabled(Preset.VPRPvP_Smite) && PvPMelee.CanSmite() && !PvPCommon.TargetImmuneToDamage() && InActionRange(PvPMelee.Smite) && HasTarget() &&

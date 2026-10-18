@@ -18,6 +18,25 @@ upstreamEnabled.UnionWith(Enum.GetValues<Feature>().Where(f=>f.ToString().Starts
 foreach (var feature in Enum.GetValues<Feature>())
     Check(FeatureDefaults.Enabled(feature) == upstreamEnabled.Contains(feature), "Unconfigured fork changed upstream behaviour: " + feature);
 var pack = new SetupPack();
+var sharedChoices=new AccordSettings {ActiveJobs=[19,38],LiveMode=true,ClearOtherActions=true};
+sharedChoices.Variants[VariantId.Burst]=true;
+sharedChoices.PvP.ActiveJobs=[31];sharedChoices.PvP.Variants[VariantId.Support]=true;
+sharedChoices.PvP.LastHotbarBackup="native-pvp-backup";
+var sharedPvp=sharedChoices.SharedPvP();
+Check(sharedPvp.ActiveJobs.SetEquals([19u,38u]) && !sharedPvp.Enabled(VariantId.Support) && sharedPvp.Enabled(VariantId.Burst),"Shared settings did not use PvE choices exclusively.");
+Check(sharedPvp.LiveMode && sharedPvp.ClearOtherActions && sharedPvp.LastHotbarBackup=="native-pvp-backup","Shared preferences lost native mode history.");
+var requestState=new PvPRequestState();
+requestState.Context(31,1,true);requestState.Observe(CombatRequest.Offense,41469,1000);
+Check(!requestState.Active(CombatRequest.Offense,1001),"Press without confirmed execution started follow-through.");
+requestState.Confirm(29409,1002);Check(!requestState.Active(CombatRequest.Offense,1003),"Unrelated execution accepted a request.");
+requestState.Confirm(41469,1004);Check(requestState.Active(CombatRequest.Offense,1005),"Confirmed start lost its follow-through.");
+requestState.Confirm(41469,19000);Check(!requestState.Active(CombatRequest.Offense,21005),"Follow-up extended the accepted window.");
+requestState.Observe(CombatRequest.Mechanic,29414,22000);requestState.Confirm(29414,26000);
+Check(!requestState.Active(CombatRequest.Mechanic,26001),"Expired input became an accepted request.");
+requestState.Observe(CombatRequest.Defense,29507,27000);requestState.Confirm(29507,27001);requestState.Complete(CombatRequest.Defense);
+Check(!requestState.Active(CombatRequest.Defense,27002),"Completed sequence started again.");
+requestState.Observe(CombatRequest.Offense,41469,28000);requestState.Confirm(41469,28001);requestState.Context(31,2,true);
+Check(!requestState.Active(CombatRequest.Offense,28002),"Request leaked across characters.");
 // Every variant compacts keyboard functions without changing controller ownership.
 foreach (var preset in pack.Data.Jobs)
 for (int mask = 0; mask < 16; mask++)
@@ -28,12 +47,14 @@ for (int mask = 0; mask < 16; mask++)
     foreach(var targetJob in new[]{preset.JobId}.Concat(preset.BaseClasses))
     foreach(bool existingExtra in new[]{false,true})
     foreach(bool sharedControllers in new[]{false,true})
+    foreach(bool sprintFallback in new[]{false,true})
     {
         var planningMaps=Defaults.Maps();
         if(existingExtra && targetJob is 1 or 19)planningMaps.Add(ExtraJobMappings.For(targetJob));
         bool Protected(Position p)=> (sharedControllers && p.Bar>=10) || p.Bar is >=2 and <10 ||
             planningMaps.Any(m=>m.SharedAcrossJobs && (m.Regular==p || m.Cross==p));
-        var plan=PveLayoutPlan.Create(targetJob,resolved,planningMaps,Protected);
+        var plan=PveLayoutPlan.Create(targetJob,resolved,planningMaps,Protected,sprintFallback);
+        if(Defaults.IsCombat(targetJob))Check(plan.Count(e=>e.Slot?.Action=="Sprint")== (sprintFallback?1:0),"Sprint fallback missing or duplicated.");
         var required=resolved.Slots.Where(s=>s.Action!="Empty").ToArray();
         foreach(var slot in required)
             Check(plan.Count(e=>ReferenceEquals(e.Slot,slot))==1,$"{preset.Job}/{mask}: required action missing or duplicated: {slot.Action}");
@@ -42,6 +63,15 @@ for (int mask = 0; mask < 16; mask++)
         var plannedRoutes=plan.Where(e=>e.Registered).ToDictionary(e=>e.Map.Id,e=>e.Regular);
         LayoutRoutes.Effective(planningMaps.Where(m=>m.Applies(targetJob)),plannedRoutes);
         Check(plan.Select(e=>e.Regular).Distinct().Count()==plan.Length,"Keyboard-only plan overlaps actions.");
+        var anchorSlots=resolved.Slots.Where(s=>s.LogicalSlot is 1 or 2 ||
+            ((Defaults.IsHealer(preset.JobId) || preset.JobId is 19 or 21 or 32 or 37) && s.LogicalSlot is 9 or 10) ||
+            (Defaults.IsCombat(preset.JobId) && !Defaults.IsHealer(preset.JobId) && s.LogicalSlot==4 && s.Action!="Empty")).ToArray();
+        var anchors=anchorSlots.Select(s=>new Position(s.RegularBar-1,s.RegularSlot-1)).ToHashSet();
+        foreach(var anchor in anchorSlots)Check(plan.Single(e=>ReferenceEquals(e.Slot,anchor)).Regular==new Position(anchor.RegularBar-1,anchor.RegularSlot-1),"A fixed intent moved on a job/base class.");
+        var occupiedPlan=plan.Where(e=>e.Slot is not null && e.Slot.Action!="Empty").Select(e=>e.Regular).ToHashSet();
+        foreach(var bar in occupiedPlan.Where(p=>!anchors.Contains(p)).GroupBy(p=>p.Bar))
+            foreach(var slot in Enumerable.Range(0,bar.Max(p=>p.Slot)+1).Select(s=>new Position(bar.Key,s)))
+                Check(Protected(slot) || anchors.Contains(slot) || occupiedPlan.Contains(slot),"Physical keyboard gap before a movable action.");
         if(required.Any(s=>s.LogicalSlot==13))
             Check(plan.Single(e=>e.Slot?.LogicalSlot==13).Regular.Bar<2,"Paladin knockback action still uses a linked utility bar.");
         foreach(bool cleanupEnabled in new[]{false,true})
@@ -55,7 +85,7 @@ for (int mask = 0; mask < 16; mask++)
     var layout = KeyboardLayout.Compile(resolved, true);
     Check(layout.Values.Distinct().Count() == KeyboardLayout.Positions.Length, "Compaction overlaps keyboard controls.");
     Check(layout.All(pair => pair.Key.Bar == pair.Value.Bar), "Compaction moved a function to another keyboard bar.");
-    var mapsForJob = ExtraJobMappings.Merge(Defaults.Maps(), resolved.Slots.Any(s => s.LogicalSlot > 12) ? [ExtraJobMappings.For(preset.JobId)] : [], new())
+    var mapsForJob = ExtraJobMappings.Merge(Defaults.Maps(), resolved.Slots.Where(s=>s.LogicalSlot>12).Select(s=>ExtraJobMappings.For(preset.JobId,s.LogicalSlot)), new())
         .Where(m => m.Applies(preset.JobId)).ToList();
     var routes = mapsForJob.Where(m => !m.SharedAcrossJobs).ToDictionary(m => m.Id, m => layout.GetValueOrDefault(m.Regular, m.Regular));
     var routed = LayoutRoutes.Effective(mapsForJob, routes);
@@ -128,9 +158,9 @@ foreach (var job in pack.Data.Jobs)
         pack.ApplyMembership(job, settings, current);
         Check(current.Except(pack.ControlledPresets(job)).ToHashSet().SetEquals(uncontrolled), "Feature-only switch changed unrelated presets.");
         Check(current.Intersect(pack.ControlledPresets(job)).ToHashSet().SetEquals(ids.Intersect(pack.ControlledPresets(job))), "Switch result depends on previous variants.");
-        Check(resolved.Slots.Length <= (job.JobId == 19 ? 13 : 12), $"Layout overflow: {job.Job}/{mask}");
+        Check(resolved.Slots.Length <= 20, $"Layout overflow: {job.Job}/{mask}");
         Check(resolved.Slots.Select(s => (s.RegularBar, s.RegularSlot)).Distinct().Count() == resolved.Slots.Length, $"Layout overlap: {job.Job}/{mask}");
-        Check(resolved.Slots.All(s => (KeyboardLayout.Positions.Contains(new(s.RegularBar - 1, s.RegularSlot - 1)) || (job.JobId == 19 && s.LogicalSlot == 13 && new Position(s.RegularBar - 1, s.RegularSlot - 1) == ExtraJobMappings.For(19).Regular))), $"Unknown layout position: {job.Job}/{mask}");
+        Check(resolved.Slots.All(s => (KeyboardLayout.Positions.Contains(new(s.RegularBar - 1, s.RegularSlot - 1)) || (s.LogicalSlot >= 13 && new Position(s.RegularBar - 1, s.RegularSlot - 1) == ExtraJobMappings.For(job.JobId,s.LogicalSlot).Regular))), $"Unknown layout position: {job.Job}/{mask}");
         if (job.JobId is >= 8 and <= 18) Check(resolved.Slots.Length == 12, "Noncombat page must remain complete.");
         if (job.Job == "DNC")
         {
@@ -169,6 +199,9 @@ foreach (var job in pack.Data.Jobs.Where(j => j.JobId >= 19))
         var resolved = pack.Resolve(job, settings);
         bool automatic = settings.Enabled(VariantId.Protection);
         var ids = resolved.Settings["EnabledActionsV6"]!.AsArray().Select(n => n!.GetValue<int>()).ToHashSet();
+        if(job.JobId is 19 or 21 or 32 or 37 or 28 or 40)
+            foreach(var action in distinctProtection.GetValueOrDefault(job.JobId,[]))
+                Check(resolved.Slots.Any(s=>s.Action==action),"Manual protection removed a distinct intent: "+job.Job+"/"+action);
         if (automatic)
         {
             Check(!ids.Overlaps(SetupPack.ManualProtectionPresets(job.JobId)), "A general protection selector remains enabled: " + job.Job);
@@ -181,7 +214,7 @@ foreach (var job in pack.Data.Jobs.Where(j => j.JobId >= 19))
                     "Automated defense retains its general button or loses safe removal identity: " + job.Job);
             }
         }
-        else Check(resolved.Slots.Single(s => s.LogicalSlot == 5).Action == job.Slots.Single(s => s.LogicalSlot == 5).Action,
+        else Check(resolved.Slots.Any(s => s.Action == job.Slots.Single(s => s.LogicalSlot == 5).Action),
             "Manual protection failed to restore its selector: " + job.Job);
     }
 var extraMaps = ExtraJobMappings.Merge(Defaults.Maps(), [ExtraJobMappings.For(19), ExtraJobMappings.For(1)], new());
@@ -192,7 +225,7 @@ var collision = Defaults.Maps();
 collision.Add(new SlotMap { Id = "custom", Profile = "All", RegularBar = 3, CrossSet = 2 });
 try { ExtraJobMappings.Merge(collision, [ExtraJobMappings.For(19)], new()); Check(false, "Custom mapping collision accepted."); }
 catch (InvalidDataException) { Check(collision.Count == Defaults.Maps().Count + 1, "Rejected extension mutated the map."); }
-try { ExtraJobMappings.Merge(Defaults.Maps(), [ExtraJobMappings.For(37)], new()); Check(false, "Unapproved extra job accepted."); }
+try { ExtraJobMappings.Merge(Defaults.Maps(), [ExtraJobMappings.For(8)], new()); Check(false, "Noncombat extra job accepted."); }
 catch (InvalidDataException) { }
 
 // All four variants: explicit initiation ownership and retained, distinct controls.
@@ -414,4 +447,4 @@ Check(liveUpdates.Poll(1253, 31, 2) && !liveUpdates.Applied, "Variant or cleanup
 checks += UpstreamMigrationTests.Run();
 checks += SeparationTests.Run();
 if (args.Length > 0) checks += EngineSchema.Verify(args[0], pack);
-Console.WriteLine($"Passed {checks} assertions across 512 PvE job/variant combinations (plus 336 PvP combinations with engine-schema verification), burst handoff, shared-slot cleanup and transaction failure recovery.");
+Console.WriteLine($"Passed {checks} assertions across 512 PvE job/variant combinations {(args.Length > 0 ? "plus 336 PvP combinations with engine-schema verification" : "PvP engine-schema checks not run: supply the engine DLL")}, burst handoff, shared-slot cleanup and transaction failure recovery.");

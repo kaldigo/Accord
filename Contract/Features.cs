@@ -17,6 +17,8 @@ public enum Feature
     PvPWarBloodwhettingInitiation, PvPWarRendInitiation, PvPGnbGnashingInitiation, PvPDrgGeirskogulInitiation, PvPSamOgiInitiation, PvPRprPlentifulInitiation, PvPRprWarrantInitiation, PvPRdmEmboldenInitiation, PvPRdmForteInitiation, PvPRdmRiposteInitiation, PvPPctCoatInitiation, PvPDncStarfallInitiation, PvPDncFanInitiation, PvPDncHoningInitiation, PvPBlmOffensiveBurstInitiation, PvPBlmDefensiveBurstInitiation, PvPBlmOffensiveWeaveInitiation, PvPBlmDefensiveWeaveInitiation, PvPBlmOffensiveXenoInitiation, PvPBlmDefensiveXenoInitiation,
     PvPDncPartnerRecipient, PvPSgeKardiaRecipient,
     PvPAstGravityInitiation,
+    PvPIntentRoutes,
+    PvPBrdAllyCleanse, PvPVprScalesProtection,
 }
 
 public static class FeatureDefaults
@@ -62,6 +64,9 @@ public static class FeatureScope
         Feature.PvPDncPartnerRecipient => job == 38,
         Feature.PvPSgeKardiaRecipient => job == 40,
         Feature.PvPAstGravityInitiation => job == 33,
+        Feature.PvPIntentRoutes => job is >=19 and <=42 && job is not 26 and not 29 and not 36,
+        Feature.PvPBrdAllyCleanse => job==23,
+        Feature.PvPVprScalesProtection => job==41,
         _ => false,
     };
 }

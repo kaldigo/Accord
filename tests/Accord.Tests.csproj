@@ -16,6 +16,7 @@
     <Compile Include="../Accord.Plugin/SetupPack.cs" Link="SetupPack.cs" />
     <Compile Include="../WrathCombo/Engine/UpstreamSettingsMigration.cs" Link="UpstreamSettingsMigration.cs" />
     <Compile Include="../WrathCombo/Engine/IntentHandoff.cs" Link="IntentHandoff.cs" />
+    <Compile Include="../WrathCombo/Engine/PvPRequestState.cs" Link="PvPRequestState.cs" />
     <Compile Include="../WrathCombo/Engine/BurstPolicy.cs" Link="BurstPolicy.cs" />
     <Compile Include="../Accord.Plugin/JobIntents.cs" Link="JobIntents.cs" />
     <Compile Include="../Accord.Plugin/HotbarTransaction.cs" Link="HotbarTransaction.cs" />

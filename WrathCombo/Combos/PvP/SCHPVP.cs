@@ -1,5 +1,6 @@
 ﻿using Dalamud.Game.ClientState.Objects.Types;
 using WrathCombo.Core;
+using WrathCombo.Engine;
 using WrathCombo.CustomComboNS;
 using WrathCombo.CustomComboNS.Functions;
 using WrathCombo.Extensions;
@@ -93,7 +94,8 @@ internal static class SCHPvP
                 return PvPHealer.Diabrosis;
 
             // Uses Deployment Tactics when available
-            if (IsEnabled(Preset.SCHPvP_DeploymentTactics) && GetRemainingCharges(DeploymentTactics) > 1 && CurrentTarget.HasStatus(Debuffs.Biolysis))
+            if ((IsEnabled(Preset.SCHPvP_DeploymentTactics) || PvPIntentRouting.Area) &&
+                GetRemainingCharges(DeploymentTactics) > 1 && CurrentTarget.HasStatus(Debuffs.Biolysis))
                 return DeploymentTactics;
 
             // Adds Adloquium when at or below threshold, will not Overwrite the 10% damage reduction buff to prevent waste
@@ -103,7 +105,7 @@ internal static class SCHPvP
                 
                 if (!healTarget.HasStatus(Buffs.Catalyze) && GetTargetHPPercent(healTarget) <= SCHPvP_AdloThreshold && ActionReady(Adloquium))
                     return SCHPvP_Adlo_Retarget
-                        ? Adloquium.Retarget(Broil, healTarget)
+                        ? Adloquium.Retarget(actionID, healTarget)
                         : Adloquium;
             }
 
@@ -117,6 +119,13 @@ internal static class SCHPvP
 
         protected override uint Invoke(uint actionID)
         {
+            if(PvPIntentRouting.Enabled && actionID==Adloquium)
+            {
+                var ally=SimpleTarget.Stack.AllyToHealPVP;
+                if(ally is not null && ally.HasStatus(Buffs.Catalyze) && GetRemainingCharges(DeploymentTactics)>1 &&
+                    ally.CanUseOn(DeploymentTactics) && NumberOfAlliesInRange(DeploymentTactics,ally)>1)
+                    return DeploymentTactics.Retarget(actionID,ally);
+            }
             return actionID is not Adloquium 
                 ? actionID 
                 : Adloquium.Retarget(SimpleTarget.Stack.AllyToHealPVP);

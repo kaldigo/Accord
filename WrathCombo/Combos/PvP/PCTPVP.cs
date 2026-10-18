@@ -121,11 +121,11 @@ internal static class PCTPvP
                     return Role.PhantomDart;
 
                 // Moogle / Madeen Portrait
-                if (IsEnabled(Preset.PCTPvP_MogOfTheAges) && hasPortrait && isBurstControlled)
+                if (IsEnabled(Preset.PCTPvP_MogOfTheAges) && hasPortrait && (isBurstControlled || PvPIntentRouting.Requested(CombatRequest.Mechanic)))
                     return OriginalHook(MogOfTheAges);
 
                 // Living Muse
-                if (IsEnabled(Preset.PCTPvP_LivingMuse) && hasMotifDrawn && HasCharges(OriginalHook(LivingMuse)) && isBurstControlled)
+                if (IsEnabled(Preset.PCTPvP_LivingMuse) && hasMotifDrawn && HasCharges(OriginalHook(LivingMuse)) && (isBurstControlled || PvPIntentRouting.Requested(CombatRequest.Mechanic)))
                     return OriginalHook(LivingMuse);
 
                 // Holy in White / Comet in Black

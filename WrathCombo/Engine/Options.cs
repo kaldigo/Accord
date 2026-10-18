@@ -12,7 +12,7 @@ internal static class Options
         var job => job,
     };
 
-    internal static bool Enabled(Feature feature) => Player.Available &&
+    internal static bool Enabled(Feature feature) => PvPIntentRouting.FeatureOverride(feature) ?? (Player.Available &&
         (Service.Configuration.ForkFeatures.TryGetValue(Job, out var job) && job.TryGetValue(feature, out bool value)
-            ? value : FeatureDefaults.Enabled(feature));
+            ? value : FeatureDefaults.Enabled(feature)));
 }

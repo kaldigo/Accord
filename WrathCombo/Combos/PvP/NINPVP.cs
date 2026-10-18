@@ -171,10 +171,17 @@ internal static class NINPvP
             var maxHPThreshold = jobMaxHp - 8000;
             float remainingPercentage = (float)LocalPlayer.CurrentHp / maxHPThreshold;
             bool inMeisuiRange = NINPvP_Meisui_ST >= remainingPercentage * 100;
-
             // Hidden state actions
             if (LocalPlayer.HasStatus(Buffs.Hidden))
                 return OriginalHook(Assassinate);
+
+            if(Engine.PvPIntentRouting.Requested(Engine.CombatRequest.Defense) ||
+                Engine.PvPIntentRouting.Active && IsEnabled(Preset.NINPvP_ST_Meisui) && inMeisuiRange)
+            {
+                if(!mudraMode && ActionReady(ThreeMudra))return ThreeMudra;
+                if(mudraMode && inMeisuiRange && ActionReady(Meisui))return Meisui;
+                if(mudraMode && ActionReady(Huton))return Huton;
+            }
 
             if (!PvPCommon.TargetImmuneToDamage())
             {
@@ -274,14 +281,22 @@ internal static class NINPvP
 
         protected override uint Invoke(uint actionID)
         {
-            if (actionID is not FumaShuriken)
+            if (actionID is not FumaShuriken && !(Engine.PvPIntentRouting.Area && actionID==PvE.All.AoEDPS))
                 return actionID;
+            if(Engine.PvPIntentRouting.Area)actionID=FumaShuriken;
 
             bool mudraMode = LocalPlayer.HasStatus(Buffs.ThreeMudra);
             var jobMaxHp = LocalPlayer.MaxHp;
             var maxHPThreshold = jobMaxHp - 8000;
             var remainingPercentage = (float)LocalPlayer.CurrentHp / (float)maxHPThreshold;
             bool inMeisuiRange = NINPvP_Meisui_AoE >= remainingPercentage * 100;
+            if(Engine.PvPIntentRouting.Requested(Engine.CombatRequest.Defense) ||
+                Engine.PvPIntentRouting.Active && IsEnabled(Preset.NINPvP_AoE_Meisui) && inMeisuiRange)
+            {
+                if(!mudraMode && ActionReady(ThreeMudra))return ThreeMudra;
+                if(mudraMode && inMeisuiRange && ActionReady(Meisui))return Meisui;
+                if(mudraMode && ActionReady(Huton))return Huton;
+            }
             bool hasBunshin = LocalPlayer.HasStatus(Buffs.Bunshin);
 
             if (LocalPlayer.HasStatus(Buffs.Hidden))

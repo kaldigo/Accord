@@ -1,58 +1,49 @@
-# Accord PvP implementation
+# Shared Accord intent implementation
 
-Implemented locally on 2026-10-17. This supersedes the implementation-pending language in the original research. Included in the 0.2.8 test release; in-game verification remains pending.
+Prepared for the 2026-10-18 test release: Accord 0.2.11, Wrathful Combo 0.2.9 and Hotbar Bridge 0.2.14. Builds and modeled tests do not establish native gameplay acceptance.
 
-## Setup and ownership
+## Settings and layout ownership
 
-Accord switches its setup page and A/M system-information entries with the game's actual hotbar mode. PvP has its own active-class selection (initially empty), four variants, live preference, cleanup preference, preparation history and backup. No PvE choices are imported into PvP. Deselecting a class leaves its existing settings and bars intact.
+The existing PvE active-class selection, four variants, live mode and cleanup preference are canonical for both modes. Migration backs up the original Accord configuration before retiring separate PvP choices. PvP retains its preparation history, pending first-visit layouts and mode-specific hotbar backup. Classes are never enabled by merging the old PvP list. Deselecting a class retains its configured engine settings and hotbars.
 
-All 21 jobs have executable profiles in `Accord.Plugin/pvp-presets.json`. Every manual layout uses 12–14 job-owned controls including five common actions and the selected-role button. Jobs with more than 12 use additional regular bar 1 slots and controller crossbar 2 slots. Native combo bindings come from the installed game sheets (`PvPCombo`, command type 26); ordinary PvP actions use command type 1. Wrath's optional custom ST damage placeholder is respected without changing that global preference. NIN's Fuma AoE and WHM's Cure II selectors retain their native bindings, as required by their source entry checks.
+Accord applies scoped PvE and PvP settings through the fork API. ST and AoE express damage intent; manual burst, protection, support and class-mechanic selectors are added when their variant is off or a saved personal policy makes a delegated action unavailable. Distinct recipient, movement, healing, area-placement, limit-break and early-release controls remain separate. Manual sequence requests require a confirmed action before ST/AoE follows through, expire, and reset on context changes. No targetless Dancer preparation was added.
 
-Static variant changes apply behaviour only. Explicit setup applies initialized selected jobs; a never-visited PvP job is queued for one application after the game initializes it on a PvP visit. Live mode applies the current selected job on class/mode/variant changes and checks for drift every second. Combat/loading pauses layout writes without changing the live preference. Keyboard compaction stays within each bar and retains primary, healing, mobility and recovery positions; controller positions remain fixed.
+All 21 PvP jobs use reviewed executable profiles in `Accord.Plugin/pvp-presets.json`. The old profile generator now emits a historical research artifact instead of overwriting these profiles. Each profile has 20 logical positions, including empty placeholders: those are not 20 mandatory visible actions. ST/AoE remain bar 1 slots 1/2. Retained job controls and burst use bar 1; movement, common PvP recovery controls, selected role action and other manual selectors use bar 2. Where the native PvP kit uses the same damage path for ST/AoE, both retain that path; Ninja selects its separate area path and Scholar's area path includes eligible spread.
 
-Both PvE and PvP cleanup/restore protect Bridge-carried positions: selected whole bars (default 3–10), both endpoints of all shared pairs, and game-shared bars. PvP gets its own common-action and LB controls rather than overwriting carried PvE shared commands. Backup files identify character and mode and include routes; failed writes attempt rollback of every touched slot and route. Restore turns off that mode's live preference.
+Keyboard actions compact through available positions within their own bar. PvE retains its fixed ST/AoE/movement anchors. Extras use job bar 2, not utility bars 3�10. Controller mappings stay stable; shared controller pages cannot block keyboard setup. Protected shared positions are excluded. If actual active controls exceed the remaining capacity, setup reports that instead of dropping actions. Vacated recognized job assignments are removed even with general cleanup off; unrelated assignments require the cleanup option.
 
-The updated Bridge is required. Its new `HotbarBridge.PvP.*` API publishes mappings, routes, protected positions and observed initialized jobs. External edits require a ready PvP context, stage extension pairs, and commit those pairs with routes. Uncommitted additions roll back when the edit closes. The existing PvE endpoints still reject PvP writes.
+Bridge translates action-type Sprint 3 and PvP Sprint 29057 at shared endpoints and linked bars. They compare as the same logical assignment, avoiding two-way conflicts or oscillation. Macros and unknown command types remain untouched. Accord omits its job Sprint when an actual shared map endpoint supplies it, otherwise adds a mode-appropriate fallback. Mode changes, class changes and periodic live checks re-evaluate layouts. Static mode changes settings without rewriting bars.
 
-## Engine changes
+## Engine changes by job
 
-Accord configures only scoped PvP presets, necessary continuation suboptions and granular fork features through the existing validated/journalled settings API. It does not modify `AutoActions`, the hands-free master toggle, runner, exclusions or execution. Personal HP thresholds, reserves, timing options and target stacks are retained. Global emergency-replacement presets are not repurposed as per-job variants.
-
-Initiation-only gates preserve existing continuation conditions:
-
-| Job | Narrow split |
+| Job | Intent handling |
 |---|---|
-| AST | Gravity initiation separated from its parent setting, keeping Double Gravity enabled after manual Gravity |
-| WAR | Bloodwhetting entry separated from Nascent Chaos; Rend entry separated from Ruination |
-| GNB | Gnashing Fang entry separated from Savage Claw/Wicked Talon and Continuation |
-| DRG | Geirskogul entry separated from Starcross |
-| SAM | Ogi entry gated; Kaeshi/Tendo/Zanshin remain existing follow-through |
-| RPR | Death Warrant and Plentiful entry separated from existing expiry/pooling handling |
-| DNC | Starfall, Fan and Honing entry gated independently; existing Acclaim channel guard retained |
-| BLM | Burst, Elemental Weave and Xenoglossy have separate offensive/defensive entry gates |
-| RDM | Embolden/Forte/Riposte entry separated from Prefulgence/Vice/melee/Scorch |
-| PCT | Coat entry separated from Grassa expiry |
+| PLD | Ranged Holy Spirit is independent of protection thresholds; ally protection and deliberate controls stay accessible. |
+| WAR | A confirmed offensive request carries the grouped offensive package and native follow-through. |
+| DRK | Self protection resolves to self; ally TBN and placed protection remain distinct. Native finishers remain available. |
+| GNB | Offensive requests carry the burst package; movement alone does not request burst. Self Corundum targets self. |
+| WHM | Offensive package handoff; healing selector retains Aquaveil and resolves its actual recipient. |
+| SCH | Eligible damage spread on AoE and shield spread through healing; dedicated movement, pet and LB controls remain. |
+| AST | Gravity follow-through, support outside damage immunity, resolved card recipients and confirmed heal recipient for Double Benefic. |
+| SGE | Pneuma support outside damage immunity; initial Kardia resolves consistently, with deliberate recipient changes retained. |
+| MNK | Native enhanced Phantom Rush; Wind knockback remains a distinct intent. |
+| DRG | Geirskogul package handoff, native finisher and protection-owned Chaotic Spring recovery. |
+| NIN | Separate ST/AoE paths; protection can initiate defensive Mudra without class mechanics enabled. Hidden-state priority remains native. |
+| SAM | Meikyo/Ogi package handoff with native finishers. |
+| RPR | Non-pooling Plentiful handling and normal Warrant expiry outside Enshroud; early release stays deliberate. |
+| VPR | Ranged Uncoiled independent of burst; optional HP-gated Scales initiation with channel hold and Backlash. |
+| BRD | Resolved reactive ally cleanse and self cleanse independent of enemy damage immunity; deliberate preventive Paean retained. |
+| MCH | Offensive and tool-cycle handoff; normal Detonator expiry and separate early release. |
+| DNC | Active Honing channel handling independent of initiation; allied Waltz eligibility and partner support; early release retained. |
+| BLM | Grouped offensive/defensive selectors preserve elemental phase and personal policies; native damage fallback. |
+| SMN | Offensive package handoff; self shield outside damage immunity, distinct ally shield and summon LBs. |
+| RDM | Embolden-to-melee handoff with native finishers. |
+| PCT | Accepted painting follows through into Muse/portrait without re-enabling new painting or changing palette intent. |
 
-All entry gates default on, preserving unconfigured upstream behaviour. DNC's automatic partner and SGE's initial Kardia reminder optionally resolve a valid recipient and execute on that same recipient; these new recipient features default off and Accord enables them for managed PvP profiles. Direct partner/Kardia buttons remain for deliberate selection. No targetless Dancer preparation was added.
+The added routing is optional, scoped to the new intent buttons, and enabled through the engine's granular settings API. Personal HP thresholds, timing and reserves are preserved; necessary continuation switches are explicit in the profiles. Hands-free master enablement, AutoActions, runner and exclusions are unchanged. Existing source hashes for hands-free components are verified by the mapping validator.
 
-Primary selectors remain active for all variant combinations, including roots named BurstMode. Required continuation flags stay on. BLM defensive suboptions and RDM follow-through suboptions are owned intent switches; AST card-play selection covers both drawn card types. Independent LB initiation options stay off in managed profiles, with native LB controls retained. NIN's native LB button retains repeat access without adding new automatic LB logic.
+## Verification and limits
 
-## Access decisions after implementation checks
+The Accord suite exercises all 512 PvE and 336 PvP job/variant states against the compiled engine schema, retained controls, settings ownership, per-bar destinations, shared-controller fallback, shared Sprint presence/absence, protected positions and transaction recovery. Bridge tests cover both Sprint directions, wrong-mode repair, conflict prevention and preserving other command types. The historical 504-action ledger remains a research inventory; its semantic checks are not an execution simulation.
 
-- Reaper keeps Death Warrant for deliberate Fate Sealed release outside Enshroud. The existing combat selector does not cover that release. Plentiful stays visible when its personal pooling policy is off.
-- Dancer retains Honing Dance for early Ovation release, En Avant and partner choice. Curing Waltz stays visible if its personal HP threshold disables automatic use.
-- Viper retains Snake Scales for deliberate channel/release. Rattling Coil stays visible if both of its automatic-use options are off.
-- Machinist retains Wildfire for Detonator, turret placement and knockback. Full Metal Field stays visible if its timing choice is unset/unsupported.
-- Other delegated HP-gated controls retain a manual fallback when their configured thresholds disable automatic initiation. BLM's mixed offensive/defensive controls, selected-ally protections, interrupts, movement and distinct LB choices remain accessible as documented in the ledger.
-
-These fallbacks preserve access without inventing resource or HP policies. Auto selections still obey the user's Wrath thresholds/options; the UI states this explicitly.
-
-## Validation and remaining acceptance
-
-- Actual engine-schema tests cover all 336 PvP job/variant combinations, required parents/continuations, feature ownership, custom damage bindings, personal-setting preservation and unchanged `AutoActions`.
-- Layout tests verify distinct destinations, common/role coverage, fixed controls, per-bar compaction and controller ownership.
-- The 504-action semantic ledger supplies 8,064 action/state checks. Source provenance is separately pinned in `pvp-implementation-review.json`, including unchanged hands-free source hashes. The original upstream inventory hashes remain intact.
-- Bridge tests cover mode isolation, staged-pair rollback, wrong-mode refusal, linked/shared-slot protection, initialization tracking, conflict pauses and automatic resumption. Existing PvE regression tests also pass.
-- Accord and Bridge compile without warnings; Wrathful compiles with inherited warnings and no errors.
-
-In-game acceptance is still needed for native combo display/pressing, retargeted execution, Honing channel presentation, first PvP visits, class/mode transitions and backup restoration. Automated checks establish settings/layout/source properties; they do not prove combat behaviour in a running client.
+Native action execution, confirmed recipient behavior and sequence timing still require in-game acceptance. Nothing in these changes executes game actions during development, installs a build or publishes a release.

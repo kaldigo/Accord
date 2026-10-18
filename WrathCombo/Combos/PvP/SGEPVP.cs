@@ -94,6 +94,7 @@ internal static class SGEPvP
                     return Kardia.Retarget(actionID, recipient);
             }
 
+            if(PvPIntentRouting.Active && IsEnabled(Preset.SGEPvP_BurstMode_Pneuma) && ActionReady(Pneuma))return Pneuma;
             if (!PvPCommon.TargetImmuneToDamage())
             {
                 if (IsEnabled(Preset.SGEPvP_Diabrosis) && PvPHealer.CanDiabrosis() && HasTarget() &&
@@ -122,7 +123,7 @@ internal static class SGEPvP
                 if (IsEnabled(Preset.SGEPvP_BurstMode_Toxikon) && !CurrentTarget.HasStatus(Debuffs.Toxicon) && GetCooldown(Toxikon).RemainingCharges > 0)
                     return OriginalHook(Toxikon);
             }
-            if (IsEnabled(Preset.SGEPvP_BurstMode_KardiaReminder))
+            if (!PvPIntentRouting.Active && IsEnabled(Preset.SGEPvP_BurstMode_KardiaReminder))
             {
                 IGameObject? healTarget = SimpleTarget.Stack.AllyToHealPVP;
                 

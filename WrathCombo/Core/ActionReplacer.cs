@@ -155,6 +155,9 @@ internal sealed class ActionReplacer : IDisposable
                 (DisabledJobsPVP.Any(x => x == Player.Job) && Svc.ClientState.IsPvP))
                 return OriginalHook(actionID);
 
+            using var intent = Engine.PvPIntentRouting.Enter(actionID);
+            var release=Engine.PvPIntentRouting.ReleaseAction(actionID);
+            if(release!=0)return Service.Configuration.PenaltyPause>0 && CustomComboFunctions.PlayerHasActionPenalty(false) ? All.Cease:release;
             var protection = Engine.IntentRouting.Protection(actionID);
             if (protection != 0 &&
                 !(Service.Configuration.BlockSpellOnMove && ActionManager.GetAdjustedCastTime(ActionType.Action, protection) > 0 && CustomComboFunctions.TimeMoving.Ticks > 0) &&
@@ -172,7 +175,7 @@ internal sealed class ActionReplacer : IDisposable
                         return All.Cease;
                     }
 
-                    return newActionID;
+                    return Engine.PvPIntentRouting.Filter(newActionID);
                 }
             }
 

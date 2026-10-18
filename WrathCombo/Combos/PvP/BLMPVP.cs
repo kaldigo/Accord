@@ -248,7 +248,7 @@ internal static class BLMPvP
             if (hasParadox && ((isParadoxPrimed && !hasResonance) || (hasAstralFire && isMoving)))
                 return OriginalHook(Paradox);
 
-            if (actionID is All.SingleTargetDPS)
+            if (actionID is All.SingleTargetDPS || PvPIntentRouting.Active)
             {
                 return isMovingAdjusted || (isMoving && BLMPVP_BurstButtonOption == 1) ? OriginalHook(Blizzard) : OriginalHook(Fire);
             }

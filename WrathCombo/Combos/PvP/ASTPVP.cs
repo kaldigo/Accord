@@ -23,6 +23,7 @@ internal static class ASTPvP
         DoubleCast = 29245,
         DoubleMalefic = 29246,
         NocturnalBenefic = 29247,
+        DoubleBenefic = NocturnalBenefic,
         DoubleGravity = 29248,
         Draw = 29249,
         Macrocosmos = 29253,
@@ -145,7 +146,7 @@ internal static class ASTPvP
                     (GetRemainingCharges(DoubleCast) > 1 || GetCooldownRemainingTime(Gravity) > 7.5f) && CanWeave())
                     return DoubleMalefic;
                 
-                if (IsEnabled(Preset.ASTPvP_Burst_Heal))
+                if (!PvPIntentRouting.Active && IsEnabled(Preset.ASTPvP_Burst_Heal))
                 {
                     IGameObject? healTarget = ASTPvP_BurstHealRetarget ? SimpleTarget.Stack.AllyToHealPVP : SimpleTarget.Stack.Allies;
                     
@@ -160,6 +161,18 @@ internal static class ASTPvP
                             ? AspectedBenefic.Retarget(Malefic, healTarget)
                             : AspectedBenefic;
                 }
+            }
+            if(PvPIntentRouting.Active && IsEnabled(Preset.ASTPvP_Burst_Heal))
+            {
+                var ally=ASTPvP_BurstHealRetarget ? SimpleTarget.Stack.AllyToHealPVP : SimpleTarget.Stack.Allies;
+                if(ASTPvP_BurstHeal_DoubleCast && CanWeave() && ComboAction==AspectedBenefic && HasCharges(DoubleCast))
+                {
+                    var recipient=PvPIntentRouting.HealingRecipient;
+                    if(recipient is not null && recipient.CanUseOn(DoubleBenefic))return DoubleBenefic.Retarget(actionID,recipient);
+                }
+                if(ally is not null && !ally.HasStatus(Buffs.DiurnalBenefic) && GetTargetHPPercent(ally)<=ASTPvP_Burst_HealThreshold &&
+                    ActionReadyForTarget(AspectedBenefic,ally.GameObjectId) && ally.CanUseOn(AspectedBenefic))
+                    return AspectedBenefic.Retarget(actionID,ally);
             }
             return OriginalHook(Malefic);
         }
@@ -196,6 +209,12 @@ internal static class ASTPvP
         {
             if (actionID is not AspectedBenefic) 
                 return actionID;
+            if(PvPIntentRouting.Enabled && ASTPvP_Heal_DoubleCast && CanWeave() && ComboAction==AspectedBenefic && HasCharges(DoubleCast))
+            {
+                var recipient=PvPIntentRouting.HealingRecipient;
+                if(recipient is not null && recipient.CanUseOn(DoubleBenefic))return DoubleBenefic.Retarget(actionID,recipient);
+                return actionID;
+            }
             
             if (ASTPvP_Heal_DoubleCast && CanWeave() && ComboAction == AspectedBenefic && HasCharges(DoubleCast))
                 return ASTPvP_Heal_Retarget

@@ -56,8 +56,8 @@ internal sealed class HotbarSetup
             var protectedSlots = ProtectedSlots();
             bool Protected(Position p) => protectedSlots.Contains(p) || NativeHotbars.Ready(current)->IsHotbarShared((uint)p.Bar);
             Notice = "";
-            var extras = jobs.Where(j => j.Preset.Slots.Any(s => s.LogicalSlot > 12))
-                .Select(j => ExtraJobMappings.For(j.Job)).Where(m => !Protected(m.Cross)).ToArray();
+            var extras = jobs.SelectMany(j => j.Preset.Slots.Where(s=>s.LogicalSlot>12)
+                .Select(s => ExtraJobMappings.For(j.Job,s.LogicalSlot))).Where(m => !Protected(m.Cross)).ToArray();
             if (!inspectOnly && bridge && extras.Length > 0 &&
                 !Svc.PluginInterface.GetIpcSubscriber<string, bool>("HotbarBridge.EnsureJobMappings").InvokeFunc(JsonSerializer.Serialize(extras)))
                 throw new InvalidOperationException("Update Hotbar Bridge to support the extra Paladin control.");
@@ -82,15 +82,18 @@ internal sealed class HotbarSetup
                     .Where(a => !string.IsNullOrEmpty(a) && a != "Empty")
                     .Select(a => actions.ResolveSlot(preset.Job, a)).ToHashSet();
                 var effectiveMaps = maps ?? ExtraJobMappings.Merge(Defaults.Maps(), extras, new());
+                bool sharedSprint = effectiveMaps.Where(m=>m.Applies(job) && m.SharedAcrossJobs)
+                    .SelectMany(m=>new[]{m.Regular,m.Cross}).Any(p=>NativeHotbars.Read(job,p) is { Type:1, Id:3 or 29057 });
+                designActions.Add(new SlotValue(1,3));
                 if (routes is not null)
                 {
                     beforeRoutes![job] = oldRoutes!.GetValueOrDefault(job) ?? new();
                     routes[job] = new();
                 }
-                foreach (var entry in PveLayoutPlan.Create(job, preset, effectiveMaps, Protected))
+                foreach (var entry in PveLayoutPlan.Create(job, preset, effectiveMaps, Protected, sprint:!sharedSprint))
                 {
                     var slot = entry.Slot;
-                    var value = slot is null ? default : actions.ResolveSlot(preset.Job, slot.Action);
+                    var value = slot is null ? default : slot.Action == "Sprint" ? new SlotValue(1,3) : actions.ResolveSlot(preset.Job, slot.Action);
                     if (routes is not null && entry.Registered) routes[job][entry.Map.Id] = entry.Regular;
                     var retired = string.IsNullOrEmpty(slot?.RetiredAction) ? default : actions.ResolveSlot(preset.Job, slot.RetiredAction);
                     Add(entry.Regular, value, retired, true);
@@ -98,6 +101,10 @@ internal sealed class HotbarSetup
                     else if (value != default) Notice = " Some controls are keyboard-only because their controller slots are shared or unavailable. Shared bars were preserved.";
                 }
                 if (routes is not null) LayoutRoutes.Effective(effectiveMaps.Where(m => m.Applies(job)), routes[job]);
+                // Clear recognised assignments at vacated destinations, including
+                // positions used by an earlier compact layout or Sprint fallback.
+                foreach(var p in Enumerable.Range(0,2).SelectMany(b=>Enumerable.Range(0,12).Select(s=>new Position(b,s))))
+                    if(!keep.Contains(p) && !Protected(p) && designActions.Contains(NativeHotbars.Read(job,p)))Add(p,default,default,true);
                 if (cleanup)
                     foreach (var edit in HotbarCleanup.Plan(job, keep, effectiveMaps,
                                  bar => NativeHotbars.Ready(current)->IsHotbarShared((uint)bar), p => NativeHotbars.Read(job, p)))

@@ -79,7 +79,7 @@ internal static class MNKPvP
                     return PvPMelee.Smite;
                 
                 if (LocalPlayer.HasStatus(Buffs.FireResonance) && ComboAction is PouncingCoeurl)
-                    return actionID;
+                    return Engine.PvPIntentRouting.Active ? OriginalHook(PhantomRush):actionID;
 
                 if (IsEnabled(Preset.MNKPvP_Burst_RisingPhoenix) && NumberOfEnemiesInRange(RisingPhoenix) >= 1 &&
                     (!LocalPlayer.HasStatus(Buffs.FireResonance) && GetRemainingCharges(RisingPhoenix) > 1 || // capped on charges

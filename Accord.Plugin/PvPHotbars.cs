@@ -65,17 +65,21 @@ internal sealed class PvPHotbars
                 if (job.JobId!=current && !Initialized(job.JobId)) throw new InvalidOperationException("Visit PvP on "+job.Job+" before writing its saved layout.");
                 var pairs=PvPLayout.Pairs(job,maps);
                 var values=job.Controls.Select(c=>PvPPack.Resolve(c,settings,snapshot)).ToArray();
+                bool sharedSprint=maps.Where(m=>m.Applies(job.JobId) && m.SharedAcrossJobs).SelectMany(m=>new[]{m.Regular,m.Cross})
+                    .Any(p=>NativeHotbars.Read(job.JobId,p,pvp:true) is { Type:1, Id:3 or 29057 });
+                if(sharedSprint)
+                    for(int i=0;i<values.Length;i++)if(job.Controls[i].Binding is { Type:1, Id:29057 })values[i]=default;
                 foreach (var control in job.Controls) ValidateBinding(control.Binding);
-                var route=PvPLayout.Routes(pairs,values,PvPLayout.Fixed(job));
+                var route=PvPLayout.IntentRoutes(job,pairs,values,Protected);
                 var bridgeRoute=route.Where(r=>maps.Any(m=>m.Id==r.Key)).ToDictionary(r=>r.Key,r=>r.Value);
                 LayoutRoutes.Effective(maps.Where(m=>m.Applies(job.JobId)),bridgeRoute);
                 routes[job.JobId]=bridgeRoute;
                 backup.Routes[job.JobId]=oldRoutes.GetValueOrDefault(job.JobId)??new();
                 var keep=new HashSet<Position>();
-                var design=job.Controls.Select(c=>c.Binding).Append(new SlotValue(1,1_000_000)).ToHashSet();
+                var design=job.Controls.Select(c=>c.Binding).Concat(job.RetiredBindings).Append(new SlotValue(1,1_000_000)).ToHashSet();
                 for(int i=0;i<pairs.Length;i++)
                 {
-                    Add(route[pairs[i].Id],values[i]);
+                    if(route.TryGetValue(pairs[i].Id,out var destination))Add(destination,values[i]);
                     if(maps.Any(m=>m.Id==pairs[i].Id) && !Protected(pairs[i].Cross))Add(pairs[i].Cross,values[i]);
                     else if(values[i]!=default)Notice=" Some controls are keyboard-only because their controller slots are shared or unavailable. Shared bars were preserved.";
                 }
@@ -86,6 +90,8 @@ internal sealed class PvPHotbars
                             var p=new Position(bar,slot);
                             if(!keep.Contains(p) && !Protected(p)) Add(p,default);
                         }
+                foreach(var p in Enumerable.Range(0,2).SelectMany(b=>Enumerable.Range(0,12).Select(s=>new Position(b,s))))
+                    if(!keep.Contains(p) && !Protected(p) && design.Contains(NativeHotbars.Read(job.JobId,p,pvp:true)))Add(p,default);
                 void Add(Position p,SlotValue value)
                 {
                     if(!keep.Add(p) || !p.Valid)throw new InvalidDataException("Duplicate or invalid PvP destination.");
@@ -104,6 +110,7 @@ internal sealed class PvPHotbars
 
     private static void ValidateBinding(SlotValue value)
     {
+        if(value==default || value.Type==1 && value.Id is 1_000_000 or 1_000_001 or >=1_000_010 and <=1_000_014)return;
         if(value.Type==26)
         {
             var row=Svc.Data.GetExcelSheet<Sheets.ActionComboRoute>(ClientLanguage.English).GetRow(value.Id);
