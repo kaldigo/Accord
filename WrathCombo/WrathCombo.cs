@@ -1,4 +1,4 @@
-﻿using Dalamud.Game.Gui.Dtr;
+using Dalamud.Game.Gui.Dtr;
 using Dalamud.Game.Text;
 using Dalamud.Game.Text.SeStringHandling;
 using Dalamud.Game.Text.SeStringHandling.Payloads;
@@ -180,20 +180,20 @@ public sealed partial class WrathCombo : IDalamudPlugin
     /// <param name="pluginInterface"> Dalamud plugin interface. </param>
     public WrathCombo(IDalamudPluginInterface pluginInterface)
     {
-        if (pluginInterface.InstalledPlugins.Any(p => p.InternalName == "WrathCombo" && p.IsLoaded))
-            throw new InvalidOperationException("Disable Wrath Combo before loading Wrathful Combo.");
-        var importedUpstream = Engine.UpstreamSettingsMigration.ImportIfMissing(pluginInterface.ConfigFile.FullName,
+        if (pluginInterface.InstalledPlugins.Any(p => p.InternalName == "WrathFork"))
+            throw new InvalidOperationException("Remove the legacy WrathFork installation, keeping its settings, before loading Wrath Combo.");
+        var importedUpstream = Engine.ForkIdentityMigration.ImportOnce(pluginInterface.ConfigFile.FullName,
             json =>
             {
                 // Validate using the same configuration model, without resolving source assembly metadata.
                 if (Newtonsoft.Json.JsonConvert.DeserializeObject<Configuration>(json,
                         new Newtonsoft.Json.JsonSerializerSettings { TypeNameHandling = Newtonsoft.Json.TypeNameHandling.None }) is null)
-                    throw new InvalidDataException("Upstream Wrath configuration is empty.");
+                    throw new InvalidDataException("Legacy WrathFork configuration is empty.");
             });
         P = this;
         pluginInterface.Create<Service>();
         ECommonsMain.Init(pluginInterface, this, Module.All);
-        if (importedUpstream) Svc.Log.Information("Imported upstream Wrath settings into the new Wrathful Combo configuration.");
+        if (importedUpstream) Svc.Log.Information("Migrated current WrathFork settings to WrathCombo; original settings were backed up.");
         PunishLibMain.Init(pluginInterface, "Wrath Combo");
         ActionRequestIPCProvider.Initialize();
 

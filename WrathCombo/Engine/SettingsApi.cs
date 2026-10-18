@@ -54,7 +54,7 @@ internal sealed class SettingsApi : IDisposable
         try
         {
             if (!Svc.Framework.IsInFrameworkUpdateThread) throw new InvalidOperationException("Use the framework thread.");
-            if (conflict) throw new InvalidOperationException("Upstream Wrath is loaded. Disable it and reload WrathFork.");
+            if (conflict) throw new InvalidOperationException("Legacy WrathFork is loaded. Remove it and reload Wrath Combo.");
             return action().ToString(Formatting.None);
         }
         catch (Exception ex) { return new JObject { ["Success"] = false, ["Error"] = ex.Message }.ToString(Formatting.None); }
@@ -159,7 +159,7 @@ internal sealed class SettingsApi : IDisposable
 
     internal void Tick()
     {
-        if (Svc.PluginInterface.InstalledPlugins.Any(p => p.InternalName == "WrathCombo" && p.IsLoaded))
+        if (Svc.PluginInterface.InstalledPlugins.Any(p => p.InternalName == "WrathFork" && p.IsLoaded))
         {
             conflict = true;
             Service.Configuration.SetActionChanging(false);

@@ -1,3 +1,5 @@
+Identity decision (2026-10-18): the engine replaces stock Wrath using InternalName and assembly `WrathCombo`, display name `Wrath Combo`. This supersedes the provisional `WrathFork` installation identity below. Accord remains separate. Preserve existing `WrathCombo.*` IPC and the private `WrathFork.Settings.*` v2 API/contract identity for transaction compatibility. Current legacy fork settings take precedence over an older stock configuration in the one-time backed-up migration. Never allow legacy WrathFork to remain installed alongside the restored identity. See [identity migration](identity-migration.md).
+
 # Accord: premise and direction
 
 Current implementation (2026-10-18): PvE choices are shared across PvE/PvP, with intent selectors, per-bar keyboard compaction and mode-aware shared Sprint. See [implementation and verification](job-research/pvp-implementation.md). Historical separate-PvP preference and layout descriptions below are superseded. Native acceptance remains pending.
@@ -149,7 +151,7 @@ Show **Set selected class hotbars** only while live mode is off. Live mode handl
 Show the current class's explanation directly beneath each variant, labelled with the class abbreviation. Group settings reset, hotbar restore, local troubleshooting export and legacy settings import under **Maintenance**. Explain each operation's scope beside its clearly labelled control, including that hotbar restore disables live mode and restores the previous operation's layout rather than necessarily the pre-Accord layout.
 
 
-## Distribution name — 2026-10-16
+## Distribution name ï¿½ 2026-10-16
 
 The user chose **Wrathful Combo** as the fork display name to distinguish it from upstream. Keep the existing internal identity `WrathFork`, configuration, `/wrath` and inherited IPC contracts. Publish Accord and Wrathful Combo alongside Hotbar Bridge in the existing HotbarTools custom repository feed; source repositories remain separate.
 

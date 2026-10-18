@@ -1,3 +1,5 @@
+Identity decision (2026-10-18): the engine replaces stock Wrath using InternalName and assembly `WrathCombo`, display name `Wrath Combo`. This supersedes the provisional `WrathFork` installation identity below. Accord remains separate. Preserve existing `WrathCombo.*` IPC and the private `WrathFork.Settings.*` v2 API/contract identity for transaction compatibility. Current legacy fork settings take precedence over an older stock configuration in the one-time backed-up migration. Never allow legacy WrathFork to remain installed alongside the restored identity. See [identity migration](docs/identity-migration.md).
+
 # Accord
 
 Accord provides reviewed job setups, intent variants and matching hotbars. The separate WrathFork plugin (provisional name) supplies rotation functionality and settings, controlled by Accord through its API.

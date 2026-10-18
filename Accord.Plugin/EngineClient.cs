@@ -20,8 +20,8 @@ internal sealed class EngineClient : IDisposable
     internal JObject Validate(JObject patch) => Decode(Svc.PluginInterface.GetIpcSubscriber<string, string>("WrathFork.Settings.Validate.v2").InvokeFunc(patch.ToString(Formatting.None)));
     internal JObject Read()
     {
-        if (!Svc.PluginInterface.InstalledPlugins.Any(p => p.InternalName == "WrathFork" && p.IsLoaded))
-            throw new InvalidOperationException("Load the compatible WrathFork engine. Behaviour and live hotbar updates are unavailable.");
+        if (!Svc.PluginInterface.InstalledPlugins.Any(p => p.InternalName == "WrathCombo" && p.IsLoaded))
+            throw new InvalidOperationException("Load the Accord-compatible Wrath Combo build. Behaviour and live hotbar updates are unavailable.");
         var result = Decode(Svc.PluginInterface.GetIpcSubscriber<string>("WrathFork.Settings.Read.v2").InvokeFunc());
         if (result.Value<string>("Identity") != "WrathFork" || result.Value<int>("ApiVersion") != 2 || result.Value<int>("SettingsSchemaVersion") != 2 ||
             result.Value<string>("EngineVersion") != "1.0.4.27" ||

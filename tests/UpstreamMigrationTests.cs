@@ -7,47 +7,58 @@ internal static class UpstreamMigrationTests
     internal static int Run()
     {
         int checks = 0;
-        void Check(bool value) { checks++; if (!value) throw new Exception("Upstream migration protection failed."); }
+        void Check(bool value) { checks++; if (!value) throw new Exception("Identity migration protection failed."); }
         var directory = Path.Combine(Path.GetTempPath(), "wrath-migration-test-" + Guid.NewGuid().ToString("N"));
         Directory.CreateDirectory(directory);
-        var source = Path.Combine(directory, "WrathCombo.json");
-        var target = Path.Combine(directory, "WrathFork.json");
+        var source = Path.Combine(directory, "WrathFork.json");
+        var target = Path.Combine(directory, "WrathCombo.json");
+        var marker = target + ".wrathfork-migration.json";
+        const string original = """
+            {"$type":"WrathCombo.Core.Configuration, WrathFork", "Version":6,
+             "EnabledActionsV6":[4022], "RotationConfig":{"Enabled":true},
+             "CustomIntValuesV6":{"threshold":42}, "UnknownFutureSetting":"kept",
+             "ForkConfigurationId":"preserved-id", "ForkOperationReceipts":{"_Sequence":19},
+             "nested":{"$type":"System.Collections.Generic.List`1[[WrathCombo.Combos.Preset, WrathFork]], System.Private.CoreLib"},
+             "text":"WrathFork"}
+            """;
         try
         {
-            Check(!UpstreamSettingsMigration.ImportIfMissing(target, _ => throw new Exception("Unexpected validation")));
-            const string original = """
-                {"$type":"WrathCombo.Core.Configuration, WrathCombo", "Version":6,
-                 "EnabledActionsV6":[4022], "RotationConfig":{"Enabled":true},
-                 "CustomIntValuesV6":{"threshold":42}, "UnknownFutureSetting":"kept",
-                 "nested":{"$type":"System.Collections.Generic.List`1[[WrathCombo.Combos.Preset, WrathCombo]], System.Private.CoreLib"},
-                 "text":"WrathCombo"}
-                """;
+            File.WriteAllText(target, "old stock settings");
+            Check(!ForkIdentityMigration.ImportOnce(target, _ => throw new Exception("Unexpected validation")));
+            Check(File.ReadAllText(target) == "old stock settings");
             File.WriteAllText(source, original);
-            Check(UpstreamSettingsMigration.ImportIfMissing(target, text => JObject.Parse(text)));
+            Check(ForkIdentityMigration.ImportOnce(target, text => JObject.Parse(text)));
             var migrated = JObject.Parse(File.ReadAllText(target));
-            Check((string?)migrated["$type"] == "WrathCombo.Core.Configuration, WrathFork");
-            Check(((string)migrated["nested"]!["$type"]!).Contains("Preset, WrathFork]]"));
-            Check((string?)migrated["UnknownFutureSetting"] == "kept" && (string?)migrated["text"] == "WrathCombo");
+            Check((string?)migrated["$type"] == "WrathCombo.Core.Configuration, WrathCombo");
+            Check(((string)migrated["nested"]!["$type"]!).Contains("Preset, WrathCombo]]"));
+            Check((string?)migrated["text"] == "WrathFork" && (string?)migrated["UnknownFutureSetting"] == "kept");
             Check(migrated["CustomIntValuesV6"]!["threshold"]!.Value<int>() == 42);
             Check(migrated["RotationConfig"]!["Enabled"]!.Value<bool>());
+            Check(migrated.Value<string>("ForkConfigurationId") == "preserved-id");
+            Check(migrated["ForkOperationReceipts"]!.Value<int>("_Sequence") == 19);
+            var backup = JObject.Parse(File.ReadAllText(marker)).Value<string>("Backup")!;
+            Check(File.ReadAllText(Path.Combine(backup, "WrathFork.json")) == original);
+            Check(File.ReadAllText(Path.Combine(backup, "WrathCombo.json")) == "old stock settings");
             Check(File.ReadAllText(source) == original);
-            foreach (var existing in new[] { File.ReadAllText(target), "{}", "", "broken json" })
-            {
-                File.WriteAllText(target, existing);
-                Check(!UpstreamSettingsMigration.ImportIfMissing(target, _ => throw new Exception("Existing configuration touched")));
-                Check(File.ReadAllText(target) == existing);
-            }
+            File.WriteAllText(target, "settings changed after migration");
+            Check(!ForkIdentityMigration.ImportOnce(target, _ => throw new Exception("Reimport")));
+            Check(File.ReadAllText(target) == "settings changed after migration");
             File.Delete(target);
+            try { ForkIdentityMigration.ImportOnce(target, _ => { }); Check(false); }
+            catch (InvalidDataException) { Check(!File.Exists(target)); }
+            File.Delete(marker);
             File.WriteAllText(source, "broken json");
-            try { UpstreamSettingsMigration.ImportIfMissing(target, _ => { }); Check(false); }
-            catch (InvalidOperationException) { Check(!File.Exists(target)); }
+            try { ForkIdentityMigration.ImportOnce(target, _ => { }); Check(false); }
+            catch (InvalidOperationException) { Check(!File.Exists(target) && !File.Exists(marker)); }
             File.WriteAllText(source, original);
-            try { UpstreamSettingsMigration.ImportIfMissing(target, _ => throw new JsonSerializationException("Invalid field")); Check(false); }
-            catch (InvalidOperationException) { Check(!File.Exists(target)); }
-            try { UpstreamSettingsMigration.ImportIfMissing(target, _ => File.WriteAllText(target, "concurrent settings")); Check(false); }
+            try { ForkIdentityMigration.ImportOnce(target, _ => throw new JsonSerializationException("Invalid field")); Check(false); }
+            catch (InvalidOperationException) { Check(!File.Exists(target) && !File.Exists(marker)); }
+            try { ForkIdentityMigration.ImportOnce(target, _ => File.WriteAllText(target, "concurrent settings")); Check(false); }
             catch (InvalidOperationException) { Check(File.ReadAllText(target) == "concurrent settings"); }
             Check(Directory.GetFiles(directory, "*.import-*").Length == 0);
             Check(File.ReadAllText(source) == original);
+            File.Delete(target);
+            Check(ForkIdentityMigration.ImportOnce(target, text => JObject.Parse(text)));
         }
         finally { Directory.Delete(directory, true); }
         return checks;
@@ -72,10 +83,10 @@ internal static class UpstreamMigrationTests
         try
         {
             var typed = JsonConvert.SerializeObject(imported, new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.All })
-                .Replace(", WrathFork", ", WrathCombo");
-            File.WriteAllText(Path.Combine(directory, "WrathCombo.json"), typed);
-            var target = Path.Combine(directory, "WrathFork.json");
-            UpstreamSettingsMigration.ImportIfMissing(target, text => JsonConvert.DeserializeObject(text, type,
+                .Replace(", WrathCombo", ", WrathFork");
+            File.WriteAllText(Path.Combine(directory, "WrathFork.json"), typed);
+            var target = Path.Combine(directory, "WrathCombo.json");
+            ForkIdentityMigration.ImportOnce(target, text => JsonConvert.DeserializeObject(text, type,
                 new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.None }));
             var loaded = JsonConvert.DeserializeObject(File.ReadAllText(target), type,
                 new JsonSerializerSettings { TypeNameHandling = TypeNameHandling.Auto })!;

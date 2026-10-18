@@ -5,18 +5,18 @@
     <PropertyGroup>
         <Authors>Team Wrath</Authors>
         <Company>-</Company>
-        <Version>0.2.9</Version>
+        <Version>1.0.4.28</Version>
         <!-- This is the version that will be used when pushing to the repo.-->
         <Description>Configurable Wrath rotation engine and settings API.</Description>
         <Copyright>Copyleft attick 2021 thanks attick UwU</Copyright>
         <PackageProjectUrl>https://github.com/kaldigo/Accord</PackageProjectUrl>
-        <PackageId>WrathFork</PackageId>
-        <Product>WrathFork</Product>
+        <PackageId>WrathCombo</PackageId>
+        <Product>WrathCombo</Product>
     </PropertyGroup>
 
     <!-- Build Parameters -->
     <PropertyGroup>
-        <AssemblyName>WrathFork</AssemblyName>
+        <AssemblyName>WrathCombo</AssemblyName>
         <RootNamespace>WrathCombo</RootNamespace>
         <TargetFramework>net10.0-windows</TargetFramework>
         <Configurations>Debug;Release</Configurations>
@@ -45,8 +45,8 @@
     <!-- Required Paths -->
     <PropertyGroup>
         <DalamudLibPath>$(appdata)\XIVLauncher\addon\Hooks\dev\</DalamudLibPath>
-        <DalamudDevPlugins>$(appdata)\XIVLauncher\devPlugins\WrathFork\</DalamudDevPlugins>
-        <DalamudPluginPath>$(appdata)\XIVLauncher\installedPlugins\WrathFork\$(version)</DalamudPluginPath>
+        <DalamudDevPlugins>$(appdata)\XIVLauncher\devPlugins\WrathCombo\</DalamudDevPlugins>
+        <DalamudPluginPath>$(appdata)\XIVLauncher\installedPlugins\WrathCombo\$(version)</DalamudPluginPath>
     </PropertyGroup>
 
     <!-- Path Overrides for Linux -->
@@ -63,12 +63,12 @@
 
     <!-- Build Parameter Overrides for Debug -->
     <PropertyGroup Condition="'$(Configuration)' == 'Debug'">
-        <OutputPath>bin\WrathFork\Debug</OutputPath>
+        <OutputPath>bin\WrathCombo\Debug</OutputPath>
     </PropertyGroup>
 
     <!-- Build Parameter Overrides for Release -->
     <PropertyGroup Condition="'$(Configuration)' == 'Release'">
-        <OutputPath>bin\WrathFork\Release</OutputPath>
+        <OutputPath>bin\WrathCombo\Release</OutputPath>
     </PropertyGroup>
 
     <!-- Logo -->
@@ -467,7 +467,7 @@
           <CopyToOutputDirectory>Always</CopyToOutputDirectory>
         </None>
         <Compile Include="../Contract/*.cs" Link="Contract/%(Filename)%(Extension)" />
-        <None Update="WrathFork.json">
+        <None Update="WrathCombo.json">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </None>
     </ItemGroup>

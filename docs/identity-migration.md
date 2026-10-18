@@ -1,0 +1,9 @@
+# Restore the WrathCombo identity
+
+Wrath Combo 1.0.4.28 is the Accord-compatible engine under the original plugin ID, DLL and configuration filename `WrathCombo`. Accord 0.2.13 detects this identity, then verifies the private settings API before making changes. Stock Wrath does not expose that API and cannot be mistaken for the compatible engine. Existing `/wrath`, `/scombo`, `WrathCombo.*` IPC and `OnActionUsed` remain unchanged. The private `WrathFork.Settings.*` v2 endpoints and identity stay stable; they identify capabilities, not the installation folder.
+
+Before installation, close the game, back up both Wrath configuration files and the installed plugins, and retire the legacy WrathFork installation. Only one `WrathCombo` installation should remain; do not copy the new DLL into the legacy folder. Preserve the fork's WorkingPluginId in the Dalamud profile while changing its InternalName. The shared feed lists WrathCombo instead of WrathFork and no longer lists the AutoDuty compatibility build. Use upstream AutoDuty from its original repository.
+
+The engine imports `WrathFork.json` once, even if an old `WrathCombo.json` exists. It validates the configuration, backs up both originals, rewrites only assembly references in `$type` metadata, and writes `WrathCombo.json.wrathfork-migration.json` to prevent subsequent imports. Unknown JSON values, configuration ID and operation receipts are retained. A failed migration aborts before rotation hooks start. No source settings are deleted. The local offline installer also preserves the auxiliary configuration directory and restores upstream AutoDuty without modifying its saved settings.
+
+Validation includes older stock settings being superseded by current fork settings, missing/invalid inputs, backup contents, unchanged arbitrary values and transaction IDs, no repeated import, concurrent writes, and real-model typed deserialization. Build/tests do not replace in-game verification after restart.

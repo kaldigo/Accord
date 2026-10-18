@@ -1,3 +1,5 @@
+Identity decision (2026-10-18): the engine replaces stock Wrath using InternalName and assembly `WrathCombo`, display name `Wrath Combo`. This supersedes the provisional `WrathFork` installation identity below. Accord remains separate. Preserve existing `WrathCombo.*` IPC and the private `WrathFork.Settings.*` v2 API/contract identity for transaction compatibility. Current legacy fork settings take precedence over an older stock configuration in the one-time backed-up migration. Never allow legacy WrathFork to remain installed alongside the restored identity. See [identity migration](identity-migration.md).
+
 # Separate plugin previews
 
 The 0.2.8 preview contains two plugins. **Wrathful Combo** (internal name `WrathFork`) owns rotations, settings and the settings API. **Accord** owns reviewed mappings, variants and hotbars. Both are needed for reviewed combat setup. Disable upstream Wrath and the old combined Accord before using these builds; Hotbar Bridge stays separate.
@@ -36,7 +38,7 @@ See [settings API and migration contract](settings-api.md) for v2 endpoints, val
 Standalone fork acceptance additionally covers restored Auto-Rotation/PvP/Custom Actions pages, `/wrath` subcommands, saved master-auto state, optional opener indicator, conflict checks and existing Wrath IPC consumers. See [audit](fork-restoration-audit.md).
 
 
-## Startup fix — 0.2.4
+## Startup fix ï¿½ 0.2.4
 
 The live Dalamud log identified a constructor failure: status-entry initialization accessed the current player from the plugin loader thread. Entries now start hidden and their player-dependent visibility/text is updated by the existing framework update handler. The installation fix and matching icons are included in 0.2.4. In-game reload confirmation remains pending.
 

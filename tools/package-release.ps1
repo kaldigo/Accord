@@ -1,5 +1,5 @@
 [CmdletBinding()]
-param([ValidateSet('WrathFork','Accord')][string[]]$Plugins=@('WrathFork','Accord'))
+param([ValidateSet('WrathCombo','Accord')][string[]]$Plugins=@('WrathCombo','Accord'))
 $ErrorActionPreference = 'Stop'
 $repoRoot = Split-Path $PSScriptRoot -Parent
 Push-Location $repoRoot
@@ -8,20 +8,20 @@ try {
         & dotnet build $project -c Release -p:UseSharedCompilation=false --nologo -v quiet
         if ($LASTEXITCODE -ne 0) { throw "Build failed: $project" }
     }
-    & dotnet run --project tests/Accord.Tests.csproj -c Release -p:UseSharedCompilation=false -- WrathCombo/bin/WrathFork/Release/WrathFork.dll
+    & dotnet run --project tests/Accord.Tests.csproj -c Release -p:UseSharedCompilation=false -- WrathCombo/bin/WrathCombo/Release/WrathCombo.dll
     if ($LASTEXITCODE -ne 0) { throw 'Separation tests failed.' }
     Add-Type -AssemblyName System.IO.Compression.FileSystem
-    $tag = 'v0.2.12-preview'
+    $tag = 'v0.2.13-preview'
     $out = Join-Path $repoRoot "artifacts/$tag"
     New-Item -ItemType Directory -Force -Path $out | Out-Null
     $hashes = @()
     $feed = @()
     foreach ($name in $Plugins) {
-        $relative = if ($name -eq 'WrathFork') { 'WrathCombo/bin/WrathFork/Release/WrathFork' } else { 'Accord.Plugin/bin/Release/Accord' }
+        $relative = if ($name -eq 'WrathCombo') { 'WrathCombo/bin/WrathCombo/Release/WrathCombo' } else { 'Accord.Plugin/bin/Release/Accord' }
         $build = Join-Path $repoRoot $relative
         $manifest = Get-Content -LiteralPath (Join-Path $build "$name.json") -Raw | ConvertFrom-Json
-        $expectedVersion = if ($name -eq 'Accord') { '0.2.12.0' } else { '0.2.9.0' }
-        if ($manifest.InternalName -ne $name -or $manifest.Name -ne $(if ($name -eq 'WrathFork') { 'Wrathful Combo' } else { 'Accord' }) -or $manifest.DalamudApiLevel -ne 15 -or [version]$manifest.AssemblyVersion -ne [version]$expectedVersion) {
+        $expectedVersion = if ($name -eq 'Accord') { '0.2.13.0' } else { '1.0.4.28' }
+        if ($manifest.InternalName -ne $name -or $manifest.Name -ne $(if ($name -eq 'WrathCombo') { 'Wrath Combo' } else { 'Accord' }) -or $manifest.DalamudApiLevel -ne 15 -or [version]$manifest.AssemblyVersion -ne [version]$expectedVersion) {
             throw "Incorrect package identity/version: $name"
         }
         $package = Join-Path $out "$name.zip"
@@ -29,14 +29,14 @@ try {
         $archive = [IO.Compression.ZipFile]::Open($package, [IO.Compression.ZipArchiveMode]::Update)
         try {
             $paths = @($archive.Entries | ForEach-Object { $_.FullName.Replace('\', '/') })
-            if ($paths -match '(?i)(^|/)WrathCombo\.(dll|json)$|\.zip$|(^|/)(configuration|configuration-backups)/') { throw 'Invalid or private package content.' }
+            if ($paths -match '(?i)(^|/)WrathFork\.(dll|json)$|\.zip$|(^|/)(configuration|configuration-backups)/') { throw 'Invalid or private package content.' }
             $required = @("$name.dll", "$name.json", 'ECommons.dll')
-            if ($name -eq 'WrathFork') { $required += @('PunishLib.dll', 'WrathCombo.API.dll') }
+            if ($name -eq 'WrathCombo') { $required += @('PunishLib.dll', 'WrathCombo.API.dll') }
             foreach ($file in $required) { if ($paths -notcontains $file) { throw "Package missing $file" } }
-            if ($name -eq 'Accord' -and ($paths -contains 'WrathFork.dll' -or $paths -contains 'WrathCombo.API.dll')) { throw 'Accord contains an engine dependency.' }
-            if ($name -eq 'WrathFork' -and $paths -contains 'Accord.dll') { throw 'Fork contains Accord.' }
+            if ($name -eq 'Accord' -and ($paths -contains 'WrathCombo.dll' -or $paths -contains 'WrathCombo.API.dll')) { throw 'Accord contains an engine dependency.' }
+            if ($name -eq 'WrathCombo' -and $paths -contains 'Accord.dll') { throw 'Fork contains Accord.' }
             $notices = @(@('LICENSE', 'LICENSE'), @('ECommons/LICENSE.md', 'licenses/ECommons.md'), @('docs/distribution.md', 'README.md'))
-            if ($name -eq 'WrathFork') { $notices += ,@('PunishLib/LICENCE.md', 'licenses/PunishLib.md') }
+            if ($name -eq 'WrathCombo') { $notices += ,@('PunishLib/LICENCE.md', 'licenses/PunishLib.md') }
             foreach ($notice in $notices) {
                 [IO.Compression.ZipFileExtensions]::CreateEntryFromFile($archive, (Join-Path $repoRoot $notice[0]), $notice[1]) | Out-Null
             }
@@ -46,11 +46,11 @@ try {
             $manifest | Add-Member -NotePropertyName $field -NotePropertyValue $url -Force
         }
         $publicManifest = $manifest | ConvertTo-Json -Depth 8 | ConvertFrom-Json
-        $publicManifest | Add-Member -NotePropertyName Changelog -NotePropertyValue 'Recognize General Action Sprint in shared slots and shared bars, preventing duplicate job-bar Sprint. Live layout refresh removes the extra fallback. Update with Hotbar Bridge 0.2.15; Wrathful Combo remains 0.2.9.' -Force
+        $publicManifest | Add-Member -NotePropertyName Changelog -NotePropertyValue 'Restore WrathCombo identity and migrate current WrathFork settings once with backups. Accord detects the compatible WrathCombo build. Remove legacy WrathFork before loading.' -Force
         $feed += $publicManifest
         $manifest | Add-Member -NotePropertyName IsTestingExclusive -NotePropertyValue $true -Force
         $manifest | Add-Member -NotePropertyName TestingAssemblyVersion -NotePropertyValue $manifest.AssemblyVersion -Force
-        $manifest | Add-Member -NotePropertyName Changelog -NotePropertyValue 'Fix duplicate Sprint by recognizing General Action bindings and shared bars. Requires Hotbar Bridge 0.2.15 for General Action Sprint mode conversion. In-game acceptance pending.' -Force
+        $manifest | Add-Member -NotePropertyName Changelog -NotePropertyValue 'Restore WrathCombo identity with one-time backed-up settings migration. In-game acceptance pending.' -Force
         ConvertTo-Json -InputObject @($manifest) -Depth 8 | Set-Content -LiteralPath (Join-Path $out "$name.pluginmaster.testing.json") -Encoding utf8NoBOM
         $hashes += (Get-FileHash -LiteralPath $package -Algorithm SHA256).Hash.ToLowerInvariant() + "  $name.zip"
     }
