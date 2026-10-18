@@ -82,8 +82,7 @@ internal sealed class HotbarSetup
                     .Where(a => !string.IsNullOrEmpty(a) && a != "Empty")
                     .Select(a => actions.ResolveSlot(preset.Job, a)).ToHashSet();
                 var effectiveMaps = maps ?? ExtraJobMappings.Merge(Defaults.Maps(), extras, new());
-                bool sharedSprint = effectiveMaps.Where(m=>m.Applies(job) && m.SharedAcrossJobs)
-                    .SelectMany(m=>new[]{m.Regular,m.Cross}).Any(p=>NativeHotbars.Read(job,p) is { Type:1, Id:3 or 29057 });
+                bool sharedSprint = ModeActions.HasSharedSprint(Protected, p=>NativeHotbars.Read(job,p));
                 designActions.Add(new SlotValue(1,3));
                 if (routes is not null)
                 {

@@ -20,6 +20,7 @@
     <Compile Include="../WrathCombo/Engine/BurstPolicy.cs" Link="BurstPolicy.cs" />
     <Compile Include="../Accord.Plugin/JobIntents.cs" Link="JobIntents.cs" />
     <Compile Include="../Accord.Plugin/HotbarTransaction.cs" Link="HotbarTransaction.cs" />
+    <Compile Include="../Accord.Plugin/Hotbars/ModeActions.cs" Link="ModeActions.cs" />
     <Compile Include="../Accord.Plugin/Hotbars/Models.cs" Link="Models.cs" />
     <Compile Include="../Accord.Plugin/Hotbars/HotbarCleanup.cs" Link="HotbarCleanup.cs" />
     <EmbeddedResource Include="../Accord.Plugin/presets.json" LogicalName="Accord.presets.json" />

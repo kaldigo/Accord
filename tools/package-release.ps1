@@ -11,7 +11,7 @@ try {
     & dotnet run --project tests/Accord.Tests.csproj -c Release -p:UseSharedCompilation=false -- WrathCombo/bin/WrathFork/Release/WrathFork.dll
     if ($LASTEXITCODE -ne 0) { throw 'Separation tests failed.' }
     Add-Type -AssemblyName System.IO.Compression.FileSystem
-    $tag = 'v0.2.11-preview'
+    $tag = 'v0.2.12-preview'
     $out = Join-Path $repoRoot "artifacts/$tag"
     New-Item -ItemType Directory -Force -Path $out | Out-Null
     $hashes = @()
@@ -20,7 +20,7 @@ try {
         $relative = if ($name -eq 'WrathFork') { 'WrathCombo/bin/WrathFork/Release/WrathFork' } else { 'Accord.Plugin/bin/Release/Accord' }
         $build = Join-Path $repoRoot $relative
         $manifest = Get-Content -LiteralPath (Join-Path $build "$name.json") -Raw | ConvertFrom-Json
-        $expectedVersion = if ($name -eq 'Accord') { '0.2.11.0' } else { '0.2.9.0' }
+        $expectedVersion = if ($name -eq 'Accord') { '0.2.12.0' } else { '0.2.9.0' }
         if ($manifest.InternalName -ne $name -or $manifest.Name -ne $(if ($name -eq 'WrathFork') { 'Wrathful Combo' } else { 'Accord' }) -or $manifest.DalamudApiLevel -ne 15 -or [version]$manifest.AssemblyVersion -ne [version]$expectedVersion) {
             throw "Incorrect package identity/version: $name"
         }
@@ -46,11 +46,11 @@ try {
             $manifest | Add-Member -NotePropertyName $field -NotePropertyValue $url -Force
         }
         $publicManifest = $manifest | ConvertTo-Json -Depth 8 | ConvertFrom-Json
-        $publicManifest | Add-Member -NotePropertyName Changelog -NotePropertyValue 'Shared PvE/PvP class and variant settings, all-job intent routing and follow-through, per-bar keyboard compaction and shared Sprint handling. Update Accord 0.2.11, Wrathful Combo 0.2.9 and Hotbar Bridge 0.2.14 together. Hands-free auto rotation unchanged.' -Force
+        $publicManifest | Add-Member -NotePropertyName Changelog -NotePropertyValue 'Recognize General Action Sprint in shared slots and shared bars, preventing duplicate job-bar Sprint. Live layout refresh removes the extra fallback. Update with Hotbar Bridge 0.2.15; Wrathful Combo remains 0.2.9.' -Force
         $feed += $publicManifest
         $manifest | Add-Member -NotePropertyName IsTestingExclusive -NotePropertyValue $true -Force
         $manifest | Add-Member -NotePropertyName TestingAssemblyVersion -NotePropertyValue $manifest.AssemblyVersion -Force
-        $manifest | Add-Member -NotePropertyName Changelog -NotePropertyValue 'Shared preferences, all-job intent routing, keyboard layouts and mode-aware Sprint. Hands-free auto rotation unchanged. In-game acceptance pending.' -Force
+        $manifest | Add-Member -NotePropertyName Changelog -NotePropertyValue 'Fix duplicate Sprint by recognizing General Action bindings and shared bars. Requires Hotbar Bridge 0.2.15 for General Action Sprint mode conversion. In-game acceptance pending.' -Force
         ConvertTo-Json -InputObject @($manifest) -Depth 8 | Set-Content -LiteralPath (Join-Path $out "$name.pluginmaster.testing.json") -Encoding utf8NoBOM
         $hashes += (Get-FileHash -LiteralPath $package -Algorithm SHA256).Hash.ToLowerInvariant() + "  $name.zip"
     }

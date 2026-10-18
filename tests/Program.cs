@@ -17,6 +17,13 @@ var upstreamEnabled = new HashSet<Feature> { Feature.DncStandardInitiation, Feat
 upstreamEnabled.UnionWith(Enum.GetValues<Feature>().Where(f=>f.ToString().StartsWith("PvP") && f.ToString().EndsWith("Initiation")));
 foreach (var feature in Enum.GetValues<Feature>())
     Check(FeatureDefaults.Enabled(feature) == upstreamEnabled.Contains(feature), "Unconfigured fork changed upstream behaviour: " + feature);
+foreach(var sprint in new[]{new SlotValue(1,3),new SlotValue(1,29057),new SlotValue(10,4)})
+{
+ Check(ModeActions.HasSharedSprint(p=>p==new Position(0,11),p=>sprint),"Shared Sprint binding not recognized.");
+ Check(ModeActions.HasSharedSprint(p=>p.Bar==9,p=>p.Slot==7?sprint:default),"Sprint on a shared whole bar not recognized.");
+ Check(!ModeActions.HasSharedSprint(p=>p.Bar==9,p=>p.Bar==1?sprint:default),"Job fallback was mistaken for shared Sprint.");
+}
+Check(!ModeActions.IsSprint(new SlotValue(10,3)) && !ModeActions.IsSprint(new SlotValue(9,4)),"Other general actions or macros mistaken for Sprint.");
 var pack = new SetupPack();
 var sharedChoices=new AccordSettings {ActiveJobs=[19,38],LiveMode=true,ClearOtherActions=true};
 sharedChoices.Variants[VariantId.Burst]=true;
