@@ -1,0 +1,19 @@
+{
+  "internal_name": "WrathCombo",
+  "repository": "kaldigo/WrathCombo",
+  "minimum_version": "1.0.4.28",
+  "project": "WrathCombo/WrathCombo.csproj",
+  "build": "WrathCombo/bin/WrathCombo/Release",
+  "required_dlls": [
+    "WrathCombo.dll",
+    "ECommons.dll",
+    "PunishLib.dll",
+    "WrathCombo.API.dll"
+  ],
+  "licenses": {
+    "LICENSE": "LICENSE",
+    "ECommons/LICENSE.md": "licenses/ECommons.md",
+    "PunishLib/LICENCE.md": "licenses/PunishLib.md",
+    "WrathCombo.API/README.md": "licenses/WrathCombo.API-README.md"
+  }
+}

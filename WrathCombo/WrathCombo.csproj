@@ -9,7 +9,7 @@
         <!-- This is the version that will be used when pushing to the repo.-->
         <Description>Configurable Wrath rotation engine and settings API.</Description>
         <Copyright>Copyleft attick 2021 thanks attick UwU</Copyright>
-        <PackageProjectUrl>https://github.com/kaldigo/Accord</PackageProjectUrl>
+        <PackageProjectUrl>https://github.com/kaldigo/WrathCombo</PackageProjectUrl>
         <PackageId>WrathCombo</PackageId>
         <Product>WrathCombo</Product>
     </PropertyGroup>

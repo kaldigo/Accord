@@ -5,11 +5,11 @@
   "DalamudApiLevel": 15,
   "Punchline": "Configurable Wrath rotation engine and settings API.",
   "Description": "Wrath rotation engine fork with configurable continuation, targeting and support functionality. Configured independently or through its settings API. Accord-compatible build. Replaces stock Wrath Combo; remove the legacy WrathFork installation before loading.",
-  "RepoUrl": "https://github.com/kaldigo/Accord",
+  "RepoUrl": "https://github.com/kaldigo/WrathCombo",
   "Tags": [
     "combo",
     "hotbars",
     "pve"
   ],
-  "IconUrl": "https://raw.githubusercontent.com/kaldigo/HotbarTools/main/assets/icons/wrathfull-combo-512.png"
+  "IconUrl": "https://raw.githubusercontent.com/kaldigo/WrathCombo/main/assets/icon.png"
 }

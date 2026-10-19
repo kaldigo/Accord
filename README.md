@@ -1,3 +1,15 @@
+# Wrath Combo — Accord-compatible fork
+
+This is the maintained fork of [PunishXIV/WrathCombo](https://github.com/PunishXIV/WrathCombo), preserving upstream history, commands, rotation features and the WrathCombo plugin identity. It adds the validated settings API used by [Accord](https://github.com/kaldigo/FFXIVAccord), which is a separate plugin and repository.
+
+Install through [Kaldigo’s Dalamud feed](https://github.com/kaldigo/DalamudPlugins). Replace stock Wrath Combo with this fork; retain your existing settings. See [identity migration](docs/identity-migration.md).
+
+Updates on main build, run the pinned Accord compatibility suite, and publish checksum-verified versioned previews automatically. Upstream sync checks daily; only untouched documentation changes qualify for automatic merging. Rotation, dependency, configuration and native-code updates require review. See [publishing](docs/publishing.md). In-game acceptance remains a separate check.
+
+The former kaldigo/Accord repository was renamed here to preserve its fork relationship and release history. Historical design notes remain in docs; client implementation now lives in FFXIVAccord.
+
+---
+
 Manual fallback preview (0.2.15, 2026-10-19): three-bar manual PvE layouts can be saved before logout and exact previous Accord layouts restored on login when compatible Wrath is available. See [manual fallback](docs/manual-fallback.md). Local build/data/recovery checks are recorded there; native acceptance remains pending.
 
 Identity decision (2026-10-18): the engine replaces stock Wrath using InternalName and assembly `WrathCombo`, display name `Wrath Combo`. This supersedes the provisional `WrathFork` installation identity below. Accord remains separate. Preserve existing `WrathCombo.*` IPC and the private `WrathFork.Settings.*` v2 API/contract identity for transaction compatibility. Current legacy fork settings take precedence over an older stock configuration in the one-time backed-up migration. Never allow legacy WrathFork to remain installed alongside the restored identity. See [identity migration](docs/identity-migration.md).
