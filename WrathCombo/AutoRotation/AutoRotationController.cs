@@ -750,6 +750,13 @@ internal unsafe class AutoRotationController
 
     private static bool AutomateDPS(Preset preset, PresetStorage.PresetData attributes, uint gameAct)
     {
+        // Pre-pull Dancer actions are self-targeted, so native action usability
+        // cannot reject a friendly selection. Require the player's hard target,
+        // not Auto Mode's selected/previous OverrideTarget, before evaluating either rotation.
+        if (Player.Job == Job.DNC && !InCombat() &&
+            (SimpleTarget.HardTarget is not { IsDead: false, IsTargetable: true } selected || !selected.IsHostile()))
+            return false;
+
         var mode = cfg.DPSRotationMode;
         if (attributes.AutoAction!.IsAoE)
         {
