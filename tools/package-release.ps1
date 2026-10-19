@@ -4,14 +4,18 @@ $ErrorActionPreference = 'Stop'
 $repoRoot = Split-Path $PSScriptRoot -Parent
 Push-Location $repoRoot
 try {
-    foreach ($project in @('WrathCombo/WrathCombo.csproj', 'Accord.Plugin/Accord.csproj')) {
+    $projects = @()
+    if ($Plugins -contains 'WrathCombo') { $projects += 'WrathCombo/WrathCombo.csproj' }
+    if ($Plugins -contains 'Accord') { $projects += 'Accord.Plugin/Accord.csproj' }
+    foreach ($project in $projects) {
         & dotnet build $project -c Release -p:UseSharedCompilation=false --nologo -v quiet
         if ($LASTEXITCODE -ne 0) { throw "Build failed: $project" }
     }
+    if (-not (Test-Path -LiteralPath 'WrathCombo/bin/WrathCombo/Release/WrathCombo.dll')) { throw 'Build the compatible Wrath Combo engine before running schema verification.' }
     & dotnet run --project tests/Accord.Tests.csproj -c Release -p:UseSharedCompilation=false -- WrathCombo/bin/WrathCombo/Release/WrathCombo.dll
     if ($LASTEXITCODE -ne 0) { throw 'Separation tests failed.' }
     Add-Type -AssemblyName System.IO.Compression.FileSystem
-    $tag = 'v0.2.13-preview'
+    $tag = 'v0.2.15-preview'
     $out = Join-Path $repoRoot "artifacts/$tag"
     New-Item -ItemType Directory -Force -Path $out | Out-Null
     $hashes = @()
@@ -20,7 +24,7 @@ try {
         $relative = if ($name -eq 'WrathCombo') { 'WrathCombo/bin/WrathCombo/Release/WrathCombo' } else { 'Accord.Plugin/bin/Release/Accord' }
         $build = Join-Path $repoRoot $relative
         $manifest = Get-Content -LiteralPath (Join-Path $build "$name.json") -Raw | ConvertFrom-Json
-        $expectedVersion = if ($name -eq 'Accord') { '0.2.13.0' } else { '1.0.4.28' }
+        $expectedVersion = if ($name -eq 'Accord') { '0.2.15.0' } else { '1.0.4.28' }
         if ($manifest.InternalName -ne $name -or $manifest.Name -ne $(if ($name -eq 'WrathCombo') { 'Wrath Combo' } else { 'Accord' }) -or $manifest.DalamudApiLevel -ne 15 -or [version]$manifest.AssemblyVersion -ne [version]$expectedVersion) {
             throw "Incorrect package identity/version: $name"
         }
@@ -45,12 +49,13 @@ try {
         foreach ($field in @('DownloadLinkInstall', 'DownloadLinkUpdate', 'DownloadLinkTesting')) {
             $manifest | Add-Member -NotePropertyName $field -NotePropertyValue $url -Force
         }
+        $changelog = if ($name -eq 'Accord') { '0.2.15: Compact PvE/PvP layouts and restores work without Hotbar Bridge. Uses Accord layouts directly; no Bridge migration required. Converts Sprint across every active regular and cross hotbar, including utility bars, in static and live modes.' } else { 'Restore WrathCombo identity and migrate current WrathFork settings once with backups. Accord detects the compatible WrathCombo build. Remove legacy WrathFork before loading.' }
         $publicManifest = $manifest | ConvertTo-Json -Depth 8 | ConvertFrom-Json
-        $publicManifest | Add-Member -NotePropertyName Changelog -NotePropertyValue 'Restore WrathCombo identity and migrate current WrathFork settings once with backups. Accord detects the compatible WrathCombo build. Remove legacy WrathFork before loading.' -Force
+        $publicManifest | Add-Member -NotePropertyName Changelog -NotePropertyValue $changelog -Force
         $feed += $publicManifest
         $manifest | Add-Member -NotePropertyName IsTestingExclusive -NotePropertyValue $true -Force
         $manifest | Add-Member -NotePropertyName TestingAssemblyVersion -NotePropertyValue $manifest.AssemblyVersion -Force
-        $manifest | Add-Member -NotePropertyName Changelog -NotePropertyValue 'Restore WrathCombo identity with one-time backed-up settings migration. In-game acceptance pending.' -Force
+        $manifest | Add-Member -NotePropertyName Changelog -NotePropertyValue $changelog -Force
         ConvertTo-Json -InputObject @($manifest) -Depth 8 | Set-Content -LiteralPath (Join-Path $out "$name.pluginmaster.testing.json") -Encoding utf8NoBOM
         $hashes += (Get-FileHash -LiteralPath $package -Algorithm SHA256).Hash.ToLowerInvariant() + "  $name.zip"
     }

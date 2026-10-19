@@ -1,7 +1,7 @@
 <Project Sdk="Microsoft.NET.Sdk">
   <PropertyGroup>
     <TargetFramework>net10.0-windows</TargetFramework>
-    <AssemblyName>Accord</AssemblyName><Version>0.2.13</Version>
+    <AssemblyName>Accord</AssemblyName><Version>0.2.15</Version>
     <Nullable>enable</Nullable><AllowUnsafeBlocks>true</AllowUnsafeBlocks>
     <LangVersion>preview</LangVersion><Platforms>x64</Platforms>
     <AppendTargetFrameworkToOutputPath>false</AppendTargetFrameworkToOutputPath>
@@ -19,6 +19,7 @@
     <Reference Include="Dalamud.Bindings.ImGui"><HintPath>$(DalamudLibPath)Dalamud.Bindings.ImGui.dll</HintPath><Private>false</Private></Reference>
     <Compile Include="../Contract/*.cs" Link="Contract/%(Filename)%(Extension)" />
     <EmbeddedResource Include="presets.json" LogicalName="Accord.presets.json" />
+    <EmbeddedResource Include="manual-layouts.json" LogicalName="Accord.manual-layouts.json" />
     <None Update="Accord.json" CopyToOutputDirectory="PreserveNewest" />
   </ItemGroup>
   <ItemGroup><EmbeddedResource Include="pvp-presets.json" LogicalName="Accord.pvp-presets.json" /></ItemGroup>

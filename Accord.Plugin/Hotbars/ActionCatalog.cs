@@ -16,7 +16,7 @@ public sealed class ActionCatalog
         crafts=craftRows?.ToList()??[];
     }
     public uint Resolve(string job,string name)=>ResolveSlot(job,name).Id;
-    public SlotValue ResolveSlot(string job,string name)
+    public SlotValue ResolveSlot(string job,string name,uint? expectedId=null)
     {
         if(name=="Empty")return default;
         var property=typeof(Sheets.ClassJobCategory).GetProperty(job)??throw new InvalidDataException($"Unknown job {job}");
@@ -27,6 +27,7 @@ public sealed class ActionCatalog
             .Select(a=>new SlotValue(1,a.RowId)).ToList();
         if(index is >=0 and <8)
             matches.AddRange(crafts.Where(a=>a.ClassJob.RowId==index+8 && string.Equals(a.Name.ToString(),name,StringComparison.OrdinalIgnoreCase)).Select(a=>new SlotValue(9,a.RowId)));
+        if(expectedId.HasValue)matches=matches.Where(a=>a.Id==expectedId.Value).ToList();
         if(matches.Count!=1)throw new InvalidDataException($"Expected one current player action for {job} / {name}, found {matches.Count}. Preset needs review.");
         return matches[0];
     }

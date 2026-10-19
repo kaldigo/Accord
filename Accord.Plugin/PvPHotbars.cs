@@ -15,29 +15,13 @@ namespace Accord;
 internal sealed class PvPHotbars
 {
     internal string Notice { get; private set; } = "";
-    private static string Read(string name) => Svc.PluginInterface.GetIpcSubscriber<string>("HotbarBridge.PvP."+name).InvokeFunc();
-    private static T Read<T>(string name) => JsonSerializer.Deserialize<T>(Read(name)) ?? throw new InvalidDataException("Bridge PvP information unavailable.");
-    private static void Write(string name, object value)
-    {
-        if (!Svc.PluginInterface.GetIpcSubscriber<string,bool>("HotbarBridge.PvP."+name).InvokeFunc(JsonSerializer.Serialize(value)))
-            throw new InvalidOperationException("Bridge rejected PvP "+name+".");
-    }
-    private static void Begin()
-    {
-        if (!Svc.PluginInterface.InstalledPlugins.Any(p=>p.InternalName=="HotbarBridge" && p.IsLoaded))
-            throw new InvalidOperationException("Load the updated Hotbar Bridge for PvP layouts and shared-slot protection.");
-        if (!Svc.PluginInterface.GetIpcSubscriber<bool>("HotbarBridge.PvP.BeginExternalEdit").InvokeFunc())
-            throw new InvalidOperationException("Waiting for Bridge to finish switching to PvP.");
-    }
-    private static void End() => Svc.PluginInterface.GetIpcSubscriber<bool>("HotbarBridge.PvP.EndExternalEdit").InvokeFunc();
     internal sealed class Backup
     {
         public bool PvP { get; set; } = true;
         public string Character { get; set; } = "";
         public List<SlotEdit> Edits { get; set; } = new();
-        public Dictionary<uint,Dictionary<string,Position>> Routes { get; set; } = new();
     }
-    internal static bool Initialized(uint job) => Read<uint[]>("GetInitializedJobs").Contains(job);
+    internal static bool Initialized(uint job) => HotbarLayoutStore.Initialized(job);
 
     internal unsafe string? Apply(PvPProfile[] jobs, PvPSettings settings, JObject snapshot, bool inspect = false)
     {
@@ -45,66 +29,58 @@ internal sealed class PvPHotbars
         NativeHotbars.Ready(current,true);
         if(Svc.Condition[Dalamud.Game.ClientState.Conditions.ConditionFlag.InCombat] || Svc.Condition[Dalamud.Game.ClientState.Conditions.ConditionFlag.BetweenAreas] || Svc.Condition[Dalamud.Game.ClientState.Conditions.ConditionFlag.BetweenAreas51])
             throw new InvalidOperationException("PvP hotbar changes wait for combat and loading to finish.");
-        if (!inspect) Begin();
-        try
+        HotbarLayoutStore.Ready(true);
+        var protectedSlots=HotbarLayoutStore.ProtectedSlots();
+        var maps=Defaults.Maps().Where(m=>m.Profile!="Noncombat").ToList();
+        bool Protected(Position p) => protectedSlots.Contains(p) || NativeHotbars.Ready(current,true)->IsHotbarShared((uint)p.Bar);
+        Notice="";
+        var extras=jobs.SelectMany(j=>PvPLayout.AvailableExtras(j,maps,Protected)).ToArray();
+        foreach(var extra in extras)if(maps.All(m=>m.Id!=extra.Id))maps.Add(extra);
+        Defaults.Validate(maps);
+        var backup=new Backup { Character=NativeHotbars.CharacterKey(Svc.PlayerState.ContentId) };
+        foreach (var job in jobs)
         {
-            var protectedSlots=Read<HashSet<Position>>("GetProtectedSlots");
-            var maps=Read<List<SlotMap>>("GetMapping");
-            bool Protected(Position p) => protectedSlots.Contains(p) || NativeHotbars.Ready(current,true)->IsHotbarShared((uint)p.Bar);
-            Notice="";
-            var extras=jobs.SelectMany(j=>PvPLayout.AvailableExtras(j,maps,Protected)).ToArray();
-            if (inspect && extras.Any(e=>maps.All(m=>m.Id!=e.Id))) return "refresh";
-            if (!inspect && extras.Length>0) { Write("EnsureJobMappings",extras); maps=Read<List<SlotMap>>("GetMapping"); }
-            Defaults.Validate(maps);
-            var oldRoutes=Read<Dictionary<uint,Dictionary<string,Position>>>("GetJobRoutes");
-            var routes=new Dictionary<uint,Dictionary<string,Position>>();
-            var backup=new Backup { Character=NativeHotbars.CharacterKey(Svc.PlayerState.ContentId) };
-            foreach (var job in jobs)
+            // Do not create a never-visited job's saved PvP page before the game initializes it.
+            if (job.JobId!=current && !Initialized(job.JobId)) throw new InvalidOperationException("Visit PvP on "+job.Job+" before writing its saved layout.");
+            var pairs=PvPLayout.Pairs(job,maps);
+            var values=job.Controls.Select(c=>PvPPack.Resolve(c,settings,snapshot)).ToArray();
+            bool existingSprint=ModeActions.HasSharedSprint(_=>true, p=>NativeHotbars.Read(job.JobId,p,pvp:true));
+            if(existingSprint)
+                for(int i=0;i<values.Length;i++)if(job.Controls[i].Binding is { Type:1, Id:29057 })values[i]=default;
+            foreach (var control in job.Controls) ValidateBinding(control.Binding);
+            var route=PvPLayout.IntentRoutes(job,pairs,values,Protected);
+            var layoutRoute=route.Where(r=>maps.Any(m=>m.Id==r.Key)).ToDictionary(r=>r.Key,r=>r.Value);
+            LayoutRoutes.Effective(maps.Where(m=>m.Applies(job.JobId)),layoutRoute);
+            var keep=new HashSet<Position>();
+            var design=job.Controls.Select(c=>c.Binding).Concat(job.RetiredBindings).Append(new SlotValue(1,1_000_000)).ToHashSet();
+            for(int i=0;i<pairs.Length;i++)
             {
-                // Do not create a never-visited job's saved PvP page before the game initializes it.
-                if (job.JobId!=current && !Initialized(job.JobId)) throw new InvalidOperationException("Visit PvP on "+job.Job+" before writing its saved layout.");
-                var pairs=PvPLayout.Pairs(job,maps);
-                var values=job.Controls.Select(c=>PvPPack.Resolve(c,settings,snapshot)).ToArray();
-                bool sharedSprint=ModeActions.HasSharedSprint(Protected, p=>NativeHotbars.Read(job.JobId,p,pvp:true));
-                if(sharedSprint)
-                    for(int i=0;i<values.Length;i++)if(job.Controls[i].Binding is { Type:1, Id:29057 })values[i]=default;
-                foreach (var control in job.Controls) ValidateBinding(control.Binding);
-                var route=PvPLayout.IntentRoutes(job,pairs,values,Protected);
-                var bridgeRoute=route.Where(r=>maps.Any(m=>m.Id==r.Key)).ToDictionary(r=>r.Key,r=>r.Value);
-                LayoutRoutes.Effective(maps.Where(m=>m.Applies(job.JobId)),bridgeRoute);
-                routes[job.JobId]=bridgeRoute;
-                backup.Routes[job.JobId]=oldRoutes.GetValueOrDefault(job.JobId)??new();
-                var keep=new HashSet<Position>();
-                var design=job.Controls.Select(c=>c.Binding).Concat(job.RetiredBindings).Append(new SlotValue(1,1_000_000)).ToHashSet();
-                for(int i=0;i<pairs.Length;i++)
-                {
-                    if(route.TryGetValue(pairs[i].Id,out var destination))Add(destination,values[i]);
-                    if(maps.Any(m=>m.Id==pairs[i].Id) && !Protected(pairs[i].Cross))Add(pairs[i].Cross,values[i]);
-                    else if(values[i]!=default)Notice=" Some controls are keyboard-only because their controller slots are shared or unavailable. Shared bars were preserved.";
-                }
-                if(settings.ClearOtherActions)
-                    for(int bar=0;bar<18;bar++)
-                        for(int slot=0;slot<(bar<10?12:16);slot++)
-                        {
-                            var p=new Position(bar,slot);
-                            if(!keep.Contains(p) && !Protected(p)) Add(p,default);
-                        }
-                foreach(var p in Enumerable.Range(0,2).SelectMany(b=>Enumerable.Range(0,12).Select(s=>new Position(b,s))))
-                    if(!keep.Contains(p) && !Protected(p) && design.Contains(NativeHotbars.Read(job.JobId,p,pvp:true)))Add(p,default);
-                void Add(Position p,SlotValue value)
-                {
-                    if(!keep.Add(p) || !p.Valid)throw new InvalidDataException("Duplicate or invalid PvP destination.");
-                    if(Protected(p))throw new InvalidOperationException($"{p} is shared or linked across modes; PvP setup preserves it. Choose job-specific Bridge pairs.");
-                    var before=NativeHotbars.Read(job.JobId,p,pvp:true);
-                    if(value==default && !settings.ClearOtherActions && !design.Contains(before))return;
-                    if(before!=value)backup.Edits.Add(new(job.JobId,p,before,value));
-                }
+                if(route.TryGetValue(pairs[i].Id,out var destination))Add(destination,values[i]);
+                if(maps.Any(m=>m.Id==pairs[i].Id) && !Protected(pairs[i].Cross))Add(pairs[i].Cross,values[i]);
+                else if(values[i]!=default)Notice=" Some controls are keyboard-only because their controller slots are shared or unavailable. Shared bars were preserved.";
             }
-            bool changed=backup.Edits.Count>0 || routes.Any(j=> !oldRoutes.TryGetValue(j.Key,out var old) || old.Count!=j.Value.Count || j.Value.Any(r=>!old.TryGetValue(r.Key,out var p)||p!=r.Value));
-            if(inspect)return changed?"refresh":null;
-            return Commit(backup,routes);
+            if(settings.ClearOtherActions)
+                for(int bar=0;bar<18;bar++)
+                    for(int slot=0;slot<(bar<10?12:16);slot++)
+                    {
+                        var p=new Position(bar,slot);
+                        if(!keep.Contains(p) && !Protected(p) && !ModeActions.IsSprint(NativeHotbars.Read(job.JobId,p,pvp:true))) Add(p,default);
+                    }
+            foreach(var p in Enumerable.Range(0,2).SelectMany(b=>Enumerable.Range(0,12).Select(s=>new Position(b,s))))
+                if(!keep.Contains(p) && !Protected(p) && design.Contains(NativeHotbars.Read(job.JobId,p,pvp:true)))Add(p,default);
+            void Add(Position p,SlotValue value)
+            {
+                if(!keep.Add(p) || !p.Valid)throw new InvalidDataException("Duplicate or invalid PvP destination.");
+                if(Protected(p))throw new InvalidOperationException($"{p} is shared or linked across modes; PvP setup preserves it. Choose job-specific controller pairs.");
+                var before=NativeHotbars.Read(job.JobId,p,pvp:true);
+                if(value==default && ModeActions.IsSprint(before))return;
+                if(value==default && !settings.ClearOtherActions && !design.Contains(before))return;
+                if(before!=value)backup.Edits.Add(new(job.JobId,p,before,value));
+            }
         }
-        finally { if(!inspect)End(); }
+        bool changed=backup.Edits.Count>0;
+        if(inspect)return changed?"refresh":null;
+        return Commit(backup);
     }
 
     private static void ValidateBinding(SlotValue value)
@@ -122,16 +98,16 @@ internal sealed class PvPHotbars
         }
     }
 
-    private static unsafe string Commit(Backup backup, Dictionary<uint,Dictionary<string,Position>> routes)
+    private static unsafe string Commit(Backup backup)
     {
         uint current=(uint)Player.Job;
+        HotbarLayoutStore.Ready(true);
         if(!backup.PvP || backup.Character!=NativeHotbars.CharacterKey(Svc.PlayerState.ContentId))throw new InvalidOperationException("Wrong mode or character for this backup.");
-        var protectedSlots=Read<HashSet<Position>>("GetProtectedSlots");
-        var maps=Read<List<SlotMap>>("GetMapping");
-        foreach(var (job,route) in routes)LayoutRoutes.Effective(maps.Where(m=>m.Applies(job)),route);
+        var protectedSlots=HotbarLayoutStore.ProtectedSlots();
         if(backup.Edits.Select(e=>(e.Job,e.Position)).Distinct().Count()!=backup.Edits.Count)throw new InvalidDataException("Duplicate backup destinations.");
         foreach(var e in backup.Edits)
         {
+            if(e.Job!=current && !Initialized(e.Job))throw new InvalidOperationException("Visit PvP on this class before restoring its saved layout.");
             if(!e.Position.Valid || protectedSlots.Contains(e.Position) || NativeHotbars.Ready(current,true)->IsHotbarShared((uint)e.Position.Bar))throw new InvalidOperationException("A backup destination is now shared or linked; restore blocked.");
             if(NativeHotbars.Read(e.Job,e.Position,pvp:true)!=e.Before)throw new InvalidOperationException("PvP hotbars changed during setup.");
         }
@@ -140,7 +116,7 @@ internal sealed class PvPHotbars
         try
         {
             HotbarTransaction.Apply(backup.Edits,(e,undo)=>NativeHotbars.Write(current,e.Job,e.Position,undo?e.Before:e.After,pvp:true),
-                ()=>Write("SetJobRoutes",routes),()=>Write("SetJobRoutes",backup.Routes));
+                null,null);
             return path;
         }
         catch(Exception ex) {throw new InvalidOperationException("PvP setup failed. Recovery backup: "+path,ex);}
@@ -151,14 +127,11 @@ internal sealed class PvPHotbars
         var json=JObject.Parse(File.ReadAllText(path));
         if(json.Value<bool?>("PvP")!=true)throw new InvalidDataException("This is not a PvP backup.");
         var backup=JsonSerializer.Deserialize<Backup>(json.ToString())!;
-        Begin();
-        try
-        {
-            var old=Read<Dictionary<uint,Dictionary<string,Position>>>("GetJobRoutes");
-            return Commit(new Backup {Character=backup.Character,
-                Routes=backup.Routes.Keys.ToDictionary(j=>j,j=>old.GetValueOrDefault(j)??new()),
-                Edits=backup.Edits.Select(e=>new SlotEdit(e.Job,e.Position,NativeHotbars.Read(e.Job,e.Position,pvp:true),e.Before)).ToList()},backup.Routes);
-        }
-        finally{End();}
+        HotbarLayoutStore.Ready(true);
+        if(backup.Character!=NativeHotbars.CharacterKey(Svc.PlayerState.ContentId))throw new InvalidOperationException("This backup belongs to another character.");
+        if(backup.Edits.Any(e=>e.Job!=(uint)Player.Job && !Initialized(e.Job)))
+            throw new InvalidOperationException("Visit PvP on the backed-up classes before restoring their saved layouts.");
+        return Commit(new Backup {Character=backup.Character,
+            Edits=backup.Edits.Select(e=>new SlotEdit(e.Job,e.Position,NativeHotbars.Read(e.Job,e.Position,pvp:true),e.Before)).ToList()});
     }
 }

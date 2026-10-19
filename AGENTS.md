@@ -1,3 +1,7 @@
+Manual fallback decision (2026-10-19): the manual profile owns regular bars 1–3 and controller pages 1–3, including former Bridge per-slot reservations. Preserve exact previous assignments in character-scoped backups for restoration. Native game-shared bars and all destinations outside that profile remain protected. Do not apply retired Bridge per-slot restrictions to the manual profile. See docs/manual-fallback.md.
+
+Bridge retirement decision (2026-10-19): Accord uses its own compact PvE/PvP regular/controller layouts directly, without Bridge IPC, configuration imports or saved Bridge routes. Preserve Accord utility/shared controls. Adapt Sprint in place across all active regular/cross hotbars independently of class selection and static/live mode. This supersedes Bridge dependency rules below. See [retirement implementation](docs/bridge-retirement.md).
+
 Identity decision (2026-10-18): the engine replaces stock Wrath using InternalName and assembly `WrathCombo`, display name `Wrath Combo`. This supersedes the provisional `WrathFork` installation identity below. Accord remains separate. Preserve existing `WrathCombo.*` IPC and the private `WrathFork.Settings.*` v2 API/contract identity for transaction compatibility. Current legacy fork settings take precedence over an older stock configuration in the one-time backed-up migration. Never allow legacy WrathFork to remain installed alongside the restored identity. See [identity migration](docs/identity-migration.md).
 
 # Accord development rules

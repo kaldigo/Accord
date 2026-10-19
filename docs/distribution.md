@@ -1,6 +1,10 @@
+Manual fallback preview (0.2.15, 2026-10-19): three-bar manual PvE layouts can be saved before logout and exact previous Accord layouts restored on login when compatible Wrath is available. See [manual fallback](manual-fallback.md). Local build/data/recovery checks are recorded there; native acceptance remains pending.
+
 Identity decision (2026-10-18): the engine replaces stock Wrath using InternalName and assembly `WrathCombo`, display name `Wrath Combo`. This supersedes the provisional `WrathFork` installation identity below. Accord remains separate. Preserve existing `WrathCombo.*` IPC and the private `WrathFork.Settings.*` v2 API/contract identity for transaction compatibility. Current legacy fork settings take precedence over an older stock configuration in the one-time backed-up migration. Never allow legacy WrathFork to remain installed alongside the restored identity. See [identity migration](identity-migration.md).
 
 # Separate plugin previews
+
+Current 0.2.14 local preview: compact PvE/PvP layouts no longer require Hotbar Bridge. Accord uses its own regular/controller layouts directly; Sprint adapts across all active regular/cross bars, including utility bars, in static and live modes. See [Bridge retirement and validation](bridge-retirement.md). Earlier Bridge requirements below are historical. Native acceptance remains pending.
 
 The 0.2.8 preview contains two plugins. **Wrathful Combo** (internal name `WrathFork`) owns rotations, settings and the settings API. **Accord** owns reviewed mappings, variants and hotbars. Both are needed for reviewed combat setup. Disable upstream Wrath and the old combined Accord before using these builds; Hotbar Bridge stays separate.
 

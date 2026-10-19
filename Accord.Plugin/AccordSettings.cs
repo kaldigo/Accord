@@ -17,6 +17,7 @@ public sealed class AccordSettings : Dalamud.Configuration.IPluginConfiguration
     public bool SharedSettingsPrepared { get; set; }
     public bool LiveMode { get; set; }
     public bool ClearOtherActions { get; set; }
+    public bool ManualLogoutFallback { get; set; } = true;
     public string LastHotbarBackup { get; set; } = "";
     public bool Enabled(VariantId id) => Variants.GetValueOrDefault(id);
 

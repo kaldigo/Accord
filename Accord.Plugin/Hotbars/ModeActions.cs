@@ -1,4 +1,5 @@
 using System;
+using System.Collections.Generic;
 
 namespace HotbarTools;
 
@@ -10,6 +11,19 @@ public static class ModeActions
     public static SlotValue Canonical(SlotValue value) => IsSprint(value) ? new(1,3) : value;
     public static SlotValue ForMode(SlotValue value, bool pvp) => IsSprint(value)
         ? new(1, pvp ? 29057u : 3u) : value;
+    public static List<SlotEdit> SprintEdits(uint job, bool pvp, Func<Position, SlotValue> read)
+    {
+        var edits = new List<SlotEdit>();
+        for (int bar = 0; bar < 18; bar++)
+            for (int slot = 0; slot < (bar < 10 ? 12 : 16); slot++)
+            {
+                var position = new Position(bar, slot);
+                var value = read(position);
+                var desired = ForMode(value, pvp);
+                if (value != desired) edits.Add(new(job, position, value, desired));
+            }
+        return edits;
+    }
     public static bool HasSharedSprint(Func<Position,bool> shared, Func<Position,SlotValue> read)
     {
         for(int bar=0;bar<18;bar++)

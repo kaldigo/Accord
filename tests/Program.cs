@@ -451,6 +451,8 @@ Check(liveUpdates.Poll(1252, 31, 2) && !liveUpdates.Applied, "Character change d
 liveUpdates.Apply(31, 2, () => { });
 liveUpdates.Request();
 Check(liveUpdates.Poll(1253, 31, 2) && !liveUpdates.Applied, "Variant or cleanup change did not refresh current layout.");
+checks += HotbarIndependenceTests.Run();
+checks += ManualFallbackTests.Run();
 checks += UpstreamMigrationTests.Run();
 checks += SeparationTests.Run();
 if (args.Length > 0) checks += EngineSchema.Verify(args[0], pack);

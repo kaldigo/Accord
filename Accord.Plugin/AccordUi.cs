@@ -38,13 +38,21 @@ internal static class AccordUi
         ImGui.Separator();
         bool cleanup = setup.Settings.ClearOtherActions;
         if (ImGui.Checkbox("Clear other actions", ref cleanup)) setup.Run(() => setup.SetCleanup(cleanup));
-        if (ImGui.IsItemHovered()) ImGui.SetTooltip("Keep only the designed job layout. Preserves game-shared bars and Bridge shared slots. Requires Hotbar Bridge; writes a recovery backup.");
+        if (ImGui.IsItemHovered()) ImGui.SetTooltip("Keep only the designed job layout. Preserves game-shared bars, utility bars, shared slots and existing Sprint buttons. Writes a recovery backup.");
         if (!setup.Settings.LiveMode && ImGui.Button("Set selected class hotbars")) setup.Run(setup.ApplyHotbars);
         if (ImGui.Button(setup.Settings.LiveMode ? "Disable live mode" : "Enable live mode")) setup.Run(() => setup.SetLive(!setup.Settings.LiveMode));
         ImGui.TextWrapped(setup.Settings.LiveMode
             ? "Live: refresh the current selected class on changes and check every second. Clear other actions also removes newly added leveling actions."
             : "Static: variants change behaviour. Use a setup button to update hotbars.");
-        ImGui.TextWrapped("Keyboard actions close gaps within each bar; fixed controls and controller positions stay in place. Hotbar Bridge is required.");
+        ImGui.TextWrapped("Keyboard actions close gaps within each bar; fixed controls and controller positions stay in place. Accord manages both regular and controller layouts. Sprint switches between PvE and PvP on all active hotbars, including utility bars.");
+        ImGui.Separator();
+        bool manualLogout = setup.Settings.ManualLogoutFallback;
+        if (ImGui.Checkbox("Save manual hotbars before logout", ref manualLogout)) setup.Run(() => setup.SetManualFallback(manualLogout));
+        ImGui.TextWrapped("Saves three-bar manual layouts for selected combat classes before normal logout. Restores your exact previous Accord layouts on login when compatible Wrath is available. Uses regular bars 1–3 and controller pages 1–3; other bars stay unchanged.");
+        if (ImGui.Button("Prepare manual hotbars now")) setup.Run(setup.PrepareManualHotbars);
+        ImGui.SameLine();
+        if (ImGui.Button("Restore Accord hotbars")) setup.Run(setup.RestoreAccordHotbars);
+        ImGui.TextWrapped(setup.ManualStatus);
         ImGui.Separator();
         ImGui.TextWrapped(setup.Status);
         if (setup.HasPendingOperation && ImGui.Button("Keep recovery record and review again")) setup.Run(setup.AbandonPendingOperation);
@@ -123,12 +131,14 @@ internal static class AccordUi
             case "selected": setup.ApplyHotbars(); return;
             case "live": setup.SetLive(Value(setup.Live)); return;
             case "restore": setup.Restore(); return;
+            case "manual": setup.PrepareManualHotbars(); return;
+            case "normal": setup.RestoreAccordHotbars(); return;
         }
         var id = parts[0] switch
         {
             "burst" => VariantId.Burst, "protection" => VariantId.Protection,
             "support" => VariantId.Support, "mechanics" => VariantId.ClassMechanics,
-            _ => throw new ArgumentException("Use /accord selected, live, burst, protection, support or mechanics."),
+            _ => throw new ArgumentException("Use /accord manual, normal, selected, restore, live, burst, protection, support or mechanics."),
         };
         setup.SetVariant(id, Value(setup.VariantEnabled(id)));
         bool Value(bool previous) => parts.ElementAtOrDefault(1) switch

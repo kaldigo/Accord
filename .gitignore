@@ -21,3 +21,10 @@ accord-build.log
 
 tools/PvpSheetProbe/bin/
 tools/PvpSheetProbe/obj/
+
+**/bin/
+**/obj/
+__pycache__/
+*.pyc
+.engine/
+

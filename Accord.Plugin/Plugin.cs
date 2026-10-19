@@ -105,6 +105,7 @@ public sealed class Plugin : IDalamudPlugin
         Svc.Commands.RemoveHandler("/accord");
         setup.Dispose();
         ClassIcons.Dispose();
+        HotbarLayoutStore.Reset();
         ECommonsMain.Dispose();
     }
 }

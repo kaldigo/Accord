@@ -4,10 +4,18 @@
     <TargetFramework>net10.0-windows</TargetFramework>
     <ImplicitUsings>enable</ImplicitUsings>
     <Nullable>enable</Nullable>
+    <AllowUnsafeBlocks>true</AllowUnsafeBlocks>
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="../Contract/*.cs" Link="Contract/%(Filename)%(Extension)" />
     <Reference Include="Dalamud"><HintPath>$(appdata)/XIVLauncher/addon/Hooks/dev/Dalamud.dll</HintPath></Reference>
+    <Compile Include="../Accord.Plugin/HotbarLayoutStore.cs" Link="HotbarLayoutStore.cs" />
+    <Compile Include="../Accord.Plugin/ManualLayoutPack.cs" Link="ManualLayoutPack.cs" />
+    <Compile Include="../Accord.Plugin/ManualFallback.cs" Link="ManualFallback.cs" />
+    <EmbeddedResource Include="../Accord.Plugin/manual-layouts.json" LogicalName="Accord.manual-layouts.json" />
+    <Compile Include="../Accord.Plugin/HotbarSetup.cs" Link="HotbarSetup.cs" />
+    <Compile Include="../Accord.Plugin/PvPHotbars.cs" Link="PvPHotbars.cs" />
+    <Compile Include="../Accord.Plugin/SprintHotbars.cs" Link="SprintHotbars.cs" />
     <Compile Include="../Accord.Plugin/HotbarRefreshPolicy.cs" Link="HotbarRefreshPolicy.cs" />
     <Compile Include="../Accord.Plugin/PveLayoutPlan.cs" Link="PveLayoutPlan.cs" />
     <Compile Include="../Accord.Plugin/LiveUpdateState.cs" Link="LiveUpdateState.cs" />

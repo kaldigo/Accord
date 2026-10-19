@@ -9,6 +9,7 @@ namespace HotbarTools;
 
 public static unsafe class NativeHotbars
 {
+    public static void Flush(uint currentJob, bool activePvP = false) => Ready(currentJob, activePvP)->SaveFile(true);
     public static RaptureHotbarModule* Ready(uint job,bool pvp=false)
     {
         var m=RaptureHotbarModule.Instance();

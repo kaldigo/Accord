@@ -1,0 +1,11 @@
+<Project Sdk="Microsoft.NET.Sdk">
+  <PropertyGroup><TargetFramework>net10.0-windows</TargetFramework><OutputType>Exe</OutputType><ImplicitUsings>enable</ImplicitUsings><Nullable>enable</Nullable></PropertyGroup>
+  <ItemGroup>
+    <Reference Include="Lumina"><HintPath>$(APPDATA)/XIVLauncher/addon/Hooks/dev/Lumina.dll</HintPath></Reference>
+    <Reference Include="Lumina.Excel"><HintPath>$(APPDATA)/XIVLauncher/addon/Hooks/dev/Lumina.Excel.dll</HintPath></Reference>
+    <Compile Include="../../Accord.Plugin/ManualLayoutPack.cs" Link="ManualLayoutPack.cs" />
+    <Compile Include="../../Accord.Plugin/Hotbars/Models.cs" Link="Models.cs" />
+    <Compile Include="../../Accord.Plugin/Hotbars/ActionCatalog.cs" Link="ActionCatalog.cs" />
+    <EmbeddedResource Include="../../Accord.Plugin/manual-layouts.json" LogicalName="Accord.manual-layouts.json" />
+  </ItemGroup>
+</Project>
