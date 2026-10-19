@@ -3,7 +3,7 @@
     "Author": "kaldigo; based on Team Wrath's Wrath Combo",
     "Name": "Wrath Combo",
     "InternalName": "WrathCombo",
-    "AssemblyVersion": "1.0.4.30",
+    "AssemblyVersion": "1.0.4.31",
     "Description": "Wrath rotation engine fork with configurable continuation, targeting and support functionality. Configured independently or through its settings API. Accord-compatible build. Replaces stock Wrath Combo; remove the legacy WrathFork installation before loading.",
     "ApplicableVersion": "any",
     "RepoUrl": "https://github.com/kaldigo/WrathCombo",
@@ -21,8 +21,8 @@
     "Punchline": "Configurable Wrath rotation engine and settings API.",
     "AcceptsFeedback": true,
     "Changelog": "Validated source update. Development preview; native acceptance remains separate.",
-    "DownloadLinkInstall": "https://github.com/kaldigo/WrathCombo/releases/download/v1.0.4.30/WrathCombo.zip",
-    "DownloadLinkUpdate": "https://github.com/kaldigo/WrathCombo/releases/download/v1.0.4.30/WrathCombo.zip",
-    "DownloadLinkTesting": "https://github.com/kaldigo/WrathCombo/releases/download/v1.0.4.30/WrathCombo.zip"
+    "DownloadLinkInstall": "https://github.com/kaldigo/WrathCombo/releases/download/v1.0.4.31/WrathCombo.zip",
+    "DownloadLinkUpdate": "https://github.com/kaldigo/WrathCombo/releases/download/v1.0.4.31/WrathCombo.zip",
+    "DownloadLinkTesting": "https://github.com/kaldigo/WrathCombo/releases/download/v1.0.4.31/WrathCombo.zip"
   }
 ]
