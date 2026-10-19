@@ -3,10 +3,10 @@
     "Author": "kaldigo; based on Team Wrath's Wrath Combo",
     "Name": "Wrath Combo",
     "InternalName": "WrathCombo",
-    "AssemblyVersion": "1.0.4.28",
+    "AssemblyVersion": "1.0.4.29",
     "Description": "Wrath rotation engine fork with configurable continuation, targeting and support functionality. Configured independently or through its settings API. Accord-compatible build. Replaces stock Wrath Combo; remove the legacy WrathFork installation before loading.",
     "ApplicableVersion": "any",
-    "RepoUrl": "https://github.com/kaldigo/Accord",
+    "RepoUrl": "https://github.com/kaldigo/WrathCombo",
     "Tags": [
       "combo",
       "hotbars",
@@ -17,12 +17,12 @@
     "LoadSync": false,
     "CanUnloadAsync": false,
     "LoadPriority": 0,
-    "IconUrl": "https://raw.githubusercontent.com/kaldigo/HotbarTools/main/assets/icons/wrathfull-combo-512.png",
+    "IconUrl": "https://raw.githubusercontent.com/kaldigo/WrathCombo/main/assets/icon.png",
     "Punchline": "Configurable Wrath rotation engine and settings API.",
     "AcceptsFeedback": true,
-    "DownloadLinkInstall": "https://github.com/kaldigo/Accord/releases/download/v0.2.13-preview/WrathCombo.zip",
-    "DownloadLinkUpdate": "https://github.com/kaldigo/Accord/releases/download/v0.2.13-preview/WrathCombo.zip",
-    "DownloadLinkTesting": "https://github.com/kaldigo/Accord/releases/download/v0.2.13-preview/WrathCombo.zip",
-    "Changelog": "Restore WrathCombo identity and migrate current WrathFork settings once with backups. Accord detects the compatible WrathCombo build. Remove legacy WrathFork before loading."
+    "Changelog": "Validated source update. Development preview; native acceptance remains separate.",
+    "DownloadLinkInstall": "https://github.com/kaldigo/WrathCombo/releases/download/v1.0.4.29/WrathCombo.zip",
+    "DownloadLinkUpdate": "https://github.com/kaldigo/WrathCombo/releases/download/v1.0.4.29/WrathCombo.zip",
+    "DownloadLinkTesting": "https://github.com/kaldigo/WrathCombo/releases/download/v1.0.4.29/WrathCombo.zip"
   }
 ]
