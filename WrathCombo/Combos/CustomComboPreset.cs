@@ -1,4 +1,4 @@
-#region
+﻿#region
 
 using ECommons.ExcelServices;
 using WrathCombo.Attributes;
@@ -8741,9 +8741,11 @@ public enum Preset
     DOL_NodeSearchingBuffs = 51012,
 
     [ReplaceSkill(DOL.Cast)]
+    [ConflictingCombos(FSH_ContextTools)]
     [JobInfo(Job.FSH)]
     FSH_CastHook = 51002,
 
+    [ConflictingCombos(FSH_ContextTools)]
     [JobInfo(Job.FSH)]
     FSH_Swim = 51008,
 
@@ -8787,7 +8789,16 @@ public enum Preset
     [JobInfo(Job.FSH)]
     FSH_Chum_BaitedBreath = 51011,
 
-    // Last value = 51011
+    [ReplaceSkill(4073, 272, 4087, 273, 241, 224, 295, 294, 25589, 25590, 21203, 21204, 4589, 4590, 280, 282, 4072, 4086, 4081, 4095, 235, 218, 237, 220, 239, 222)]
+    [JobInfo(Job.MIN)]
+    DOL_ContextTools = 51013,
+
+    [ReplaceSkill(289, 288, 268, 26805, 37045, 4595, 26806, 4100, 2135, 4105, 4104, 4102, 4106, 37046, 4596)]
+    [ConflictingCombos(FSH_CastHook, FSH_Swim)]
+    [JobInfo(Job.FSH)]
+    FSH_ContextTools = 51014,
+
+    // Last value = 51014
 
     #endregion
 
