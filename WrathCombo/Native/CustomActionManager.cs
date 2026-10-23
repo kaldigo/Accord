@@ -145,7 +145,9 @@ public sealed unsafe class CustomActionManager : IDisposable
 
     private byte* FormatNameDetour(int nameType, uint rowId, uint detailType, uint parameter)
     {
-        if (P.CustomActions.Manager.Actions.TryGetFirst(x => x.Id == rowId, out var act))
+        // Hooks are live before CustomActionSetup has been assigned to P.CustomActions.
+        // Use this manager's initialized table, including during construction/reload.
+        if (_actions.TryGetValue(rowId, out var act))
         {
             return (byte*)act.NamePtr;
         }
@@ -154,7 +156,7 @@ public sealed unsafe class CustomActionManager : IDisposable
 
     private void* UpdateTooltipDetour(uint rowId)
     {
-        if (P.CustomActions.Manager.Actions.TryGetFirst(x => x.Id == rowId, out var act))
+        if (_actions.TryGetValue(rowId, out var act))
         {
             return (void*)act.TransientRowPtr;
         }
